@@ -2,8 +2,8 @@
 // Despliega recursos de pago. Revisar costos y suscripcion antes de ejecutar.
 targetScope = 'resourceGroup'
 
-@description('Region de todos los recursos. La disponibilidad de tamanos depende de la region.')
-param location string = resourceGroup().location
+@description('Region de los recursos. North Central US valido en Azure for Students el 17-10-2026; comprobar disponibilidad de nuevo antes de desplegar.')
+param location string = 'northcentralus'
 
 @description('IP publica administradora en formato X.X.X.X/32; SSH solo desde esta IP.')
 param adminIpCidr string
@@ -16,8 +16,8 @@ param sshPublicKey string
 @description('Contrasena privada del administrador PostgreSQL.')
 param dbPassword string
 
-@description('Tamano de VM; confirmar precio y disponibilidad en la region elegida.')
-param vmSize string = 'Standard_B1s'
+@description('Tamano de VM validado en North Central US el 17-10-2026; confirmar precio y disponibilidad antes de desplegar.')
+param vmSize string = 'Standard_B2als_v2'
 
 @description('SKU PostgreSQL Flexible Server; confirmar precio y disponibilidad.')
 param dbSku string = 'Standard_B1ms'
