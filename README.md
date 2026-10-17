@@ -10,6 +10,9 @@ Prototipo académico para observar la temperatura y la humedad del **aire** de u
 - [`wokwi/sketch.ino`](wokwi/sketch.ino): programa del ESP32 con lectura del DHT22, control local, mensajes MQTT y recuperación de lecturas recientes.
 - [`wokwi/diagram.json`](wokwi/diagram.json): circuito de la simulación.
 - [`wokwi/libraries.txt`](wokwi/libraries.txt): bibliotecas utilizadas por Wokwi.
+- [`server/app.py`](server/app.py): servidor HTTP que recibe lecturas y las guarda en CSV y base de datos.
+- [`aws/savia-iot.yaml`](aws/savia-iot.yaml): infraestructura preparada para Ubuntu público y PostgreSQL privado en AWS.
+- [`GUIA_PRACTICA_1.md`](GUIA_PRACTICA_1.md): instrucciones de la práctica, pruebas y evidencias pendientes.
 
 La página del repositorio es una compilación lista para publicar; **el código fuente editable de esa página no está incluido en este repositorio**. El circuito y su programa sí están disponibles en archivos editables.
 
@@ -28,6 +31,7 @@ La página del repositorio es una compilación lista para publicar; **el código
 
 ```text
 DHT22 → ESP32 → Wi-Fi/MQTT → dashboard
+          └── Wi-Fi/HTTP → servidor Python → CSV + base de datos
           │                        │
           └─ regla local → relé → LED verde (ventilación simulada)
 ```
@@ -46,6 +50,8 @@ El reto de la asignatura también contempla organizar el montaje por equipo, def
 ## Verificación realizada
 
 En la versión local del prototipo se comprobaron lecturas simuladas, control remoto con confirmación, un corte de red de 20 segundos, recuperación de lecturas y exportación CSV. Esas pruebas locales no prueban por sí solas que un dispositivo físico o la página pública estén conectados en este momento. Para una exposición, vuelve a ejecutar los pasos anteriores y registra el resultado observado.
+
+El servidor nuevo pasó una prueba local automatizada de validación, autenticación, lectura duplicada y escritura en CSV + SQLite. **AWS y el envío HTTP desde el Wokwi publicado siguen pendientes de desplegar/configurar y comprobar con datos de la simulación.**
 
 ## Referencias técnicas
 

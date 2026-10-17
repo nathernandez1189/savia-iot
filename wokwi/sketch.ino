@@ -6,6 +6,7 @@
    Serial: a=AUTO, 1=ON, 0=OFF, c=corte de Wi-Fi durante 20 segundos.
 */
 #include <WiFi.h>
+#include <HTTPClient.h>
 #include <PubSubClient.h>
 #include <ArduinoJson.h>
 #include <DHTesp.h>
@@ -17,6 +18,9 @@ const uint8_t PIN_DHT=15, PIN_RELE=26, PIN_ALERTA=27;
 const uint8_t PIN_AUTO=18, PIN_ON=19, PIN_OFF=23;
 const char* BROKER="test.mosquitto.org";
 const char* BASE="uao/invernadero/477744536654042113/v2";
+// Configurar al desplegar el servidor. Vacío mantiene solo el flujo MQTT actual.
+const char* API_URL=""; // Ejemplo: http://IP_PUBLICA/api/telemetry
+const char* API_TOKEN=""; // Mismo valor de SAVIA_DEVICE_TOKEN en el servidor
 const uint16_t CAPACITY=720;
 const unsigned long READ_MS=2200, SEND_MS=5000, RETRY_MS=5000;
 DHTesp dht; LiquidCrystal_I2C lcd(0x27,20,4);
@@ -28,6 +32,7 @@ unsigned long lastRead=0,lastSample=0,lastTry=0,lastWifiTry=0,lastHistory=0;
 unsigned long cutUntil=0,cutAt=0,manualUntil=0;
 bool mqttWasConnected=false,historyActive=false;
 uint32_t sequence=0,historyNext=0,historyEnd=0;
+uint32_t httpNextSeq=1; unsigned long lastHttpTry=0;
 String lastCommandId;
 struct Sample {uint32_t seq,up;uint64_t ts;float temp,hum;bool valid,automatic,fan;uint8_t alarm;char reason[24];};
 Sample buffer[CAPACITY]; uint16_t head=0,count=0;
@@ -47,6 +52,24 @@ void jsonSample(JsonObject j,const Sample&s){j["v"]=2;j["boot"]=bootId;j["seq"]=
  if(s.valid){j["temperature"]=s.temp;j["humidity"]=s.hum;}else{j["temperature"]=nullptr;j["humidity"]=nullptr;}
  j["mode"]=s.automatic?"AUTO":"MANUAL";j["fan"]=s.fan;j["alarm"]=alarmText(s.alarm);j["reason"]=s.reason;}
 void publishSample(const Sample&s){if(!mqtt.connected())return;JsonDocument d;jsonSample(d.to<JsonObject>(),s);String payload;serializeJson(d,payload);mqtt.publish(topicState.c_str(),payload.c_str(),true);}
+void sendHttp(){
+ if(!API_URL[0] || WiFi.status()!=WL_CONNECTED || millis()-lastHttpTry<5000 || !count)return;
+ if(httpNextSeq>sequence)return;
+ lastHttpTry=millis();
+ uint32_t oldest=buffer[(head+CAPACITY-count)%CAPACITY].seq;
+ if(httpNextSeq<oldest){Serial.printf("HTTP: %lu lecturas antiguas excedieron el buffer RAM\n",(unsigned long)(oldest-httpNextSeq));httpNextSeq=oldest;}
+ for(uint16_t i=0;i<count;i++){
+  Sample &s=buffer[(head+CAPACITY-count+i)%CAPACITY];if(s.seq!=httpNextSeq)continue;
+  if(!s.valid){httpNextSeq++;return;} // No inventar valores cuando falla el sensor.
+  JsonDocument d;jsonSample(d.to<JsonObject>(),s);String payload;serializeJson(d,payload);
+  HTTPClient http;http.setTimeout(1200);if(!http.begin(API_URL))return;
+  http.addHeader("Content-Type","application/json");if(API_TOKEN[0])http.addHeader("X-Device-Token",API_TOKEN);
+  int code=http.POST(payload);http.end();
+  if(code==200 || code==201){Serial.printf("HTTP guardado: #%lu\n",(unsigned long)s.seq);httpNextSeq++;}
+  else Serial.printf("HTTP pendiente: #%lu, estado %d\n",(unsigned long)s.seq,code);
+  return;
+ }
+}
 void record(const char*reason){Sample &s=buffer[head];s.seq=++sequence;s.up=millis();time_t t=time(nullptr);s.ts=t>1700000000?(uint64_t)t*1000:0;
  s.temp=temperatura;s.hum=humedad;s.valid=sensorValido;s.automatic=automatico;s.fan=ventilador;s.alarm=alarmCode();strlcpy(s.reason,reason,sizeof(s.reason));
  head=(head+1)%CAPACITY;if(count<CAPACITY)count++;publishSample(s);
@@ -92,5 +115,5 @@ void loop(){
  if(manualUntil&&(int32_t)(now-manualUntil)>=0)setMode('a',"manual_expirado");
  if(mqttWasConnected&&!mqtt.connected()){mqttWasConnected=false;automatico=true;manualUntil=0;control();outputs();record("auto_respaldo");}
  if(now-lastSample>=SEND_MS){lastSample=now;record("lectura");}
- connectNetwork();sendHistory();delay(5);
+ connectNetwork();sendHistory();sendHttp();delay(5);
 }
