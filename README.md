@@ -11,8 +11,9 @@ Prototipo académico para observar la temperatura y la humedad del **aire** de u
 - [`wokwi/diagram.json`](wokwi/diagram.json): circuito de la simulación.
 - [`wokwi/libraries.txt`](wokwi/libraries.txt): bibliotecas utilizadas por Wokwi.
 - [`server/app.py`](server/app.py): servidor HTTP que recibe lecturas y las guarda en CSV y base de datos.
-- [`aws/savia-iot.yaml`](aws/savia-iot.yaml): infraestructura preparada para Ubuntu público y PostgreSQL privado en AWS.
-- [`GUIA_PRACTICA_1.md`](GUIA_PRACTICA_1.md): instrucciones de la práctica, pruebas y evidencias pendientes.
+- [`azure/main.bicep`](azure/main.bicep): propuesta principal de infraestructura para Ubuntu público y PostgreSQL privado en Azure.
+- [`GUIA_PRACTICA_1_AZURE.md`](GUIA_PRACTICA_1_AZURE.md): pasos de Azure, pruebas y evidencias pendientes. El criterio de evaluación del profesor nombra AWS expresamente; confirmar si acepta Azure.
+- [`aws/savia-iot.yaml`](aws/savia-iot.yaml) y [`GUIA_PRACTICA_1.md`](GUIA_PRACTICA_1.md): alternativa conservada para cumplir literalmente el criterio AWS si se requiere.
 
 La página del repositorio es una compilación lista para publicar; **el código fuente editable de esa página no está incluido en este repositorio**. El circuito y su programa sí están disponibles en archivos editables.
 
@@ -50,7 +51,7 @@ El reto de la asignatura también contempla organizar el montaje por equipo, def
 
 En la versión local del prototipo se comprobaron lecturas simuladas, control remoto con confirmación, un corte de red de 20 segundos, recuperación de lecturas y exportación CSV. Esas pruebas locales no prueban por sí solas que un dispositivo físico o la página pública estén conectados en este momento. Para una exposición, vuelve a ejecutar los pasos anteriores y registra el resultado observado.
 
-El servidor nuevo pasó una prueba local automatizada de validación, autenticación, lectura duplicada y escritura en CSV + SQLite. **AWS y el envío HTTP desde el Wokwi publicado siguen pendientes de desplegar/configurar y comprobar con datos de la simulación.**
+El servidor nuevo pasó una prueba local automatizada de validación, autenticación, lectura duplicada y escritura en CSV + SQLite. El código HTTP adicional compiló en Wokwi, pero su dirección de servidor sigue vacía. **Azure y el envío Wokwi → servidor siguen pendientes de desplegar/configurar y comprobar con datos de la simulación.**
 
 ## Referencias técnicas
 
