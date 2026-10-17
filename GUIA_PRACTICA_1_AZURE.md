@@ -43,7 +43,7 @@ La plantilla [`azure/main.bicep`](azure/main.bicep) define una red virtual, subr
 Cloud Shell tiene Azure CLI y Bicep. Tras confirmar la cobertura de costos, abrir Cloud Shell desde el portal. El grupo de recursos `rg-savia-iot-practica1` ya existe y está vacío. La región de los recursos de la plantilla es `northcentralus`; puede diferir de la región del grupo. Descargar la plantilla publicada en GitHub:
 
 ```bash
-curl -fL -o main.bicep https://raw.githubusercontent.com/nathernandez1189/savia-iot/main/azure/main.bicep
+curl -fL -o main.bicep https://raw.githubusercontent.com/nathernandez1189/savia-iot/0a4f2c7f64197d02acdd9dbf2bacebe9265407c0/azure/main.bicep
 ```
 
 Comprobar que `az account show` indica la suscripción prevista. Completar los parámetros en Cloud Shell sin incluir claves privadas ni contraseñas en el historial:
@@ -62,7 +62,13 @@ az deployment group validate --resource-group rg-savia-iot-practica1 --template-
 az deployment group what-if --resource-group rg-savia-iot-practica1 --template-file main.bicep --parameters location=northcentralus vmSize=Standard_B2als_v2 adminIpCidr="$SAVIA_ADMIN_CIDR" sshPublicKey="$SAVIA_SSH_PUB" dbPassword="$SAVIA_DB_PASSWORD"
 ```
 
-Solo después de revisar esa vista previa y los costos, ejecutar `az deployment group create` con los mismos parámetros. Guardar los valores de salida `webPublicIp` y `postgresHost`. La VM todavía necesita instalar la aplicación.
+Solo después de revisar esa vista previa, confirmar los costos y preparar una IP administradora y una clave SSH **reales**, ejecutar:
+
+```bash
+az deployment group create --resource-group rg-savia-iot-practica1 --template-file main.bicep --parameters location=northcentralus vmSize=Standard_B2als_v2 adminIpCidr="$SAVIA_ADMIN_CIDR" sshPublicKey="$SAVIA_SSH_PUB" dbPassword="$SAVIA_DB_PASSWORD"
+```
+
+Guardar los valores de salida `webPublicIp` y `postgresHost`. La VM todavía necesita instalar la aplicación. Los parámetros temporales usados para la validación no sirven para el despliegue real.
 
 ## Instalar Savia IoT en la VM
 
@@ -114,7 +120,16 @@ server {
 }
 ```
 
-Activar el sitio, retirar el predeterminado, validar con `sudo nginx -t` y recargar Nginx. `http://IP_PUBLICA/health` debe responder con `status:ok` y `database:postgres`. El HTTP sin TLS es solo para datos simulados de la práctica; para uso real se necesita HTTPS.
+Activar el sitio, retirar el predeterminado, validar y recargar Nginx:
+
+```bash
+sudo ln -s /etc/nginx/sites-available/savia-iot /etc/nginx/sites-enabled/savia-iot
+sudo rm /etc/nginx/sites-enabled/default
+sudo nginx -t
+sudo systemctl reload nginx
+```
+
+`http://IP_PUBLICA/health` debe responder con `status:ok` y `database:postgres`. El HTTP sin TLS es solo para datos simulados de la práctica; para uso real se necesita HTTPS.
 
 ## Conectar Wokwi y verificar la entrega
 
