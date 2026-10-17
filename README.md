@@ -11,8 +11,9 @@ Prototipo académico para observar la temperatura y la humedad del **aire** de u
 - [`wokwi/diagram.json`](wokwi/diagram.json): circuito de la simulación.
 - [`wokwi/libraries.txt`](wokwi/libraries.txt): bibliotecas utilizadas por Wokwi.
 - [`server/app.py`](server/app.py): servidor HTTP que recibe lecturas y las guarda en CSV y base de datos.
-- [`azure/main.bicep`](azure/main.bicep): propuesta principal de infraestructura para Ubuntu público y PostgreSQL privado en Azure.
-- [`GUIA_PRACTICA_1_AZURE.md`](GUIA_PRACTICA_1_AZURE.md): pasos de Azure, pruebas y evidencias pendientes. El criterio de evaluación del profesor nombra AWS expresamente; confirmar si acepta Azure.
+- [`server/mqtt_bridge.py`](server/mqtt_bridge.py): puente que recibe el canal MQTT de Wokwi y entrega las lecturas a la aplicación web local en la VM.
+- [`azure/main.bicep`](azure/main.bicep): infraestructura desplegada para Ubuntu público y PostgreSQL privado en Azure.
+- [`GUIA_PRACTICA_1_AZURE.md`](GUIA_PRACTICA_1_AZURE.md): pasos de Azure y verificación de la simulación. El criterio escrito nombra AWS, pero la estudiante confirmó que el docente acepta Azure.
 - [`aws/savia-iot.yaml`](aws/savia-iot.yaml) y [`GUIA_PRACTICA_1.md`](GUIA_PRACTICA_1.md): alternativa conservada para cumplir literalmente el criterio AWS si se requiere.
 
 La página del repositorio es una compilación lista para publicar; **el código fuente editable de esa página no está incluido en este repositorio**. El circuito y su programa sí están disponibles en archivos editables.
@@ -32,7 +33,7 @@ La página del repositorio es una compilación lista para publicar; **el código
 
 ```text
 DHT22 → ESP32 → Wi-Fi/MQTT → dashboard
-          ├─ Wi-Fi/HTTP → servidor Python → CSV + base de datos
+          ├─ puente MQTT en Azure → servidor Python → CSV + PostgreSQL
           └─ regla local → relé → LED verde (ventilación simulada)
 ```
 
@@ -51,7 +52,7 @@ El reto de la asignatura también contempla organizar el montaje por equipo, def
 
 En la versión local del prototipo se comprobaron lecturas simuladas, control remoto con confirmación, un corte de red de 20 segundos, recuperación de lecturas y exportación CSV. Esas pruebas locales no prueban por sí solas que un dispositivo físico o la página pública estén conectados en este momento. Para una exposición, vuelve a ejecutar los pasos anteriores y registra el resultado observado.
 
-El servidor nuevo pasó una prueba local automatizada de validación, autenticación, lectura duplicada y escritura en CSV + SQLite. El código HTTP adicional compiló en Wokwi, pero su dirección de servidor sigue vacía. **Azure y el envío Wokwi → servidor siguen pendientes de desplegar/configurar y comprobar con datos de la simulación.**
+El servidor pasó pruebas automatizadas de validación, autenticación, deduplicación y escritura en CSV + base de datos. El 17 de octubre de 2026 se desplegó en Azure y se verificó una lectura de Wokwi con el mismo identificador, temperatura y humedad en PostgreSQL y CSV. [Consultar el servidor de demostración](http://23.101.172.173/health). El código HTTP del ESP32 conserva la URL vacía: el envío activo usa el puente MQTT y mantiene el token exclusivamente en la VM. El broker es público, así que la procedencia de los mensajes no puede autenticarse; esta prueba solo utiliza datos simulados.
 
 ## Referencias técnicas
 
