@@ -133,7 +133,7 @@ sudo systemctl reload nginx
 
 ## Conectar Wokwi y verificar la entrega
 
-En el `sketch.ino` del proyecto Wokwi, definir `API_URL="http://IP_PUBLICA/api/telemetry"` y `API_TOKEN="TOKEN_PRIVADO_LARGO"` con el mismo token de la VM; guardar e iniciar la simulación. **No publicar el token en GitHub.** Se espera `HTTP guardado: #...` en el monitor serial. Confirmar que aumenta el número de `readings` en `/health`, que `/api/readings` muestra la lectura y que `/api/readings.csv` contiene el mismo valor. La tabla `readings` debe aparecer en PostgreSQL; la conexión a esta base solo debe funcionar desde la VM.
+En el `sketch.ino` del proyecto Wokwi, definir `API_URL="http://IP_PUBLICA/api/telemetry"` y `API_TOKEN="TOKEN_DE_DEMOSTRACION"` con el mismo token de la VM; guardar e iniciar la simulación. **Si se comparte públicamente el proyecto Wokwi, el código y ese token pueden ser visibles.** Por eso debe ser un token temporal, exclusivo de esta demostración con datos simulados; no reutilizarlo en otras cuentas o sistemas y cambiarlo al terminar. No publicar la contraseña de PostgreSQL en Wokwi ni en GitHub. Se espera `HTTP guardado: #...` en el monitor serial. Confirmar que aumenta el número de `readings` en `/health`, que `/api/readings` muestra la lectura y que `/api/readings.csv` contiene el mismo valor. La tabla `readings` debe aparecer en PostgreSQL; la conexión a esta base solo debe funcionar desde la VM.
 
 Para exponer, mostrar: circuito ESP32/DHT22, programa modificado, lectura del monitor serial, servidor local con CSV+SQLite, servidor Azure con CSV+PostgreSQL, red pública/privada, IP estática, NSG y enlace del repositorio. Señalar que el control de ventilación permanece local en el ESP32.
 
