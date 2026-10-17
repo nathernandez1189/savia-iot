@@ -10,7 +10,9 @@
 
 - El servidor Python recibió datos de prueba y los guardó en CSV y SQLite. Pasó la prueba automatizada de autenticación, deduplicación y validación.
 - El proyecto Wokwi con ESP32 y DHT22 compiló y siguió emitiendo lecturas por MQTT al dashboard. El código HTTP está listo, pero su URL permanece vacía hasta que exista un servidor público.
-- **Todavía no se ha comprobado un envío Wokwi → servidor ni se ha desplegado Azure.** No se deben presentar esas partes como terminadas.
+- Se creó el grupo **vacío** `rg-savia-iot-practica1`; no contiene la VM ni la base de datos.
+- La plantilla Bicep compiló sin errores. Azure validó la arquitectura en `northcentralus` con VM `Standard_B2als_v2` y la vista previa mostró **11 recursos por crear**. Las pruebas en `eastus2` (política regional) y con `Standard_B1s` (sin capacidad en las regiones probadas) fallaron.
+- **Todavía no se ha comprobado un envío Wokwi → servidor ni se ha desplegado la aplicación en Azure.** No se deben presentar esas partes como terminadas.
 
 La telemetría de Wokwi es simulada. El DHT22 mide temperatura y humedad relativa del **aire**; no mide suelo ni nutrientes.
 
@@ -30,15 +32,15 @@ La plantilla [`azure/main.bicep`](azure/main.bicep) define una red virtual, subr
 
 ## Antes de crear recursos
 
-1. Iniciar sesión en [portal.azure.com](https://portal.azure.com/) con la cuenta personal del equipo. Revisar la **suscripción activa** y la **región**. No seleccionar una suscripción de trabajo sin autorización.
-2. Consultar el costo de `Standard_B1s`, PostgreSQL Flexible Server `Standard_B1ms` con 32 GiB, disco de 30 GiB e IP pública estática para la región elegida. Confirmar que los tamaños están disponibles y que hay crédito suficiente.
+1. Iniciar sesión en [portal.azure.com](https://portal.azure.com/) con la cuenta académica prevista y verificar la suscripción. No seleccionar una suscripción de trabajo.
+2. Consultar el costo y el crédito **antes** de crear los 11 recursos. El 17 de octubre de 2026, la [API pública de precios de Azure](https://prices.azure.com/api/retail/prices) indicaba en `northcentralus` USD 0,0376/h para la VM Linux `Standard_B2als_v2`, USD 0,017/h para PostgreSQL B1ms y USD 0,115/GB-mes para su almacenamiento. A 720 horas y 32 GB, el subtotal es **USD 43,0/mes**, sin disco de VM, IP pública, transferencia ni posibles cargos de backup. Las tarifas pueden cambiar; verificar el costo aplicable a la suscripción antes de desplegar.
 3. Tener una clave pública SSH. En el equipo de Natalia existe `~/.ssh/id_ed25519.pub`; usar únicamente el contenido del archivo `.pub`, nunca la clave privada.
 4. Conocer la IP pública desde la cual se administrará la VM y escribirla como `X.X.X.X/32`. Si esa IP cambia, habrá que actualizar la regla SSH del NSG.
 5. Elegir una contraseña nueva y privada para PostgreSQL. No escribirla en el repositorio ni en mensajes del grupo.
 
 ## Despliegue con Azure Cloud Shell
 
-Cloud Shell tiene Azure CLI y Bicep. Tras confirmar suscripción, región y costo, abrir Cloud Shell desde el portal. Crear un grupo de recursos exclusivo, por ejemplo `rg-savia-iot-practica1`, en la región elegida. Descargar la plantilla publicada en GitHub:
+Cloud Shell tiene Azure CLI y Bicep. Tras confirmar la cobertura de costos, abrir Cloud Shell desde el portal. El grupo de recursos `rg-savia-iot-practica1` ya existe y está vacío. La región de los recursos de la plantilla es `northcentralus`; puede diferir de la región del grupo. Descargar la plantilla publicada en GitHub:
 
 ```bash
 curl -fL -o main.bicep https://raw.githubusercontent.com/nathernandez1189/savia-iot/main/azure/main.bicep
@@ -56,8 +58,8 @@ Antes de ejecutar el despliegue, validar la plantilla y revisar el cambio propue
 
 ```bash
 az bicep build --file main.bicep
-az deployment group validate --resource-group rg-savia-iot-practica1 --template-file main.bicep --parameters adminIpCidr="$SAVIA_ADMIN_CIDR" sshPublicKey="$SAVIA_SSH_PUB" dbPassword="$SAVIA_DB_PASSWORD"
-az deployment group what-if --resource-group rg-savia-iot-practica1 --template-file main.bicep --parameters adminIpCidr="$SAVIA_ADMIN_CIDR" sshPublicKey="$SAVIA_SSH_PUB" dbPassword="$SAVIA_DB_PASSWORD"
+az deployment group validate --resource-group rg-savia-iot-practica1 --template-file main.bicep --parameters location=northcentralus vmSize=Standard_B2als_v2 adminIpCidr="$SAVIA_ADMIN_CIDR" sshPublicKey="$SAVIA_SSH_PUB" dbPassword="$SAVIA_DB_PASSWORD"
+az deployment group what-if --resource-group rg-savia-iot-practica1 --template-file main.bicep --parameters location=northcentralus vmSize=Standard_B2als_v2 adminIpCidr="$SAVIA_ADMIN_CIDR" sshPublicKey="$SAVIA_SSH_PUB" dbPassword="$SAVIA_DB_PASSWORD"
 ```
 
 Solo después de revisar esa vista previa y los costos, ejecutar `az deployment group create` con los mismos parámetros. Guardar los valores de salida `webPublicIp` y `postgresHost`. La VM todavía necesita instalar la aplicación.
