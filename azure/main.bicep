@@ -22,7 +22,8 @@ param vmSize string = 'Standard_B1s'
 @description('SKU PostgreSQL Flexible Server; confirmar precio y disponibilidad.')
 param dbSku string = 'Standard_B1ms'
 
-var adminUser = 'azureuser'
+@description('Usuario administrador de la VM Ubuntu.')
+param adminUser string = 'azureuser'
 var dbServerName = 'savia-pg-${uniqueString(resourceGroup().id)}'
 var publicSubnetCidr = '10.42.1.0/24'
 
