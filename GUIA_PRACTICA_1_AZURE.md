@@ -8,7 +8,7 @@
 
 ## Estado comprobado y alcance
 
-- El 17 de octubre de 2026 quedó desplegado el grupo `rg-savia-iot-practica1` en **Azure for Students**, con VM Ubuntu `savia-web`, IP pública estática `23.101.172.173`, PostgreSQL Flexible Server privado y NSG. La aplicación responde en [http://23.101.172.173/health](http://23.101.172.173/health).
+- El 17 de octubre de 2026 quedó desplegado el grupo `rg-savia-iot-practica1` en **Azure for Students**, con VM Ubuntu `savia-web`, IP pública estática `23.101.172.173`, PostgreSQL Flexible Server privado y NSG. La [portada del servidor](https://23-101-172-173.sslip.io/) y su [ruta de salud](https://23-101-172-173.sslip.io/health) responden por HTTPS con certificado válido.
 - El ESP32 simulado en [Wokwi](https://wokwi.com/projects/477744536654042113) publica temperatura y humedad por el canal MQTT de pruebas que ya usa el dashboard. Un puente ejecutado en la VM recibe ese canal y entrega cada lectura a la aplicación web local, que la valida y la guarda en PostgreSQL y CSV. **No se añadió ningún token al código público de Wokwi.**
 - Se verificó la sesión de Wokwi `a4cb5ad6`: el monitor serial mostró la lectura `#6` de **24,0 °C y 65,0 %**, y el mismo identificador y valores aparecieron en PostgreSQL y en `readings.csv`. El endpoint público `/api/readings` también devolvió lecturas de esa sesión.
 - Las pruebas automatizadas de validación, autenticación, deduplicación, doble almacenamiento y filtro del puente MQTT pasaron en la VM. La sesión demuestra funcionamiento puntual; no constituye una prueba de disponibilidad prolongada.
@@ -22,13 +22,13 @@ La telemetría de Wokwi es simulada. El DHT22 mide temperatura y humedad relativ
 Wokwi / ESP32 / DHT22 ── MQTT público de pruebas ──► VM Ubuntu
                                                      │ puente MQTT
                                                      ▼
-IP pública estática ── HTTP 80 ──► aplicación web ──► CSV local
+IP pública estática ── HTTPS 443 ──► aplicación web ──► CSV local
                                       │
                                       └── PostgreSQL Flexible Server
                                           en subred privada delegada
 ```
 
-La plantilla [`azure/main.bicep`](azure/main.bicep) define una red virtual, subred pública para Ubuntu, subred privada delegada para PostgreSQL Flexible Server, zona DNS privada, IP pública estática y NSG. El NSG permite HTTP 80 y limita SSH 22 a la IP administradora. La base de datos tiene acceso público deshabilitado. **Estos recursos son facturables**: VM, disco, IP pública y PostgreSQL, entre otros. El precio depende de región, suscripción, créditos y tiempo de uso.
+La plantilla [`azure/main.bicep`](azure/main.bicep) define una red virtual, subred pública para Ubuntu, subred privada delegada para PostgreSQL Flexible Server, zona DNS privada, IP pública estática y NSG. El NSG permite HTTP 80 y HTTPS 443, y limita SSH 22 a la IP administradora. La base de datos tiene acceso público deshabilitado. **Estos recursos son facturables**: VM, disco, IP pública y PostgreSQL, entre otros. El precio depende de región, suscripción, créditos y tiempo de uso.
 
 ## Preparación del despliegue realizado
 
@@ -129,15 +129,15 @@ sudo nginx -t
 sudo systemctl reload nginx
 ```
 
-`http://IP_PUBLICA/health` debe responder con `status:ok` y `database:postgres`. El HTTP sin TLS es solo para datos simulados de la práctica; para uso real se necesita HTTPS.
+Para el enlace público seguro, elegir un dominio que resuelva a la IP, abrir TCP 443 en el NSG e instalar un certificado TLS válido con Certbot. En este despliegue se usa `23-101-172-173.sslip.io`; `https://23-101-172-173.sslip.io/health` responde con `status:ok` y `database:postgres`. El certificado se renueva automáticamente en la VM. Para reproducirlo con otra IP, cambiar el nombre de host y solicitar un certificado nuevo.
 
 ## Conexión de Wokwi y verificación de la entrega
 
 El proyecto Wokwi ya publica en el canal `uao/invernadero/477744536654042113/v2/telemetry` del broker público de pruebas. El archivo [`server/mqtt_bridge.py`](server/mqtt_bridge.py) se instala como el servicio `savia-mqtt` de la VM. Este se suscribe al canal, ignora mensajes retenidos o malformados y envía cada lectura a la aplicación web en `127.0.0.1:8000/api/telemetry`. La aplicación valida, deduplica y escribe en PostgreSQL y CSV. El token queda **solo en la VM** y no se publica en Wokwi ni en GitHub.
 
-Para reproducir esa integración en una VM recién creada, instalar las dependencias de [`server/requirements.txt`](server/requirements.txt), copiar [`server/savia-mqtt.service`](server/savia-mqtt.service) a `/etc/systemd/system/`, activar `savia-mqtt` y comprobar sus registros con `journalctl -u savia-mqtt`. Iniciar Wokwi y contrastar el `boot`, `seq`, temperatura y humedad del monitor serial con [las lecturas públicas](http://23.101.172.173/api/readings) y [el CSV](http://23.101.172.173/api/readings.csv).
+Para reproducir esa integración en una VM recién creada, instalar las dependencias de [`server/requirements.txt`](server/requirements.txt), copiar [`server/savia-mqtt.service`](server/savia-mqtt.service) a `/etc/systemd/system/`, activar `savia-mqtt` y comprobar sus registros con `journalctl -u savia-mqtt`. Iniciar Wokwi y contrastar el `boot`, `seq`, temperatura y humedad del monitor serial con [las lecturas públicas](https://23-101-172-173.sslip.io/api/readings) y [el CSV](https://23-101-172-173.sslip.io/api/readings.csv).
 
-El broker MQTT es **público y no autentica el origen del dato**: otra persona podría publicar en el mismo canal. Por ello estas lecturas son evidencia de una simulación académica, no mediciones confiables de un cultivo real. El HTTP de la IP pública tampoco tiene TLS; no enviar datos sensibles por este prototipo.
+El broker MQTT es **público y no autentica el origen del dato**: otra persona podría publicar en el mismo canal. Por ello estas lecturas son evidencia de una simulación académica, no mediciones confiables de un cultivo real. El acceso público recomendado usa HTTPS, pero la fuente MQTT de prueba sigue sin autenticar mensajes. No enviar datos sensibles por este prototipo.
 
 Para exponer, mostrar: circuito ESP32/DHT22, programa modificado, lectura del monitor serial, servidor local con CSV+SQLite, servidor Azure con CSV+PostgreSQL, red pública/privada, IP estática, NSG y enlace del repositorio. Señalar que el control de ventilación permanece local en el ESP32.
 

@@ -54,7 +54,7 @@ El reto de la asignatura también contempla organizar el montaje por equipo, def
 
 En la versión local del prototipo se comprobaron lecturas simuladas, control remoto con confirmación, un corte de red de 20 segundos, recuperación de lecturas y exportación CSV. Esas pruebas locales no prueban por sí solas que un dispositivo físico o la página pública estén conectados en este momento. Para una exposición, vuelve a ejecutar los pasos anteriores y registra el resultado observado.
 
-El servidor pasó pruebas automatizadas de validación, autenticación, deduplicación y escritura en CSV + base de datos. El 17 de octubre de 2026 se desplegó en Azure y se verificó una lectura de Wokwi con el mismo identificador, temperatura y humedad en PostgreSQL y CSV. [Consultar el servidor de demostración](http://23.101.172.173/health). El código HTTP del ESP32 conserva la URL vacía: el envío activo usa el puente MQTT y mantiene el token exclusivamente en la VM. El broker es público, así que la procedencia de los mensajes no puede autenticarse; esta prueba solo utiliza datos simulados.
+El servidor pasó pruebas automatizadas de validación, autenticación, deduplicación y escritura en CSV + base de datos. El 17 de octubre de 2026 se desplegó en Azure y se verificó una lectura de Wokwi con el mismo identificador, temperatura y humedad en PostgreSQL y CSV. [Consultar el servidor de demostración](https://23-101-172-173.sslip.io/health). El código HTTP del ESP32 conserva la URL vacía: el envío activo usa el puente MQTT y mantiene el token exclusivamente en la VM. El broker es público, así que la procedencia de los mensajes no puede autenticarse; esta prueba solo utiliza datos simulados.
 
 ## Referencias técnicas
 

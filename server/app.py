@@ -128,6 +128,29 @@ class Handler(BaseHTTPRequestHandler):
 
     def do_GET(self):
         path = urlparse(self.path)
+        if path.path == "/":
+            page = """<!doctype html><html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Savia IoT · Servidor del proyecto</title><style>
+:root{font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#173b31;background:#f1f7f1}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;display:grid;place-items:center;padding:24px}
+main{width:min(100%,680px);background:white;border:1px solid #d9e9d9;border-radius:24px;padding:clamp(24px,5vw,48px);box-shadow:0 16px 48px #134c2020}
+.eyebrow{color:#31825a;font-size:.82rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase}
+h1{font-size:clamp(2.1rem,6vw,3.6rem);line-height:1.1;margin:.3em 0;color:#164d38}
+p{line-height:1.65;color:#52655d}.links{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px;margin-top:28px}
+a{display:block;padding:14px 18px;border-radius:12px;background:#e6f4e9;color:#14583d;font-weight:700;text-decoration:none}
+a:hover,a:focus-visible{background:#ccebd5;outline:2px solid #32885d;outline-offset:2px}
+small{display:block;margin-top:28px;color:#62766c}</style></head><body><main>
+<div class="eyebrow">Invernadero de tomates · Proyecto académico</div><h1>Savia IoT</h1>
+<p>Este servidor recibe las lecturas simuladas del ESP32 y DHT22 en Wokwi y las guarda en PostgreSQL. El tablero visual del proyecto está disponible por separado.</p>
+<nav class="links" aria-label="Enlaces del proyecto">
+<a href="https://nathernandez1189.github.io/savia-iot/">Abrir tablero ↗</a>
+<a href="/api/readings">Ver lecturas registradas</a>
+<a href="/api/readings.csv">Descargar CSV</a>
+<a href="/health">Estado del servidor</a></nav>
+<small>Fuente de las lecturas: prototipo simulado de Wokwi. No son mediciones de un cultivo real.</small>
+</main></body></html>"""
+            return self.reply(200, page.encode("utf-8"), "text/html; charset=utf-8")
         if path.path == "/health":
             try:
                 with closing(connection()) as db:

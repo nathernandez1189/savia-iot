@@ -12,7 +12,7 @@
 
 - [x] Caso de uso: temperatura y humedad del aire en un invernadero de tomates.
 - [x] ESP32 y DHT22 simulados en [Wokwi](https://wokwi.com/projects/477744536654042113), con lectura y control local de ventilación simulada.
-- [x] Aplicación web Python ejecutada en una VM Ubuntu de Azure. La [ruta de salud](http://23.101.172.173/health) respondió con `status: ok` y `database: postgres` durante la verificación.
+- [x] Aplicación web Python ejecutada en una VM Ubuntu de Azure. La [ruta de salud](https://23-101-172-173.sslip.io/health) respondió con `status: ok` y `database: postgres` durante la verificación.
 - [x] Publicación de lecturas por MQTT desde Wokwi. El puente de la VM entrega esos mensajes a la aplicación web local; ningún token está incluido en el código público del ESP32.
 - [x] Misma sesión y lectura de Wokwi confirmadas en PostgreSQL y `readings.csv`: `boot=a4cb5ad6`, `seq=6`, 24,0 °C y 65,0 %.
 - [x] VM en subred pública, PostgreSQL en subred privada, IP pública estática y reglas NSG. El docente acepta Azure según la confirmación de la estudiante; estos son los equivalentes funcionales de los elementos AWS nombrados en el enunciado.

@@ -46,6 +46,19 @@ resource webNsg 'Microsoft.Network/networkSecurityGroups@2023-09-01' = {
         }
       }
       {
+        name: 'AllowHTTPS'
+        properties: {
+          priority: 120
+          direction: 'Inbound'
+          access: 'Allow'
+          protocol: 'Tcp'
+          sourcePortRange: '*'
+          destinationPortRange: '443'
+          sourceAddressPrefix: 'Internet'
+          destinationAddressPrefix: '*'
+        }
+      }
+      {
         name: 'AllowSSHFromAdmin'
         properties: {
           priority: 110
