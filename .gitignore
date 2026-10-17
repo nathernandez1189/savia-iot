@@ -1,0 +1,11 @@
+.DS_Store
+.env
+.env.*
+!.env.example
+node_modules/
+*.log
+*.zip
+*.tar.gz
+*.pdf
+*.docx
+*.pptx
