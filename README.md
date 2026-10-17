@@ -31,8 +31,7 @@ La página del repositorio es una compilación lista para publicar; **el código
 
 ```text
 DHT22 → ESP32 → Wi-Fi/MQTT → dashboard
-          └── Wi-Fi/HTTP → servidor Python → CSV + base de datos
-          │                        │
+          ├─ Wi-Fi/HTTP → servidor Python → CSV + base de datos
           └─ regla local → relé → LED verde (ventilación simulada)
 ```
 

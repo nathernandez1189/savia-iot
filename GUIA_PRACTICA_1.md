@@ -103,7 +103,7 @@ Activarlo con `sudo ln -s /etc/nginx/sites-available/savia-iot /etc/nginx/sites-
 4. AWS VPC/subred pública para EC2, subredes privadas para RDS, IP elástica y grupos de seguridad (sin mostrar claves).
 5. Repositorio GitHub actualizado y presentación breve del flujo, resultados y límites.
 
-La entrega se considera completa cuando los tres integrantes verifican lecturas **reales de la simulación** en CSV y base de datos local **y** en AWS; la existencia del dashboard o de la plantilla por sí sola no demuestra esa persistencia.
+La entrega se considera completa cuando el equipo verifica lecturas **reales de la simulación** en CSV y base de datos local **y** en AWS; la existencia del dashboard o de la plantilla por sí sola no demuestra esa persistencia.
 
 ## Apagar después de la sustentación
 

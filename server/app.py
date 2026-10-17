@@ -166,8 +166,10 @@ class Handler(BaseHTTPRequestHandler):
 
 
 def main():
-    init_db()
     host = os.getenv("SAVIA_HOST", "127.0.0.1")
+    if host not in ("127.0.0.1", "::1", "localhost") and not TOKEN:
+        raise SystemExit("Defina SAVIA_DEVICE_TOKEN antes de publicar el servidor")
+    init_db()
     port = int(os.getenv("SAVIA_PORT", "8000"))
     print(f"Savia IoT escuchando en http://{host}:{port}", flush=True)
     ThreadingHTTPServer((host, port), Handler).serve_forever()
