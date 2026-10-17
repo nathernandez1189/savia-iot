@@ -4,7 +4,7 @@
 **Docente:** Jhorman Andrés Villanueva Vivas  
 **Caso de uso:** monitoreo de temperatura y humedad del aire en un invernadero de tomates.
 
-> **Antes de entregar:** el enunciado permite una máquina virtual en la nube, pero el criterio de evaluación nombra expresamente **AWS** y pide una **IP elástica** y **grupos de seguridad**. Azure ofrece una arquitectura equivalente con **IP pública estática** y **grupo de seguridad de red (NSG)**, pero no es literalmente AWS. Conviene confirmar con el docente que acepta Azure. La plantilla AWS original se conserva en [`aws/savia-iot.yaml`](aws/savia-iot.yaml) por si exige esa plataforma.
+> **Plataforma acordada:** según la confirmación de la estudiante, el docente acepta Azure para esta práctica. El criterio escrito nombra **AWS**, **IP elástica** y **grupos de seguridad**; en Azure se documentarán sus equivalentes funcionales: **IP pública estática** y **grupo de seguridad de red (NSG)**. La plantilla AWS original se conserva en [`aws/savia-iot.yaml`](aws/savia-iot.yaml) como referencia.
 
 ## Estado comprobado y alcance
 
