@@ -14,6 +14,8 @@ Prototipo académico para observar la temperatura y la humedad del **aire** de u
 - [`server/mqtt_bridge.py`](server/mqtt_bridge.py): puente que recibe el canal MQTT de Wokwi y entrega las lecturas a la aplicación web local en la VM.
 - [`azure/main.bicep`](azure/main.bicep): infraestructura desplegada para Ubuntu público y PostgreSQL privado en Azure.
 - [`GUIA_PRACTICA_1_AZURE.md`](GUIA_PRACTICA_1_AZURE.md): pasos de Azure y verificación de la simulación. El criterio escrito nombra AWS, pero la estudiante confirmó que el docente acepta Azure.
+- [`CHECKLIST_ENTREGA_PRACTICA_1.md`](CHECKLIST_ENTREGA_PRACTICA_1.md): lo comprobado y lo pendiente según el enunciado.
+- [`entregables/`](entregables/): [presentación de la práctica](entregables/Presentacion_Savia_IoT_Practica_1_Azure_para_compartir.pptx) y [evidencia de funcionamiento](entregables/Evidencia_Savia_IoT_Azure_2026-10-17.pdf) para descargar y revisar con el equipo.
 - [`aws/savia-iot.yaml`](aws/savia-iot.yaml) y [`GUIA_PRACTICA_1.md`](GUIA_PRACTICA_1.md): alternativa conservada para cumplir literalmente el criterio AWS si se requiere.
 
 La página del repositorio es una compilación lista para publicar; **el código fuente editable de esa página no está incluido en este repositorio**. El circuito y su programa sí están disponibles en archivos editables.
