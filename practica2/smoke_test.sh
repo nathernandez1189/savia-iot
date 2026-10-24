@@ -23,5 +23,5 @@ for attempt in $(seq 1 30); do
   sleep 1
 done
 docker compose exec -T collector python -c 'import sqlite3,sys; db=sqlite3.connect("/data/outbox.sqlite3"); row=db.execute("SELECT sent FROM readings WHERE boot=?", (sys.argv[1],)).fetchone(); print("InfluxDB confirmado (sent=1):", row); sys.exit(0 if row == (1,) else 1)' "$boot"
-docker compose exec -T influxdb influx query --org "$INFLUX_ORG" --token "$INFLUX_TOKEN" 'from(bucket: "'"$INFLUX_BUCKET"'") |> range(start: -10m) |> filter(fn: (r) => r.boot == "'"$boot"'")' | tail -n 5
+python3 verify_influx.py "$boot"
 printf 'ID de la prueba sintética: %s\n' "$boot"

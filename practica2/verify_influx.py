@@ -20,7 +20,7 @@ config = dict(line.split("=", 1) for line in (Path(__file__).parent / ".env").re
 flux = (f'from(bucket: "{config["INFLUX_BUCKET"]}") |> range(start: -24h) '
         f'|> filter(fn: (r) => r.boot == "{boot}" and '
         '(r._field == "temperatura" or r._field == "humedad"))')
-url = "http://127.0.0.1:8086/api/v2/query?" + urlencode({"org": config["INFLUX_ORG"]})
+url = config.get("INFLUX_URL", "http://127.0.0.1:8086").rstrip("/") + "/api/v2/query?" + urlencode({"org": config["INFLUX_ORG"]})
 request = Request(url, data=flux.encode(), method="POST", headers={
     "Authorization": "Token " + config["INFLUX_TOKEN"],
     "Content-Type": "application/vnd.flux",
