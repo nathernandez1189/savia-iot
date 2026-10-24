@@ -24,9 +24,9 @@ El 24 de octubre de 2026 se comprobó que la pila estaba en CREATE_COMPLETE, EC2
 
 El servidor expone HTTP sin HTTPS. Su IP es temporal y solo funciona mientras el laboratorio permanezca activo; por eso no se usa aquí como enlace permanente de entrega.
 
-## Primera parte: verificación pendiente en Ubuntu local
+## Reproducción de la etapa inicial en Ubuntu local
 
-**Sí existe una VM Ubuntu en AWS:** es la instalación de la segunda parte de la práctica y se comprobó el 24 de octubre. Lo pendiente es la etapa **local previa** que el criterio de evaluación distingue expresamente de la nube: ejecutar y documentar el servidor en Ubuntu fuera de AWS, por ejemplo en una máquina o entorno local del equipo. No significa crear otra VM en AWS. Las pruebas automatizadas realizadas en macOS tampoco sustituyen esa evidencia. En el Ubuntu local, con Python 3 y Git instalados, se puede iniciar una prueba con SQLite y CSV:
+La implementación observada el 24 de octubre funciona en una VM Ubuntu de AWS. El enunciado también contempla una etapa inicial en un servidor Ubuntu local, fuera de AWS. El procedimiento siguiente permite reproducirla; es una guía técnica y no un registro de su ejecución. En Ubuntu local, con Python 3 y Git instalados, se puede iniciar una prueba con SQLite y CSV:
 
 ~~~bash
 git clone https://github.com/nathernandez1189/savia-iot.git
@@ -52,6 +52,6 @@ La petición manual comprueba el servidor y sus salidas, pero **no** que el ESP3
 2. Verificar que el monitor serial indique conexión antes de afirmar que hay envío remoto. Si falla la red, mostrar solo el control local y explicar el límite.
 3. En AWS, mostrar la VM pública, las subredes privadas de RDS y sus grupos de seguridad sin enseñar claves.
 4. Comparar una lectura identificada por el mismo arranque y secuencia en la API, el CSV y PostgreSQL.
-5. Exponer la fase local Ubuntu cuando exista su evidencia y entregar el repositorio por el canal indicado por el docente.
+5. Diferenciar la evidencia observada en AWS del procedimiento de reproducción en Ubuntu local.
 
-La presentación, la prueba local Ubuntu y la subida al campus se registran como pendientes en el [estado de la práctica](CHECKLIST_ENTREGA_PRACTICA_1.md).
+La [ficha de implementación y evidencia](CHECKLIST_ENTREGA_PRACTICA_1.md) resume qué se observó en cada componente y el alcance de esas comprobaciones.
