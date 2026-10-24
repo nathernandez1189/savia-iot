@@ -93,8 +93,8 @@ Resources:
       SubnetIds: [!Ref PrivateSubnetA, !Ref PrivateSubnetB]
   Database:
     Type: AWS::RDS::DBInstance
-    DeletionPolicy: Snapshot
-    UpdateReplacePolicy: Snapshot
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
     Properties:
       DBInstanceIdentifier: savia-iot-db
       Engine: postgres
@@ -117,6 +117,7 @@ Resources:
       ImageId: !Ref UbuntuAmiId
       InstanceType: !Ref InstanceType
       KeyName: !Ref KeyName
+      IamInstanceProfile: LabInstanceProfile
       SubnetId: !Ref PublicSubnet
       SecurityGroupIds: [!Ref WebSecurityGroup]
       BlockDeviceMappings:
