@@ -43,7 +43,7 @@ Se ejecutó la prueba automatizada del servidor en el Mac del equipo: 1 prueba a
 
 ## Estado para la entrega
 
-La **fase AWS** está desplegada y las lecturas de Wokwi llegaron a PostgreSQL y CSV. Para afirmar que toda la práctica está terminada falta documentar una **prueba local separada en Ubuntu** si el profesor la exige, validar el acceso desde el navegador de la estudiante y presentar/subir oficialmente el material. El acceso HTTP desde CloudShell funcionó; Chrome bloqueó por el cliente tanto la IP como el nombre gratuito `184-193-138-254.sslip.io`; el navegador interno sí abrió la IP. No se ha instalado HTTPS en AWS. [Checklist vigente](../CHECKLIST_ENTREGA_PRACTICA_1.md).
+La **fase AWS** está desplegada y las lecturas de Wokwi llegaron a PostgreSQL y CSV. Para afirmar que toda la práctica está terminada falta documentar una **prueba local separada en Ubuntu** si el profesor la exige y presentar/subir oficialmente el material. El acceso HTTP desde CloudShell funcionó; Chrome bloqueó por el cliente tanto la IP como el nombre gratuito `184-193-138-254.sslip.io`; el navegador interno sí abrió la IP. No se ha instalado HTTPS en AWS. [Checklist vigente](../CHECKLIST_ENTREGA_PRACTICA_1.md).
 
 ## Segunda comprobación del 24 de octubre (14:26 UTC y minutos siguientes)
 
