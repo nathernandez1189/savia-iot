@@ -50,7 +50,7 @@ def parse_payload(payload: bytes):
 
 def line_protocol(row):
     # boot se validó como alfanumérico; ninguna etiqueta recibe datos libres.
-    return (f'invernadero_aire,origen=wokwi,boot={row["boot"]} '
+    return (f'invernadero_aire,origen=simulacion,boot={row["boot"]} '
             f'temperatura={row["temperature"]},humedad={row["humidity"]},'
             f'secuencia={row["seq"]}i,ventilacion={row["fan"]}i '
             f'{row["received_at_ms"]}')

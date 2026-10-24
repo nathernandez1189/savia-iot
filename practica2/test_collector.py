@@ -20,7 +20,7 @@ class CollectorTest(unittest.TestCase):
         row = parse_payload(sample())
         row["received_at_ms"] = 1000
         self.assertEqual(line_protocol(row),
-                         "invernadero_aire,origen=wokwi,boot=abc12345 temperatura=31.2,humedad=64.5,secuencia=1i,ventilacion=1i 1000")
+                         "invernadero_aire,origen=simulacion,boot=abc12345 temperatura=31.2,humedad=64.5,secuencia=1i,ventilacion=1i 1000")
         for invalid in (sample(temperature=None), sample(humidity=105),
                         sample(seq=True), sample(boot="x,bad"), b"not-json"):
             with self.assertRaises((ValueError, TypeError)):

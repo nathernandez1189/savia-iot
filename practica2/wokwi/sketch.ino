@@ -24,7 +24,7 @@ DHTesp dht;
 char boot[9];
 uint32_t seq = 0;
 bool fan = false;
-unsigned long lastSample = 0, lastConnect = 0;
+unsigned long lastSample = 0, lastConnect = 0, lastWifiAttempt = 0;
 
 void reconnect() {
   if (WiFi.status() != WL_CONNECTED) return;
@@ -53,7 +53,8 @@ void setup() {
 }
 
 void loop() {
-  if (WiFi.status() != WL_CONNECTED) {
+  if (WiFi.status() != WL_CONNECTED && millis() - lastWifiAttempt >= 5000) {
+    lastWifiAttempt = millis();
     WiFi.reconnect();
   }
   reconnect();
