@@ -19,6 +19,12 @@ Savia IoT representa el monitoreo de un invernadero de tomates. Un ESP32 y un DH
 | Infraestructura AWS | La pila CloudFormation llegó a CREATE_COMPLETE. Incluye EC2 Ubuntu en subred pública con IP elástica, PostgreSQL RDS en subredes privadas y grupos de seguridad que restringen el acceso a la base. La [plantilla](aws/savia-iot.yaml) permite examinar la configuración. |
 | Código y demostración | [Repositorio GitHub](https://github.com/nathernandez1189/savia-iot), [simulación Wokwi](https://wokwi.com/projects/477744536654042113), [tablero Savia IoT](https://nathernandez1189.github.io/savia-iot/), [presentación](entregables/Savia_IoT_Practica_1_AWS.pptx) y [guion](entregables/Guion_Exposicion_AWS.md). |
 
+El [código fuente del tablero](dashboard/) también está incluido. Pasó la comprobación de tipos y 12 pruebas; su compilación reproduce los archivos HTML, CSS y JavaScript de la versión publicada.
+
+## Estado frente a los siete puntos del enunciado
+
+Los puntos **1 a 6** cuentan con implementación y evidencia técnica: caso de uso, servidor Ubuntu local, telemetría del ESP32 simulado, CSV y base de datos, despliegue AWS y repositorio GitHub. El punto **7**, presentación frente a los compañeros, tiene [diapositivas](entregables/Savia_IoT_Practica_1_AWS.pptx) y [guion](entregables/Guion_Exposicion_AWS.md) preparados; la exposición solo puede marcarse realizada después de presentarla. El informe y las diapositivas están en [entregables/](entregables/) para revisión del equipo antes de subirlos a CampusDigital.
+
 ## Alcance de la evidencia
 
 El enunciado distingue la configuración inicial de un servidor Ubuntu y la posterior implementación en AWS. Se ejecutó **Ubuntu local en un contenedor Docker** y, por separado, una **VM Ubuntu en AWS**. La primera guardó SQLite y CSV; la segunda, PostgreSQL y CSV. Las [evidencias local](entregables/Evidencia_Ubuntu_Local_2026-10-24.md) y [AWS](entregables/Evidencia_AWS_2026-10-24.md) registran los resultados de cada entorno.

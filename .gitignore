@@ -3,6 +3,7 @@
 .env.*
 !.env.example
 node_modules/
+dashboard/dist/
 build/
 .venv/
 *.log
