@@ -9,6 +9,7 @@ build/
 *.zip
 *.tar.gz
 *.pdf
+!entregables/Savia_IoT_Practica_1_Entrega_2026-10-24.pdf
 *.docx
 *.pptx
 !entregables/Savia_IoT_Practica_1_AWS.pptx

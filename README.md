@@ -22,6 +22,7 @@ El enunciado solicita un caso de monitoreo, un servidor Ubuntu, envío de lectur
 - [entregables/Evidencia_AWS_2026-10-24.md](entregables/Evidencia_AWS_2026-10-24.md): resultados observados el 24 de octubre de 2026 y sus límites.
 - [entregables/Evidencia_Ubuntu_Local_2026-10-24.md](entregables/Evidencia_Ubuntu_Local_2026-10-24.md): prueba local de Wokwi a SQLite y CSV.
 - [entregables/Savia_IoT_Practica_1_AWS.pptx](entregables/Savia_IoT_Practica_1_AWS.pptx): presentación de ocho diapositivas para explicar el caso, la arquitectura, la simulación, las pruebas y sus límites.
+- [entregables/Savia_IoT_Practica_1_Entrega_2026-10-24.pdf](entregables/Savia_IoT_Practica_1_Entrega_2026-10-24.pdf): informe formal de tres páginas con los enlaces y resultados de ambas etapas.
 - [index.html](index.html), [assets/](assets/) y [brand/](brand/): versión compilada del tablero publicada en GitHub Pages. El código fuente editable del tablero **no forma parte de este repositorio**.
 
 ## Funcionamiento
