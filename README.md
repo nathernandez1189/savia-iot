@@ -7,7 +7,7 @@ Proyecto académico de **Inteligencia Artificial Aplicada a Internet de las Cosa
 
 [Simulación en Wokwi](https://wokwi.com/projects/477744536654042113) · [Tablero Savia IoT](https://nathernandez1189.github.io/savia-iot/) · [Implementación y evidencia](CHECKLIST_ENTREGA_PRACTICA_1.md)
 
-**Nueva actividad:** la [Práctica 2](practica2/README.md) desarrolla para el mismo invernadero un broker MQTT autenticado, almacenamiento en InfluxDB, CSV y visualización con alertas en Grafana. Su [prueba local](practica2/EVIDENCIA_LOCAL_2026-10-24.md) está documentada por separado de la implementación AWS de la Práctica 1. La copia de Wokwi para esta segunda actividad está preparada en código, pero todavía no se ha verificado conectada al laboratorio AWS.
+**Nueva actividad:** la [Práctica 2](practica2/README.md) desarrolla para el mismo invernadero un broker MQTT autenticado, almacenamiento en InfluxDB y CSV, y visualización con alertas en Grafana. La [prueba local](practica2/EVIDENCIA_LOCAL_2026-10-24.md) y la [prueba en AWS](practica2/EVIDENCIA_AWS_2026-10-24.md) están documentadas. La [copia de Wokwi de esta actividad](https://wokwi.com/projects/478779944323491841) es pública y no contiene credenciales; todavía no se ha demostrado su conexión con el broker propio.
 
 ## Relación con la Práctica 1
 

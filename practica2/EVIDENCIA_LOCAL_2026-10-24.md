@@ -7,7 +7,7 @@
 
 ## Alcance de esta prueba
 
-Se inició en Docker Desktop una pila de cuatro servicios: Mosquitto, colector Python, InfluxDB OSS 2 y Grafana. Las lecturas se generaron con **un cliente MQTT de prueba en el computador**, con valores simulados de 31,2 °C y 32,5 °C y humedad relativa de 64,5 %. **Esta prueba no demuestra que el ESP32 de Wokwi haya enviado datos al broker propio ni que la pila esté instalada en AWS.** El proyecto público de Wokwi de la Práctica 1 usa otra conexión y permanece separado.
+Se inició en Docker Desktop una pila de cuatro servicios: Mosquitto, colector Python, InfluxDB OSS 2 y Grafana. Las lecturas se generaron con **un cliente MQTT de prueba en el computador**, con valores simulados de 31,2 °C y 32,5 °C y humedad relativa de 64,5 %. **Esta prueba local no demuestra que el ESP32 de Wokwi haya enviado datos al broker propio.** El despliegue posterior en AWS se documenta [por separado](EVIDENCIA_AWS_2026-10-24.md). El proyecto público de Wokwi de la Práctica 1 usa otra conexión y permanece separado.
 
 ## Resultados observados
 
@@ -20,11 +20,11 @@ Se inició en Docker Desktop una pila de cuatro servicios: Mosquitto, colector P
 
 ## Pendiente para acreditar la práctica completa
 
-- Instalar o verificar esta pila en el laboratorio AWS Academy, en la VM Ubuntu adecuada y con capacidad suficiente. Restringir el acceso a InfluxDB y Grafana; habilitar MQTT solo para la demostración, con credenciales temporales.
+- El despliegue en AWS Academy ya se verificó; véase la [evidencia de AWS](EVIDENCIA_AWS_2026-10-24.md). Mantener InfluxDB y Grafana sin puertos públicos y retirar la apertura temporal de MQTT al terminar la demostración.
 - Crear una copia **privada** de la simulación de la Práctica 2, configurar la IP y clave temporal allí, variar el DHT22 y comprobar que las nuevas lecturas lleguen a MQTT, CSV, InfluxDB y Grafana. No publicar la clave dentro de un Wokwi compartido.
 - Guardar capturas legibles de AWS, Wokwi, tópicos, serie temporal, tablero y alerta recibida; presentar el recorrido al grupo.
 - Aclarar con el docente el numeral de la subred de base de datos: el enunciado de esta actividad menciona una subred pública, mientras que la Práctica 1 usó PostgreSQL privado. Esta prueba local no acredita una topología de subred AWS.
 
-**Reconocimiento de AWS:** en el Learner Lab se encontró la instancia existente `i-01f3188a0db02ef65`, tipo `t3.micro`, con 1 GiB de RAM y volumen raíz de 12 GiB. El grupo de seguridad permitía HTTP 80 desde Internet y SSH 22 solo desde `127.0.0.1/32`; no tenía el puerto MQTT abierto. Estos datos no prueban que la pila de esta práctica esté allí instalada. Antes de desplegar, hay que resolver capacidad, acceso y exposición temporal del broker sin afectar la Práctica 1 ni superar el límite de gasto acordado.
+**Evolución de AWS:** la instancia existente `i-01f3188a0db02ef65` era `t3.micro` durante esta prueba local. Después se amplió a `t3.small`, se abrió MQTT temporalmente y se instaló la pila. La [evidencia posterior](EVIDENCIA_AWS_2026-10-24.md) prevalece para el estado en nube.
 
 **Estado de entrega académica:** preparar los archivos y compartir el repositorio no equivale a subir la actividad en CampusDigital. El 24 de octubre se observó allí el cierre para el 31 de octubre de 2026 a las 12:00, hora de Colombia.
