@@ -1,30 +1,29 @@
-# Savia IoT - checklist de la Práctica 1
+# Savia IoT · estado de la Práctica 1
 
-**Materia:** Inteligencia Artificial aplicada a Internet de las Cosas
-
-**Docente:** Jhorman Andrés Villanueva Vivas
-
-**Estado comprobado:** 17 de octubre de 2026
-
+**Materia:** Inteligencia Artificial Aplicada a Internet de las Cosas  
+**Docente:** Jhorman Andrés Villanueva Vivas  
+**Corte de verificación:** 24 de octubre de 2026  
 **Base:** enunciado «Práctica 1 - Servidor web para un proyecto de IoT».
 
-## Listo y comprobado
+## Comprobado
 
-- [x] Caso de uso: temperatura y humedad del aire en un invernadero de tomates.
-- [x] ESP32 y DHT22 simulados en [Wokwi](https://wokwi.com/projects/477744536654042113), con lectura y control local de ventilación simulada.
-- [x] Aplicación web Python ejecutada en una VM Ubuntu de Azure. La [ruta de salud](https://23-101-172-173.sslip.io/health) respondió con `status: ok` y `database: postgres` durante la verificación.
-- [x] Publicación de lecturas por MQTT desde Wokwi. El puente de la VM entrega esos mensajes a la aplicación web local; ningún token está incluido en el código público del ESP32.
-- [x] Misma sesión y lectura de Wokwi confirmadas en PostgreSQL y `readings.csv`: `boot=a4cb5ad6`, `seq=6`, 24,0 °C y 65,0 %.
-- [x] VM en subred pública, PostgreSQL en subred privada, IP pública estática y reglas NSG. El docente acepta Azure según la confirmación de la estudiante; estos son los equivalentes funcionales de los elementos AWS nombrados en el enunciado.
-- [x] Código y guía en este repositorio; presentación y [evidencia de funcionamiento](entregables/Evidencia_Savia_IoT_Azure_2026-10-17.pdf) disponibles para el equipo.
+- [x] Caso de uso del invernadero de tomates: temperatura y humedad del aire.
+- [x] ESP32 y DHT22 simulados en [Wokwi](https://wokwi.com/projects/477744536654042113); regla local de ventilación con LED como actuador simulado.
+- [x] Aplicación Python y puente MQTT en una VM **Ubuntu de AWS Academy Learner Lab**.
+- [x] ESP32 publica por MQTT; el puente recibe las lecturas y las entrega a la aplicación web. El token del servidor no está en Wokwi ni en GitHub.
+- [x] PostgreSQL RDS privado y CSV: la API reportó `database=postgres` y 13 lecturas; el CSV y la API mostraron `boot=465479e7`, `seq=23…25`, 24.0 °C y 65.0 %.
+- [x] La cifra subió de 4 a 13 durante la misma simulación: evidencia de recepción continuada durante esa sesión, aunque no de disponibilidad prolongada.
+- [x] VPC, subred pública para EC2, dos privadas para RDS, IP elástica y grupos de seguridad creados por la pila `savia-iot-lab` (16 recursos `CREATE_COMPLETE`).
+- [x] Repositorio, plantilla y guía actualizados con el despliegue AWS. [Evidencia del 24 de octubre](entregables/Evidencia_AWS_2026-10-24.md).
+- [x] Eliminación de la pila programada para el 1 de noviembre a las 23:00 (Bogotá), según la fecha indicada por Natalia.
 
-## Antes de exponer o entregar
+## Falta para afirmar que está **todo** completo
 
-- [ ] Documentar por separado la **primera parte local en Ubuntu**. El servidor ya pasó pruebas locales con SQLite, pero no se ha documentado una ejecución local Ubuntu distinta de la VM de Azure. Confirmar si el docente acepta la VM para ese punto o hacer la demostración separada.
-- [ ] Explicar la ruta Wokwi → MQTT → puente → aplicación web. Consultar si el profesor exige que el ESP32 haga HTTP directo a la aplicación; el enunciado no fija el protocolo, pero pide modificar el código del dispositivo para enviar datos a la aplicación web.
-- [ ] Mostrar en clase el monitor serial, los registros del servidor, PostgreSQL, CSV y la red pública/privada. La evidencia actual verifica una ejecución puntual, no disponibilidad prolongada.
-- [ ] Presentar el trabajo ante los compañeros y confirmar la entrega en la plataforma académica. Tener las diapositivas listas no equivale a haberlas presentado o subido.
-- [ ] Confirmar si se exige montaje físico con ESP32 y DHT22. Lo verificado aquí es una simulación.
-- [ ] Después de la clase del 24 de octubre de 2026, guardar la evidencia necesaria y retirar los recursos de Azure para evitar cargos posteriores.
+- [ ] Ejecutar y **capturar** una instalación local separada en Ubuntu con SQLite y CSV, o confirmar explícitamente con el docente que la VM Ubuntu de AWS satisface también la primera fase. Los tests locales de Python no demuestran por sí solos ese requisito.
+- [ ] Confirmar en el navegador de la estudiante el acceso remoto a la VM. AWS CloudShell sí respondió por HTTP; Chrome mostró antes un bloqueo del cliente al abrir la IP. El servidor no tiene HTTPS.
+- [ ] Capturar una prueba completa en la sustentación: Wokwi, monitor serial, API, CSV y una consulta PostgreSQL sin secretos.
+- [ ] Presentar y subir el material al campus. Tener código y documentación en GitHub no equivale a entrega oficial.
+- [ ] Aclarar si el profesor exige un montaje físico. Todo lo verificado utiliza una simulación, sin motor real.
+- [ ] Tras el 1 de noviembre, comprobar que se borraron la pila, RDS, la IP elástica y los dos parámetros, y que no siguen los cargos.
 
-**Límite:** el broker MQTT es público y no autentica el origen del mensaje; los datos son simulados y no deben interpretarse como mediciones reales de un cultivo.
+**Límites:** los datos son simulados; el broker MQTT de pruebas es público y no autentica el origen. La página de GitHub Pages, el servidor AWS y el proyecto Wokwi son piezas distintas.
