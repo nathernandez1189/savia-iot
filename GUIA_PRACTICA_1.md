@@ -26,7 +26,7 @@ El servidor expone HTTP sin HTTPS. Su IP es temporal y solo funciona mientras el
 
 ## Primera parte: verificación pendiente en Ubuntu local
 
-La ejecución automatizada del servidor se probó en macOS, pero todavía **falta ejecutar y documentar** una instalación Ubuntu local separada, como solicita el enunciado. En esa máquina, con Python 3 y Git instalados, el equipo puede iniciar una prueba local con SQLite y CSV:
+**Sí existe una VM Ubuntu en AWS:** es la instalación de la segunda parte de la práctica y se comprobó el 24 de octubre. Lo pendiente es la etapa **local previa** que el criterio de evaluación distingue expresamente de la nube: ejecutar y documentar el servidor en Ubuntu fuera de AWS, por ejemplo en una máquina o entorno local del equipo. No significa crear otra VM en AWS. Las pruebas automatizadas realizadas en macOS tampoco sustituyen esa evidencia. En el Ubuntu local, con Python 3 y Git instalados, se puede iniciar una prueba con SQLite y CSV:
 
 ~~~bash
 git clone https://github.com/nathernandez1189/savia-iot.git
