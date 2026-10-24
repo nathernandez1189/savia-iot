@@ -1,35 +1,27 @@
-# Guion de exposición · Savia IoT en AWS
+# Esquema de exposición | Savia IoT
 
-**Duración sugerida:** 5 a 7 minutos. **Materia:** Inteligencia Artificial Aplicada a Internet de las Cosas.  
+**Asignatura:** Inteligencia Artificial Aplicada a Internet de las Cosas  
+**Docente:** Jhorman Andrés Villanueva Vivas  
 **Integrantes:** Natalia Hernández Piedrahita, Sidney Leonardo Leusson Angulo, José Fernando Luque Cajiao y Jarvin David Alvarado Garcés.
 
-## 1. Problema y objetivo (Natalia)
+Este esquema sirve para preparar la presentación; el equipo puede repartir las intervenciones. **No es constancia de que la exposición ya se haya realizado.**
 
-«Planteamos un invernadero de tomates donde importa conocer la temperatura y la humedad del aire y responder a cambios de temperatura. Construimos una simulación IoT que permite monitorear esas variables, accionar una ventilación representada por un LED y conservar las lecturas en una aplicación web. El prototipo es académico: no afirmamos haber medido un cultivo real».
+## 1. Problema y prototipo
 
-Mostrar [Wokwi](https://wokwi.com/projects/477744536654042113) y señalar ESP32, DHT22 y LED.
+Presentar el caso de un invernadero de tomates en el que interesa conocer la temperatura y la humedad relativa del aire. Abrir el [circuito en Wokwi](https://wokwi.com/projects/477744536654042113) e identificar ESP32, DHT22 y LED. Aclarar que todo es simulado y que el LED representa la ventilación.
 
-## 2. Sensores y decisión local (Sidney)
+## 2. Lectura y decisión local
 
-«El DHT22 entrega temperatura y humedad relativa del aire. El ESP32 lee ambos valores. En modo automático enciende el indicador de ventilación si la temperatura supera 30 °C y lo apaga al bajar de 27 °C. Ese intervalo evita que cambie de estado constantemente cerca de un solo umbral. Si la conexión se pierde, la regla local sigue funcionando».
+Variar la temperatura del DHT22 y observar el monitor serial. En modo AUTO, la ventilación se activa cuando supera 30 °C y se desactiva cuando baja de 27 °C; entre los dos umbrales conserva el estado. Explicar que esa regla continúa aunque falle la comunicación. Esta lógica es automatización por umbrales, **no** un modelo de IA entrenado.
 
-En Wokwi variar el DHT22; mostrar monitor serial y LED. Si la simulación no compila o el broker no responde durante la clase, explicar la lógica con el código y mostrar la evidencia guardada, sin declarar una prueba en vivo que no ocurrió.
+## 3. Envío y almacenamiento
 
-## 3. Envío y almacenamiento (José)
+Describir el recorrido real: ESP32 → MQTT → puente en Ubuntu → aplicación Python → PostgreSQL y CSV. Mostrar una lectura con el mismo identificador de arranque y secuencia en la API y el CSV; si es posible, mostrar también la fila en PostgreSQL sin revelar credenciales. El ESP32 no envía HTTP directamente en la configuración activa.
 
-«El ESP32 publica telemetría por MQTT. Un puente instalado en la máquina Ubuntu de AWS recibe esos mensajes y los entrega a nuestra aplicación Python. La aplicación valida, descarta duplicados y guarda cada lectura en PostgreSQL y en un archivo CSV. El token del servidor permanece en AWS y no aparece en el proyecto público Wokwi».
+## 4. Despliegue y límites
 
-Mostrar `/health`, `/api/readings?limit=10` y `/api/readings.csv` desde una conexión que permita HTTP; comparar `boot` y `seq` de una fila. No mostrar secretos ni consola de variables de entorno. En la última verificación se observaron 13 lecturas y las secuencias 23–25 de un mismo arranque.
+En AWS CloudFormation señalar la VM Ubuntu de la subred pública, la IP elástica, las subredes privadas de RDS y los grupos de seguridad. La base no tiene acceso público. La [evidencia del 24 de octubre](Evidencia_AWS_2026-10-24.md) registró 13 lecturas, pero en una prueba posterior falló la conexión Wi-Fi de Wokwi. Repetir la comprobación en vivo antes de afirmar que siguen entrando datos.
 
-## 4. Infraestructura y resultados (David)
+Cerrar indicando con claridad que falta la evidencia de una instalación **Ubuntu local separada**, además de la presentación y la entrega oficial. La versión AWS usa HTTP sin HTTPS y un broker MQTT público de pruebas, adecuado solo para este prototipo simulado.
 
-«Usamos AWS Academy Learner Lab. CloudFormation creó una VPC, una subred pública para el servidor Ubuntu, dos subredes privadas para PostgreSQL, una IP elástica y grupos de seguridad. RDS no está expuesto a internet; solo el servidor web puede conectarse a su puerto. El flujo completo de la simulación llegó a base de datos y CSV».
-
-Mostrar la pila `savia-iot-lab` y sus recursos, sin abrir pestañas de credenciales. La pila estaba en `CREATE_COMPLETE` con 16 recursos el 24 de octubre. La eliminación está programada para el 1 de noviembre a las 23:00, hora de Bogotá, y debe verificarse posteriormente.
-
-## Cierre en equipo
-
-«Se cumplió la demostración en AWS con datos simulados y almacenamiento dual. Aún no hemos documentado una ejecución local separada en Ubuntu; las pruebas automatizadas se ejecutaron en macOS y pasaron, pero no sustituyen ese requisito. El MQTT público tampoco autentica el origen de los mensajes, por lo que no usaríamos esta configuración para un invernadero real. Como siguiente paso probaríamos un sensor y actuador físicos, un canal autenticado y una instalación local Ubuntu documentada».
-
-**Enlaces:** [Repositorio](https://github.com/nathernandez1189/savia-iot) · [Wokwi](https://wokwi.com/projects/477744536654042113) · [Evidencia AWS](Evidencia_AWS_2026-10-24.md).  
-**Nota de acceso:** Chrome del equipo bloqueó HTTP hacia la VM aunque AWS CloudShell sí obtuvo respuesta. No anunciar un enlace HTTPS de AWS: aún no existe certificado.
+**Enlaces para preparar la demostración:** [Repositorio](https://github.com/nathernandez1189/savia-iot) · [Wokwi](https://wokwi.com/projects/477744536654042113) · [Tablero](https://nathernandez1189.github.io/savia-iot/) · [Checklist](../CHECKLIST_ENTREGA_PRACTICA_1.md).
