@@ -27,8 +27,14 @@ Grafana respondió por su API y mostró una alerta de temperatura superior a 30 
 
 En la VM principal se configuraron el colector y la fuente de datos de Grafana para `http://10.42.2.106:8086`. El historial de **nueve lecturas** de la cola se reenvió a la nueva base con sus marcas de tiempo originales. Después, `verify_influx.py 39c72c8e` encontró las lecturas del ESP32 simulado en la **nueva** InfluxDB. Una prueba sintética adicional (`AWSCHECK1792860683`) se publicó por MQTT y se confirmó tanto en CSV como en InfluxDB (`sent=1`, consulta con puntos). La fuente aprovisionada de Grafana apuntó a `10.42.2.106:8086` y su API respondió correctamente. Se detuvo el contenedor de InfluxDB de la primera VM: allí siguieron activos Mosquitto, colector y Grafana, mientras la base quedó activa en la segunda. La aplicación de la Práctica 1 continuó con `/health` correcto y PostgreSQL como base propia.
 
+## Captura del tablero en AWS
+
+Se abrió el Grafana privado desde la propia VM y se guardó [esta captura del tablero](evidencias/grafana-aws-2026-10-24.png). Aparecen las cuatro tarjetas: serie de temperatura, serie de humedad, última temperatura y última humedad. Las series incluyen el arranque `39c72c8e` del ESP32 **simulado en Wokwi** (24 °C, 65 %) y lecturas `AWSCHECK...` enviadas por un cliente MQTT de prueba. La última lectura visible (31,2 °C y 64,5 %) es **sintética**; no se presenta como medición física ni como lectura del DHT22 de Wokwi. Para que las tarjetas de valor actual mostraran un único dato, su consulta se agrupó y ordenó por fecha antes de seleccionar el último punto. La imagen no expone credenciales.
+
+![Tablero Grafana de Savia IoT en AWS con temperatura y humedad simuladas](evidencias/grafana-aws-2026-10-24.png)
+
 ## Alcance y pasos restantes
 
-Los sensores y el cultivo son simulados; no se registró una medición física. La conexión del ESP32 con AWS quedó comprobada en una sesión, no su disponibilidad permanente. El tablero de Grafana se verificó mediante la API y la consulta a InfluxDB, pero no se obtuvo una captura visual del panel de AWS en esta comprobación. La notificación por MQTT está comprobada localmente; no se documentó una nueva recepción en AWS. La sustentación y el envío formal al campus corresponden al equipo.
+Los sensores y el cultivo son simulados; no se registró una medición física. La conexión del ESP32 con AWS quedó comprobada en una sesión, no su disponibilidad permanente. El tablero de Grafana quedó verificado mediante la API, la consulta a InfluxDB y la captura visual anterior. La notificación por MQTT está comprobada localmente; no se documentó una nueva recepción en AWS. La sustentación y el envío formal al campus corresponden al equipo.
 
 La separación en una segunda subred pública se implementó con una segunda VM; no se presenta como una base administrada de AWS. El acceso MQTT abierto y las dos VM deben retirarse o reducirse tras la demostración prevista hasta el **1 de noviembre de 2026**, según el límite de gasto del equipo. El presupuesto de AWS puede reflejar cargos con retraso, por lo que esa fecha no es una garantía automática de costo.
