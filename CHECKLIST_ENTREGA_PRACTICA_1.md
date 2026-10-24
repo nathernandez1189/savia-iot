@@ -17,13 +17,13 @@ Savia IoT representa el monitoreo de un invernadero de tomates. Un ESP32 y un DH
 | Comunicación del dispositivo | El ESP32 publica las lecturas por MQTT. Un puente en cada Ubuntu las entrega por HTTP local a su aplicación. AWS pasó de 4 a 13 lecturas en una sesión y de 13 a 23 en otra; el Ubuntu local recibió las secuencias 22–25 del segundo arranque. La configuración activa no usa envío HTTP directo desde el ESP32. |
 | Persistencia | La aplicación valida y deduplica los mensajes. Las secuencias 23–25 de un mismo arranque coincidieron en la API respaldada por PostgreSQL y en el CSV del servidor. |
 | Infraestructura AWS | La pila CloudFormation llegó a CREATE_COMPLETE. Incluye EC2 Ubuntu en subred pública con IP elástica, PostgreSQL RDS en subredes privadas y grupos de seguridad que restringen el acceso a la base. La [plantilla](aws/savia-iot.yaml) permite examinar la configuración. |
-| Código y demostración | [Repositorio GitHub](https://github.com/nathernandez1189/savia-iot), [simulación Wokwi](https://wokwi.com/projects/477744536654042113), [tablero Savia IoT](https://nathernandez1189.github.io/savia-iot/), [presentación](entregables/Savia_IoT_Practica_1_AWS.pptx) y [guion](entregables/Guion_Exposicion_AWS.md). |
+| Código y demostración | [Repositorio GitHub](https://github.com/nathernandez1189/savia-iot), [simulación Wokwi](https://wokwi.com/projects/477744536654042113), [tablero Savia IoT](https://nathernandez1189.github.io/savia-iot/) y [presentación](entregables/Savia_IoT_Practica_1_AWS.pptx). |
 
 El [código fuente del tablero](dashboard/) también está incluido. Pasó la comprobación de tipos y 12 pruebas; su compilación reproduce los archivos HTML, CSS y JavaScript de la versión publicada.
 
 ## Estado frente a los siete puntos del enunciado
 
-Los puntos **1 a 6** cuentan con implementación y evidencia técnica: caso de uso, servidor Ubuntu local, telemetría del ESP32 simulado, CSV y base de datos, despliegue AWS y repositorio GitHub. El punto **7**, presentación frente a los compañeros, tiene [diapositivas](entregables/Savia_IoT_Practica_1_AWS.pptx) y [guion](entregables/Guion_Exposicion_AWS.md) preparados; la exposición solo puede marcarse realizada después de presentarla. El informe y las diapositivas están en [entregables/](entregables/) para revisión del equipo antes de subirlos a CampusDigital.
+Los puntos **1 a 6** cuentan con implementación y evidencia técnica: caso de uso, servidor Ubuntu local, telemetría del ESP32 simulado, CSV y base de datos, despliegue AWS y repositorio GitHub. El punto **7**, presentación frente a los compañeros, tiene [diapositivas](entregables/Savia_IoT_Practica_1_AWS.pptx) preparadas; la exposición solo puede marcarse realizada después de presentarla. El informe y las diapositivas están en [entregables/](entregables/) para revisión del equipo antes de subirlos a CampusDigital.
 
 ## Alcance de la evidencia
 
