@@ -5,11 +5,11 @@ Proyecto académico de **Inteligencia Artificial Aplicada a Internet de las Cosa
 **Equipo:** Natalia Hernández Piedrahita, Sidney Leonardo Leusson Angulo, José Fernando Luque Cajiao y Jarvin David Alvarado Garcés.  
 **Docente:** Jhorman Andrés Villanueva Vivas.
 
-[Simulación en Wokwi](https://wokwi.com/projects/477744536654042113) · [Tablero Savia IoT](https://nathernandez1189.github.io/savia-iot/) · [Estado de la práctica](CHECKLIST_ENTREGA_PRACTICA_1.md)
+[Simulación en Wokwi](https://wokwi.com/projects/477744536654042113) · [Tablero Savia IoT](https://nathernandez1189.github.io/savia-iot/) · [Implementación y evidencia](CHECKLIST_ENTREGA_PRACTICA_1.md)
 
 ## Relación con la Práctica 1
 
-El enunciado solicita un caso de monitoreo, un servidor Ubuntu local, envío de lecturas desde el ESP32 hacia la aplicación, almacenamiento en CSV y base de datos, repetición en una VM de AWS con servidor público y base privada, repositorio y exposición. Este repositorio contiene el prototipo, el servidor, la plantilla de AWS y la evidencia fechada de las comprobaciones realizadas. La **VM Ubuntu en AWS ya existe y fue comprobada**. Lo que no está documentado es una ejecución anterior en Ubuntu local, separada de AWS, tal como distinguen los criterios de evaluación; tampoco consta la exposición o la entrega en el campus.
+El enunciado solicita un caso de monitoreo, un servidor Ubuntu, envío de lecturas desde el ESP32, almacenamiento en CSV y base de datos, una implementación posterior en AWS, repositorio y exposición. Este repositorio reúne el prototipo, el servidor, la plantilla AWS y resultados fechados. La **VM Ubuntu en AWS ya existe y fue comprobada**. La documentación de la ejecución local inicial es independiente de la evidencia AWS; la [guía](GUIA_PRACTICA_1.md) explica cómo reproducirla.
 
 ## Qué contiene el repositorio
 
@@ -17,6 +17,7 @@ El enunciado solicita un caso de monitoreo, un servidor Ubuntu local, envío de 
 - [server/](server/): aplicación Python, puente MQTT, servicios de ejecución y prueba del servidor.
 - [aws/savia-iot.yaml](aws/savia-iot.yaml): plantilla CloudFormation para AWS Academy Learner Lab. Define una VM Ubuntu en subred pública, IP elástica y PostgreSQL RDS en subredes privadas.
 - [GUIA_PRACTICA_1.md](GUIA_PRACTICA_1.md): arquitectura, reproducción y comprobaciones.
+- [CHECKLIST_ENTREGA_PRACTICA_1.md](CHECKLIST_ENTREGA_PRACTICA_1.md): informe breve de implementación y evidencia por componente.
 - [entregables/Evidencia_AWS_2026-10-24.md](entregables/Evidencia_AWS_2026-10-24.md): resultados observados el 24 de octubre de 2026 y sus límites.
 - [index.html](index.html), [assets/](assets/) y [brand/](brand/): versión compilada del tablero publicada en GitHub Pages. El código fuente editable del tablero **no forma parte de este repositorio**.
 
