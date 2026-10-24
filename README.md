@@ -12,11 +12,10 @@ Prototipo académico para observar la temperatura y la humedad del **aire** de u
 - [`wokwi/libraries.txt`](wokwi/libraries.txt): bibliotecas utilizadas por Wokwi.
 - [`server/app.py`](server/app.py): servidor HTTP que recibe lecturas y las guarda en CSV y base de datos.
 - [`server/mqtt_bridge.py`](server/mqtt_bridge.py): puente que recibe el canal MQTT de Wokwi y entrega las lecturas a la aplicación web local en la VM.
-- [`azure/main.bicep`](azure/main.bicep): infraestructura desplegada para Ubuntu público y PostgreSQL privado en Azure.
-- [`GUIA_PRACTICA_1_AZURE.md`](GUIA_PRACTICA_1_AZURE.md): pasos de Azure y verificación de la simulación. El criterio escrito nombra AWS, pero la estudiante confirmó que el docente acepta Azure.
+- [`aws/savia-iot.yaml`](aws/savia-iot.yaml): infraestructura desplegada en AWS Academy Learner Lab, con Ubuntu público, IP elástica y PostgreSQL RDS privado.
+- [`GUIA_PRACTICA_1.md`](GUIA_PRACTICA_1.md): arquitectura AWS, reproducción y pasos de verificación. La carpeta `azure/` se conserva como antecedente de una demostración anterior.
 - [`CHECKLIST_ENTREGA_PRACTICA_1.md`](CHECKLIST_ENTREGA_PRACTICA_1.md): lo comprobado y lo pendiente según el enunciado.
-- [`entregables/`](entregables/): [presentación de la práctica](entregables/Presentacion_Savia_IoT_Practica_1_Azure_para_compartir.pptx) y [evidencia de funcionamiento](entregables/Evidencia_Savia_IoT_Azure_2026-10-17.pdf) para descargar y revisar con el equipo.
-- [`aws/savia-iot.yaml`](aws/savia-iot.yaml) y [`GUIA_PRACTICA_1.md`](GUIA_PRACTICA_1.md): alternativa conservada para cumplir literalmente el criterio AWS si se requiere.
+- [`entregables/`](entregables/): [evidencia AWS actual](entregables/Evidencia_AWS_2026-10-24.md), más una presentación y evidencia históricas de la fase Azure. La presentación Azure requiere actualización antes de sustentar AWS.
 
 La página del repositorio es una compilación lista para publicar; **el código fuente editable de esa página no está incluido en este repositorio**. El circuito y su programa sí están disponibles en archivos editables.
 
@@ -35,7 +34,7 @@ La página del repositorio es una compilación lista para publicar; **el código
 
 ```text
 DHT22 → ESP32 → Wi-Fi/MQTT → dashboard
-          ├─ puente MQTT en Azure → servidor Python → CSV + PostgreSQL
+          ├─ puente MQTT en AWS → servidor Python → CSV + PostgreSQL
           └─ regla local → relé → LED verde (ventilación simulada)
 ```
 
@@ -54,7 +53,7 @@ El reto de la asignatura también contempla organizar el montaje por equipo, def
 
 En la versión local del prototipo se comprobaron lecturas simuladas, control remoto con confirmación, un corte de red de 20 segundos, recuperación de lecturas y exportación CSV. Esas pruebas locales no prueban por sí solas que un dispositivo físico o la página pública estén conectados en este momento. Para una exposición, vuelve a ejecutar los pasos anteriores y registra el resultado observado.
 
-El servidor pasó pruebas automatizadas de validación, autenticación, deduplicación y escritura en CSV + base de datos. El 17 de octubre de 2026 se desplegó en Azure y se verificó una lectura de Wokwi con el mismo identificador, temperatura y humedad en PostgreSQL y CSV. [Abrir el servidor de demostración](https://23-101-172-173.sslip.io/). El código HTTP del ESP32 conserva la URL vacía: el envío activo usa el puente MQTT y mantiene el token exclusivamente en la VM. El broker es público, así que la procedencia de los mensajes no puede autenticarse; esta prueba solo utiliza datos simulados.
+El servidor pasó pruebas automatizadas de validación, autenticación, deduplicación y escritura en CSV + base de datos. El **24 de octubre de 2026** se comprobó el despliegue AWS Academy Learner Lab: `/health` informó PostgreSQL activo; durante la simulación, el contador subió de 4 a 13 lecturas, y las secuencias 23–25 del mismo arranque se vieron en la API y CSV. [Evidencia y límites](entregables/Evidencia_AWS_2026-10-24.md). El servidor está en [HTTP por IP elástica](http://184.193.138.254/); aún no dispone de HTTPS y Chrome había bloqueado ese acceso desde el equipo de la estudiante. El código HTTP del ESP32 conserva la URL vacía: el envío activo usa el puente MQTT y mantiene el token solo en la VM. El broker es público, así que la procedencia de los mensajes no puede autenticarse; esta prueba solo utiliza datos simulados. La prueba local separada en Ubuntu y la entrega en el campus siguen pendientes según el [checklist](CHECKLIST_ENTREGA_PRACTICA_1.md).
 
 ## Referencias técnicas
 
