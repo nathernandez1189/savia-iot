@@ -1,25 +1,28 @@
-# Estado de la Práctica 1 | Savia IoT
+# Práctica 1 | Implementación y evidencia de Savia IoT
 
 **Asignatura:** Inteligencia Artificial Aplicada a Internet de las Cosas  
 **Docente:** Jhorman Andrés Villanueva Vivas  
-**Equipo:** Natalia Hernández Piedrahita, Sidney Leonardo Leusson Angulo, José Fernando Luque Cajiao y Jarvin David Alvarado Garcés  
-**Verificación:** 24 de octubre de 2026  
-**Fuente:** enunciado «Práctica 1: Servidor web para un proyecto de IoT».
+**Integrantes:** Natalia Hernández Piedrahita, Sidney Leonardo Leusson Angulo, José Fernando Luque Cajiao y Jarvin David Alvarado Garcés  
+**Fecha de la comprobación técnica:** 24 de octubre de 2026
 
-| Requisito del enunciado | Estado comprobado |
+## Caso de uso
+
+Savia IoT representa el monitoreo de un invernadero de tomates. Un ESP32 y un DHT22 simulados en [Wokwi](https://wokwi.com/projects/477744536654042113) generan lecturas de temperatura y humedad relativa del **aire**. El ESP32 conserva el control local de un LED que representa la ventilación: se activa por encima de 30 °C y se desactiva por debajo de 27 °C.
+
+## Componentes desarrollados y comprobaciones
+
+| Componente | Implementación y evidencia |
 |---|---|
-| 1. Caso de monitoreo de temperatura y humedad | **Realizado.** Invernadero de tomates; DHT22 simulado mide aire interior en [Wokwi](https://wokwi.com/projects/477744536654042113). |
-| 2. Aplicación web en servidor Ubuntu local | **Pendiente solo la fase local.** La VM Ubuntu de AWS existe y funciona; falta documentar una ejecución Ubuntu local, separada de AWS. La prueba en macOS no la reemplaza. |
-| 3. Envío de datos del ESP32 a la aplicación | **Comprobado en una sesión.** El ESP32 publicó por MQTT y un puente en la VM entregó las lecturas a la aplicación Python; el contador en AWS pasó de 4 a 13. No es envío HTTP directo desde el ESP32. |
-| 4. Almacenamiento en CSV y base de datos | **Comprobado en AWS.** Las mismas secuencias aparecieron en la API respaldada por PostgreSQL y en CSV. Falta repetir y registrar la prueba en Ubuntu local. |
-| 5. VM en AWS, servidor público, base privada, IP elástica y reglas de acceso | **Comprobado el 24 de octubre.** La pila CloudFormation quedó en CREATE_COMPLETE; EC2 estaba en ejecución y RDS no tenía acceso público. |
-| 6. Proyecto en GitHub y enlace compartido | **Repositorio publicado.** [Enlace para compartir](https://github.com/nathernandez1189/savia-iot). Compartirlo con el docente o subirlo al campus requiere la acción del equipo. |
-| 7. Presentación a los compañeros | **Pendiente.** Existe un [esquema de exposición](entregables/Guion_Exposicion_AWS.md), pero no se ha constatado la sustentación. |
+| Aplicación web en Ubuntu | Aplicación Python ejecutada en una **VM Ubuntu de AWS Academy Learner Lab**. Expone una ruta de salud, una API de lecturas y una descarga CSV. Su código está en [server/](server/). |
+| Comunicación del dispositivo | El ESP32 publica las lecturas por MQTT. Un puente en la VM las entrega por HTTP local a la aplicación. Durante una sesión comprobada, el contador pasó de 4 a 13 lecturas. La configuración activa no usa envío HTTP directo desde el ESP32. |
+| Persistencia | La aplicación valida y deduplica los mensajes. Las secuencias 23–25 de un mismo arranque coincidieron en la API respaldada por PostgreSQL y en el CSV del servidor. |
+| Infraestructura AWS | La pila CloudFormation llegó a CREATE_COMPLETE. Incluye EC2 Ubuntu en subred pública con IP elástica, PostgreSQL RDS en subredes privadas y grupos de seguridad que restringen el acceso a la base. La [plantilla](aws/savia-iot.yaml) permite examinar la configuración. |
+| Código y demostración | [Repositorio GitHub](https://github.com/nathernandez1189/savia-iot), [simulación Wokwi](https://wokwi.com/projects/477744536654042113), [tablero Savia IoT](https://nathernandez1189.github.io/savia-iot/) y [esquema de exposición](entregables/Guion_Exposicion_AWS.md). |
 
-## Qué conviene cerrar antes de entregar
+## Alcance de la evidencia
 
-1. Ejecutar el servidor en Ubuntu **local, fuera de AWS**, y guardar evidencia de una lectura en la base y en el CSV. Esto no requiere crear otra VM en AWS. La [guía](GUIA_PRACTICA_1.md) incluye los pasos.
-2. Repetir una demostración en vivo del recorrido Wokwi → MQTT → aplicación → PostgreSQL/CSV. En la segunda comprobación del 24 de octubre, la pasarela Wi-Fi de Wokwi no conectó y no produjo lecturas nuevas; el ESP32 sí mantuvo el control local.
-3. Preparar la exposición y realizar la entrega por el canal indicado por el docente. Publicar el repositorio no equivale a entregarlo oficialmente.
+El enunciado distingue la configuración inicial de un servidor Ubuntu y la posterior implementación en AWS. **Las comprobaciones fechadas de este documento corresponden a la VM Ubuntu de AWS**; la [guía de reproducción](GUIA_PRACTICA_1.md) describe cómo ejecutar el servidor en un Ubuntu local fuera de AWS. Esa guía es un procedimiento y no constituye, por sí sola, evidencia de una segunda ejecución.
 
-**Alcance de la evidencia:** los datos proceden de una simulación, no de un cultivo real. El LED representa la ventilación. El clima exterior del tablero procede de Open-Meteo y no es una lectura del ESP32. El broker MQTT de pruebas es público; la prueba no acredita autenticación del origen ni disponibilidad continua. [Resultados observados](entregables/Evidencia_AWS_2026-10-24.md).
+La recepción desde Wokwi se observó durante una sesión. En una comprobación posterior del mismo día, la pasarela Wi-Fi de Wokwi no conectó y no produjo nuevas filas, aunque el control local del ESP32 funcionó. Por eso las cifras anteriores se presentan como resultados fechados, no como garantía de conexión permanente. El broker MQTT es público y se usa únicamente con datos simulados.
+
+El DHT22 no mide humedad del suelo, pH ni nutrientes; el LED no es un ventilador físico. El clima exterior que muestra el tablero procede de Open-Meteo y no reemplaza lecturas interiores. La [evidencia técnica del 24 de octubre](entregables/Evidencia_AWS_2026-10-24.md) amplía los resultados y sus límites.
