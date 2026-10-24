@@ -43,7 +43,17 @@ Se ejecutó la prueba automatizada del servidor en el Mac del equipo: 1 prueba a
 
 ## Estado para la entrega
 
-La **fase AWS** está desplegada y las lecturas de Wokwi llegaron a PostgreSQL y CSV. Para afirmar que toda la práctica está terminada falta documentar una **prueba local separada en Ubuntu** si el profesor la exige, validar el acceso desde el navegador de la estudiante y presentar/subir oficialmente el material. El acceso HTTP desde CloudShell funcionó; Chrome bloqueó por el cliente tanto la IP como el nombre gratuito `184-193-138-254.sslip.io`. No se ha instalado HTTPS en AWS. [Checklist vigente](../CHECKLIST_ENTREGA_PRACTICA_1.md).
+La **fase AWS** está desplegada y las lecturas de Wokwi llegaron a PostgreSQL y CSV. Para afirmar que toda la práctica está terminada falta documentar una **prueba local separada en Ubuntu** si el profesor la exige, validar el acceso desde el navegador de la estudiante y presentar/subir oficialmente el material. El acceso HTTP desde CloudShell funcionó; Chrome bloqueó por el cliente tanto la IP como el nombre gratuito `184-193-138-254.sslip.io`; el navegador interno sí abrió la IP. No se ha instalado HTTPS en AWS. [Checklist vigente](../CHECKLIST_ENTREGA_PRACTICA_1.md).
+
+## Segunda comprobación del 24 de octubre (14:26 UTC y minutos siguientes)
+
+- EC2 siguió en `running`; los chequeos de instancia y sistema devolvieron `ok`. RDS estaba `available` y `PubliclyAccessible=False`.
+- AWS Systems Manager confirmó `active` para `savia-iot`, `savia-mqtt` y `nginx`. En la VM, `readings.csv` tenía 14 líneas: un encabezado y 13 lecturas.
+- El navegador interno abrió `http://184.193.138.254/`, `/health` y `/api/readings?limit=2` correctamente. Chrome de esta sesión bloqueó HTTP, por lo que el problema de Chrome no equivale a un fallo de AWS.
+- Las pruebas locales automatizadas pasaron nuevamente (1 prueba), cubriendo autenticación, deduplicación, validación y SQLite/CSV.
+- El ESP32 de Wokwi leyó el DHT22. A 32 °C encendió el indicador en AUTO; a 26 °C lo apagó. Los botones Encender, Apagar y Auto cambiaron el estado como se esperaba.
+- **Bloqueo actual de red:** dos navegadores mostraron `WiFi Error: Connection to IoT Gateway wss://netwi.wokwi.com/ failed`. El monitor serial quedó en `RED=LOCAL`; el contador AWS permaneció en 13. No se atribuye la causa sin un diagnóstico adicional y no se afirma una nueva transmisión de Wokwi a AWS en esta segunda sesión.
+- El dashboard público abrió. Su historial conservó una lectura al recargar y la exportación produjo un CSV con esa lectura. La búsqueda Open-Meteo devolvió Santiago de Cali con Valle del Cauca y Colombia, diferenciándola de homónimos. No se seleccionó una ubicación para no atribuir al cultivo una ciudad no indicada por el equipo, por lo que el pronóstico de siete días no se probó.
 
 ## Control de costos
 
