@@ -16,6 +16,12 @@ for attempt in $(seq 1 20); do
   sleep 1
 done
 docker compose exec -T collector grep "$boot" /data/readings.csv
-docker compose exec -T collector python -c 'import sqlite3; db=sqlite3.connect("/data/outbox.sqlite3"); print("InfluxDB confirmado (sent=1):", db.execute("SELECT sent FROM readings WHERE boot=?", (__import__("sys").argv[1],)).fetchone())' "$boot"
+for attempt in $(seq 1 30); do
+  if docker compose exec -T collector python -c 'import sqlite3,sys; db=sqlite3.connect("/data/outbox.sqlite3"); row=db.execute("SELECT sent FROM readings WHERE boot=?", (sys.argv[1],)).fetchone(); sys.exit(0 if row == (1,) else 1)' "$boot"; then
+    break
+  fi
+  sleep 1
+done
+docker compose exec -T collector python -c 'import sqlite3,sys; db=sqlite3.connect("/data/outbox.sqlite3"); row=db.execute("SELECT sent FROM readings WHERE boot=?", (sys.argv[1],)).fetchone(); print("InfluxDB confirmado (sent=1):", row); sys.exit(0 if row == (1,) else 1)' "$boot"
 docker compose exec -T influxdb influx query --org "$INFLUX_ORG" --token "$INFLUX_TOKEN" 'from(bucket: "'"$INFLUX_BUCKET"'") |> range(start: -10m) |> filter(fn: (r) => r.boot == "'"$boot"'")' | tail -n 5
 printf 'ID de la prueba sintética: %s\n' "$boot"
