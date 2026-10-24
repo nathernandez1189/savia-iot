@@ -32,13 +32,12 @@ services:
     restart: unless-stopped
     depends_on:
       - mosquitto
-      - influxdb
     environment:
       MQTT_HOST: mosquitto
       MQTT_PORT: "1883"
       MQTT_USER: ${MQTT_COLLECTOR_USER:-savia_collector}
       MQTT_PASSWORD: ${MQTT_COLLECTOR_PASSWORD:?configure .env}
-      INFLUX_URL: http://influxdb:8086
+      INFLUX_URL: ${INFLUX_URL:-http://influxdb:8086}
       INFLUX_ORG: ${INFLUX_ORG:-savia}
       INFLUX_BUCKET: ${INFLUX_BUCKET:-invernadero}
       INFLUX_TOKEN: ${INFLUX_TOKEN:?configure .env}
@@ -48,8 +47,6 @@ services:
   grafana:
     image: grafana/grafana:11.5.2
     restart: unless-stopped
-    depends_on:
-      - influxdb
     ports:
       - "127.0.0.1:3000:3000"
     environment:
@@ -59,6 +56,7 @@ services:
       INFLUX_ORG: ${INFLUX_ORG:-savia}
       INFLUX_BUCKET: ${INFLUX_BUCKET:-invernadero}
       INFLUX_TOKEN: ${INFLUX_TOKEN:?configure .env}
+      INFLUX_URL: ${INFLUX_URL:-http://influxdb:8086}
       MQTT_ALERT_USER: ${MQTT_ALERT_USER:-savia_alerts}
       MQTT_ALERT_PASSWORD: ${MQTT_ALERT_PASSWORD:?configure .env}
     volumes:

@@ -1,0 +1,85 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'Savia IoT Practica 2: InfluxDB separado en una segunda subred publica, acceso solo desde EC2 web.'
+Parameters:
+  VpcId: {Type: AWS::EC2::VPC::Id}
+  PublicRouteTableId: {Type: String}
+  WebSecurityGroupId: {Type: AWS::EC2::SecurityGroup::Id}
+  UbuntuAmiId: {Type: AWS::EC2::Image::Id}
+Resources:
+  InfluxPublicSubnet:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref VpcId
+      CidrBlock: 10.42.2.0/24
+      AvailabilityZone: us-east-1b
+      MapPublicIpOnLaunch: true
+      Tags: [{Key: Name, Value: savia-influx-public}]
+  InfluxRouteAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref InfluxPublicSubnet
+      RouteTableId: !Ref PublicRouteTableId
+  InfluxSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: 'InfluxDB 8086 solo desde la VM Savia web; sin SSH publico.'
+      VpcId: !Ref VpcId
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 8086
+          ToPort: 8086
+          SourceSecurityGroupId: !Ref WebSecurityGroupId
+      Tags: [{Key: Name, Value: savia-influx-restricted}]
+  InfluxServer:
+    Type: AWS::EC2::Instance
+    DependsOn: InfluxRouteAssociation
+    Properties:
+      ImageId: !Ref UbuntuAmiId
+      InstanceType: t3.micro
+      IamInstanceProfile: LabInstanceProfile
+      NetworkInterfaces:
+        - DeviceIndex: '0'
+          AssociatePublicIpAddress: true
+          SubnetId: !Ref InfluxPublicSubnet
+          GroupSet: [!Ref InfluxSecurityGroup]
+      BlockDeviceMappings:
+        - DeviceName: /dev/sda1
+          Ebs: {VolumeSize: 12, VolumeType: gp3, Encrypted: true, DeleteOnTermination: true}
+      UserData:
+        Fn::Base64: |
+          #!/bin/bash
+          set -euxo pipefail
+          fallocate -l 1G /swapfile
+          chmod 600 /swapfile
+          mkswap /swapfile
+          swapon /swapfile
+          echo '/swapfile none swap sw 0 0' >> /etc/fstab
+          apt-get update
+          DEBIAN_FRONTEND=noninteractive apt-get install -y docker.io
+          systemctl enable --now docker
+          mkdir -p /opt/savia-influx/data /opt/savia-influx/config
+          python3 - <<'PY'
+          from pathlib import Path
+          from secrets import token_hex
+          values = {
+              'DOCKER_INFLUXDB_INIT_MODE': 'setup',
+              'DOCKER_INFLUXDB_INIT_USERNAME': 'savia_admin',
+              'DOCKER_INFLUXDB_INIT_PASSWORD': token_hex(24),
+              'DOCKER_INFLUXDB_INIT_ORG': 'savia',
+              'DOCKER_INFLUXDB_INIT_BUCKET': 'invernadero',
+              'DOCKER_INFLUXDB_INIT_ADMIN_TOKEN': token_hex(32),
+          }
+          p = Path('/opt/savia-influx/influx.env')
+          p.write_text(''.join(f'{key}={value}\n' for key, value in values.items()))
+          p.chmod(0o600)
+          PY
+          docker run -d --name savia-influx --restart unless-stopped \
+            -p 8086:8086 --env-file /opt/savia-influx/influx.env \
+            -v /opt/savia-influx/data:/var/lib/influxdb2 \
+            -v /opt/savia-influx/config:/etc/influxdb2 influxdb:2
+      Tags: [{Key: Name, Value: savia-influx-practica2}]
+Outputs:
+  InfluxInstanceId: {Value: !Ref InfluxServer}
+  InfluxPrivateIp: {Value: !GetAtt InfluxServer.PrivateIp}
+  InfluxSubnetId: {Value: !Ref InfluxPublicSubnet}
+  InfluxSecurityGroupId: {Value: !Ref InfluxSecurityGroup}
