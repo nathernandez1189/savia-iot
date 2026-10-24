@@ -18,13 +18,13 @@ const output = process.env.CAPTURE_FILE || '/out/grafana-aws-2026-10-24.png';
 (async () => {
   const browser = await chromium.launch({ headless: true, args: ['--no-sandbox'] });
   try {
-    const page = await browser.newPage({ viewport: { width: 1600, height: 1050 }, deviceScaleFactor: 1 });
+    const page = await browser.newPage({ viewport: { width: 1600, height: 780 }, deviceScaleFactor: 1 });
     await page.goto(`${base}/login`, { waitUntil: 'domcontentloaded' });
     await page.locator('input[name="user"]').fill(values.GRAFANA_USER);
     await page.locator('input[name="password"]').fill(values.GRAFANA_PASSWORD);
     await page.locator('button[type="submit"]').click();
     await page.waitForURL(url => !url.pathname.endsWith('/login'), { timeout: 30000 });
-    await page.goto(`${base}/d/savia-practica2/savia-iot-invernadero-de-tomates?orgId=1&from=now-2h&to=now&kiosk`, { waitUntil: 'domcontentloaded' });
+    await page.goto(`${base}/d/savia-practica2/savia-iot-invernadero-de-tomates?orgId=1&from=now-2h&to=now`, { waitUntil: 'domcontentloaded' });
     await page.getByText('Temperatura del aire interior (simulada)').waitFor({ timeout: 30000 });
     await page.waitForTimeout(10000);
     const title = await page.title();

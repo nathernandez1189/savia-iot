@@ -34,7 +34,7 @@
       "title": "Última temperatura",
       "gridPos": {"h": 5, "w": 12, "x": 0, "y": 9},
       "datasource": {"type": "influxdb", "uid": "savia-influx"},
-      "targets": [{"refId": "A", "query": "from(bucket: \"invernadero\") |> range(start: -30m) |> filter(fn: (r) => r._measurement == \"invernadero_aire\" and r._field == \"temperatura\") |> last()", "datasource": {"type": "influxdb", "uid": "savia-influx"}}],
+      "targets": [{"refId": "A", "query": "from(bucket: \"invernadero\") |> range(start: -30m) |> filter(fn: (r) => r._measurement == \"invernadero_aire\" and r._field == \"temperatura\") |> group(columns: []) |> sort(columns: [\"_time\"]) |> last()", "datasource": {"type": "influxdb", "uid": "savia-influx"}}],
       "fieldConfig": {"defaults": {"unit": "celsius", "thresholds": {"mode": "absolute", "steps": [{"color": "green"}, {"color": "red", "value": 30}]}}, "overrides": []}
     },
     {
@@ -43,7 +43,7 @@
       "title": "Última humedad relativa",
       "gridPos": {"h": 5, "w": 12, "x": 12, "y": 9},
       "datasource": {"type": "influxdb", "uid": "savia-influx"},
-      "targets": [{"refId": "A", "query": "from(bucket: \"invernadero\") |> range(start: -30m) |> filter(fn: (r) => r._measurement == \"invernadero_aire\" and r._field == \"humedad\") |> last()", "datasource": {"type": "influxdb", "uid": "savia-influx"}}],
+      "targets": [{"refId": "A", "query": "from(bucket: \"invernadero\") |> range(start: -30m) |> filter(fn: (r) => r._measurement == \"invernadero_aire\" and r._field == \"humedad\") |> group(columns: []) |> sort(columns: [\"_time\"]) |> last()", "datasource": {"type": "influxdb", "uid": "savia-influx"}}],
       "fieldConfig": {"defaults": {"unit": "percent", "thresholds": {"mode": "absolute", "steps": [{"color": "red"}, {"color": "green", "value": 50}, {"color": "red", "value": 85}]}}, "overrides": []}
     }
   ]
