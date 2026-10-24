@@ -1,31 +1,25 @@
-# Savia IoT · estado de la Práctica 1
+# Estado de la Práctica 1 | Savia IoT
 
-**Materia:** Inteligencia Artificial Aplicada a Internet de las Cosas  
+**Asignatura:** Inteligencia Artificial Aplicada a Internet de las Cosas  
 **Docente:** Jhorman Andrés Villanueva Vivas  
-**Corte de verificación:** 24 de octubre de 2026  
-**Base:** enunciado «Práctica 1 - Servidor web para un proyecto de IoT».
+**Equipo:** Natalia Hernández Piedrahita, Sidney Leonardo Leusson Angulo, José Fernando Luque Cajiao y Jarvin David Alvarado Garcés  
+**Verificación:** 24 de octubre de 2026  
+**Fuente:** enunciado «Práctica 1: Servidor web para un proyecto de IoT».
 
-## Comprobado
+| Requisito del enunciado | Estado comprobado |
+|---|---|
+| 1. Caso de monitoreo de temperatura y humedad | **Realizado.** Invernadero de tomates; DHT22 simulado mide aire interior en [Wokwi](https://wokwi.com/projects/477744536654042113). |
+| 2. Aplicación web en servidor Ubuntu local | **Pendiente de evidencia.** El servidor funciona en AWS y la prueba automatizada pasó en macOS, pero no se documentó una instalación Ubuntu local separada. |
+| 3. Envío de datos del ESP32 a la aplicación | **Comprobado en una sesión.** El ESP32 publicó por MQTT y un puente en la VM entregó las lecturas a la aplicación Python; el contador en AWS pasó de 4 a 13. No es envío HTTP directo desde el ESP32. |
+| 4. Almacenamiento en CSV y base de datos | **Comprobado en AWS.** Las mismas secuencias aparecieron en la API respaldada por PostgreSQL y en CSV. Falta repetir y registrar la prueba en Ubuntu local. |
+| 5. VM en AWS, servidor público, base privada, IP elástica y reglas de acceso | **Comprobado el 24 de octubre.** La pila CloudFormation quedó en CREATE_COMPLETE; EC2 estaba en ejecución y RDS no tenía acceso público. |
+| 6. Proyecto en GitHub y enlace compartido | **Repositorio publicado.** [Enlace para compartir](https://github.com/nathernandez1189/savia-iot). Compartirlo con el docente o subirlo al campus requiere la acción del equipo. |
+| 7. Presentación a los compañeros | **Pendiente.** Existe un [esquema de exposición](entregables/Guion_Exposicion_AWS.md), pero no se ha constatado la sustentación. |
 
-- [x] Caso de uso del invernadero de tomates: temperatura y humedad del aire.
-- [x] ESP32 y DHT22 simulados en [Wokwi](https://wokwi.com/projects/477744536654042113); regla local de ventilación con LED como actuador simulado.
-- [x] Aplicación Python y puente MQTT en una VM **Ubuntu de AWS Academy Learner Lab**.
-- [x] ESP32 publica por MQTT; el puente recibe las lecturas y las entrega a la aplicación web. El token del servidor no está en Wokwi ni en GitHub.
-- [x] PostgreSQL RDS privado y CSV: la API reportó `database=postgres` y 13 lecturas; el CSV y la API mostraron `boot=465479e7`, `seq=23…25`, 24.0 °C y 65.0 %.
-- [x] La cifra subió de 4 a 13 durante la misma simulación: evidencia de recepción continuada durante esa sesión, aunque no de disponibilidad prolongada.
-- [x] VPC, subred pública para EC2, dos privadas para RDS, IP elástica y grupos de seguridad creados por la pila `savia-iot-lab` (16 recursos `CREATE_COMPLETE`).
-- [x] Repositorio, plantilla y guía actualizados con el despliegue AWS. [Evidencia del 24 de octubre](entregables/Evidencia_AWS_2026-10-24.md).
-- [x] Eliminación de la pila programada para el 1 de noviembre a las 23:00 (Bogotá), según la fecha indicada por Natalia.
+## Qué conviene cerrar antes de entregar
 
-## Falta para afirmar que está **todo** completo
+1. Ejecutar el servidor en una instalación Ubuntu **local separada** y guardar evidencia de una lectura en la base y en el CSV. La [guía](GUIA_PRACTICA_1.md) incluye los pasos.
+2. Repetir una demostración en vivo del recorrido Wokwi → MQTT → aplicación → PostgreSQL/CSV. En la segunda comprobación del 24 de octubre, la pasarela Wi-Fi de Wokwi no conectó y no produjo lecturas nuevas; el ESP32 sí mantuvo el control local.
+3. Preparar la exposición y realizar la entrega por el canal indicado por el docente. Publicar el repositorio no equivale a entregarlo oficialmente.
 
-- [ ] Ejecutar y **capturar** una instalación local separada en Ubuntu con SQLite y CSV, o confirmar explícitamente con el docente que la VM Ubuntu de AWS satisface también la primera fase. Los tests locales de Python no demuestran por sí solos ese requisito.
-- [x] Acceso remoto a la VM comprobado desde el navegador interno: la portada, `/health` y `/api/readings?limit=2` abrieron y mostraron 13 lecturas en PostgreSQL. Chrome de esta sesión bloqueó HTTP; el servidor sigue sin HTTPS.
-- [ ] Capturar una prueba completa **en vivo** en la sustentación: Wokwi, monitor serial, API, CSV y consulta PostgreSQL sin secretos. En la verificación posterior, Wokwi mostró `WiFi Error: Connection to IoT Gateway wss://netwi.wokwi.com/ failed` en Chrome y navegador interno; el control local sí funcionó, pero esa sesión no generó nuevas filas en AWS.
-- [ ] Presentar y subir el material al campus. Tener código y documentación en GitHub no equivale a entrega oficial.
-- [ ] Aclarar si el profesor exige un montaje físico. Todo lo verificado utiliza una simulación, sin motor real.
-- [ ] Tras el 1 de noviembre, comprobar que se borraron la pila, RDS, la IP elástica y los dos parámetros, y que no siguen los cargos.
-
-**Verificación adicional del 24 de octubre:** EC2 `running` con estado de instancia/sistema `ok`; RDS `available` y no pública; servicios `savia-iot`, `savia-mqtt` y `nginx` activos; CSV de AWS con 13 filas de datos más encabezado. El historial del dashboard persistió tras recargar y su exportación descargó un CSV con una lectura. La búsqueda de municipios distinguió Cali (Colombia) de homónimos; el pronóstico no se probó porque no se configuró una ubicación real del cultivo.
-
-**Límites:** los datos son simulados; el broker MQTT de pruebas es público y no autentica el origen. La página de GitHub Pages, el servidor AWS y el proyecto Wokwi son piezas distintas.
+**Alcance de la evidencia:** los datos proceden de una simulación, no de un cultivo real. El LED representa la ventilación. El clima exterior del tablero procede de Open-Meteo y no es una lectura del ESP32. El broker MQTT de pruebas es público; la prueba no acredita autenticación del origen ni disponibilidad continua. [Resultados observados](entregables/Evidencia_AWS_2026-10-24.md).
