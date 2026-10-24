@@ -9,7 +9,7 @@ Proyecto académico de **Inteligencia Artificial Aplicada a Internet de las Cosa
 
 ## Relación con la Práctica 1
 
-El enunciado solicita un caso de monitoreo, un servidor Ubuntu local, envío de lecturas desde el ESP32 hacia la aplicación, almacenamiento en CSV y base de datos, repetición en una VM de AWS con servidor público y base privada, repositorio y exposición. Este repositorio contiene el prototipo, el servidor, la plantilla de AWS y la evidencia fechada de las comprobaciones realizadas. La **instalación local separada en Ubuntu aún no tiene evidencia de ejecución**; tampoco consta la exposición o la entrega en el campus. No presentamos esos puntos como terminados.
+El enunciado solicita un caso de monitoreo, un servidor Ubuntu local, envío de lecturas desde el ESP32 hacia la aplicación, almacenamiento en CSV y base de datos, repetición en una VM de AWS con servidor público y base privada, repositorio y exposición. Este repositorio contiene el prototipo, el servidor, la plantilla de AWS y la evidencia fechada de las comprobaciones realizadas. La **VM Ubuntu en AWS ya existe y fue comprobada**. Lo que no está documentado es una ejecución anterior en Ubuntu local, separada de AWS, tal como distinguen los criterios de evaluación; tampoco consta la exposición o la entrega en el campus.
 
 ## Qué contiene el repositorio
 
