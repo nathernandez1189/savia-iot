@@ -24,11 +24,13 @@ La infraestructura descrita en [CloudFormation](../aws/savia-iot.yaml) incluye u
 
 La coincidencia de identificadores y valores respalda que esas lecturas llegaron a la aplicación y quedaron disponibles en PostgreSQL y CSV durante la sesión observada. El repositorio no contiene un volcado de la base ni datos reales de un cultivo.
 
+En una **segunda sesión del mismo 24 de octubre**, Wokwi recuperó su conexión Wi-Fi y MQTT. El contador de AWS pasó de **13 a 23** registros. Las secuencias **23 y 24** del arranque `8b9a8e13`, con **26,0 °C y 65,0 %**, aparecieron tanto en la API respaldada por PostgreSQL como en el CSV. Esas mismas secuencias se recibieron también en la ejecución [Ubuntu local](Evidencia_Ubuntu_Local_2026-10-24.md). La recepción no fue continua: el broker público y el simulador presentaron interrupciones durante las pruebas.
+
 ## Límites de la comprobación
 
-Más tarde, el mismo 24 de octubre, Wokwi mostró un error al conectarse a su pasarela Wi-Fi en dos navegadores. El ESP32 mantuvo el control local, pero el contador de AWS permaneció en 13. Por tanto, **no se afirma que el flujo completo esté conectado en este momento** ni que haya mantenido disponibilidad durante varios días. Antes de la sustentación se debe repetir la prueba de extremo a extremo y guardar capturas de Wokwi, API, CSV y PostgreSQL.
+Entre las dos sesiones, Wokwi mostró un error al conectarse a su pasarela Wi-Fi en dos navegadores. El ESP32 mantuvo el control local; más tarde la conexión se recuperó. La segunda sesión confirmó de nuevo el recorrido completo, pero **no acredita disponibilidad continua**. Para la sustentación conviene repetirlo en vivo y conservar capturas legibles del simulador, la API y el CSV.
 
-La aplicación se comprobó con una prueba automatizada en macOS para validación, deduplicación y persistencia SQLite/CSV. La infraestructura y los datos observados en este informe corresponden a la VM Ubuntu de AWS. El procedimiento para una ejecución Ubuntu local, fuera de AWS, se presenta por separado en la guía del proyecto.
+Además de la VM Ubuntu de AWS, la aplicación y el puente se ejecutaron y comprobaron en un [Ubuntu local separado](Evidencia_Ubuntu_Local_2026-10-24.md). Sus datos de prueba se guardaron en SQLite y CSV; AWS utilizó PostgreSQL y CSV.
 
 Los datos del DHT22 son simulados. El broker MQTT público no autentica la procedencia de un mensaje; por eso este montaje no se presenta como una instalación productiva. El servidor AWS ofrece HTTP sin HTTPS y su dirección pública es temporal. El clima exterior de Open-Meteo en el tablero es una fuente distinta y no se usa como lectura del invernadero.
 

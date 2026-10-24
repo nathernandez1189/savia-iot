@@ -26,25 +26,24 @@ El servidor expone HTTP sin HTTPS. Su IP es temporal y solo funciona mientras el
 
 ## Reproducción de la etapa inicial en Ubuntu local
 
-La implementación observada el 24 de octubre funciona en una VM Ubuntu de AWS. El enunciado también contempla una etapa inicial en un servidor Ubuntu local, fuera de AWS. El procedimiento siguiente permite reproducirla; es una guía técnica y no un registro de su ejecución. En Ubuntu local, con Python 3 y Git instalados, se puede iniciar una prueba con SQLite y CSV:
+Además de la VM Ubuntu de AWS, el 24 de octubre se ejecutó el servidor en **Ubuntu 24.04 local mediante Docker**. La [evidencia local](entregables/Evidencia_Ubuntu_Local_2026-10-24.md) registra cuatro lecturas del ESP32 simulado recibidas en SQLite y CSV. Para repetirla en un equipo con Git y Docker Desktop:
 
 ~~~bash
 git clone https://github.com/nathernandez1189/savia-iot.git
 cd savia-iot
-python3 -m unittest discover -s server -p 'test_*.py' -v
+docker build -f local-ubuntu/Dockerfile -t savia-iot-ubuntu-local:practica1 .
+docker run --rm savia-iot-ubuntu-local:practica1 python3 -m unittest discover -s server -p 'test_*.py' -v
 mkdir -p server/data
-SAVIA_HOST=127.0.0.1 SAVIA_DB_KIND=sqlite SAVIA_DATA_DIR="$PWD/server/data" SAVIA_DEVICE_TOKEN=TOKEN_DE_PRUEBA python3 server/app.py
+docker run -d --rm --name savia-ubuntu-local -p 127.0.0.1:18000:8000 -e SAVIA_DEVICE_TOKEN=TOKEN_DE_PRUEBA -v "$PWD/server/data:/data" savia-iot-ubuntu-local:practica1
 ~~~
 
-En otra terminal, sustituir el token de ejemplo por el mismo valor elegido arriba y enviar una muestra de prueba:
+Abrir la simulación en Wokwi y verificar que el monitor serial indique `MQTT conectado`. En otra terminal, iniciar temporalmente el puente en el mismo contenedor:
 
 ~~~bash
-curl -i http://127.0.0.1:8000/api/telemetry -H 'Content-Type: application/json' -H 'X-Device-Token: TOKEN_DE_PRUEBA' -d '{"boot":"PRUEBA01","seq":1,"ts":1791633600000,"temperature":31.2,"humidity":64.5,"mode":"AUTO","fan":true,"alarm":"NORMAL","reason":"lectura"}'
-curl http://127.0.0.1:8000/health
-curl http://127.0.0.1:8000/api/readings.csv
+docker exec -e SAVIA_DEVICE_TOKEN=TOKEN_DE_PRUEBA savia-ubuntu-local python3 server/mqtt_bridge.py
 ~~~
 
-La petición manual comprueba el servidor y sus salidas, pero **no** que el ESP32 haya enviado esa muestra. Para completar la primera parte, conectar Wokwi a esa instalación mediante el puente MQTT o una ruta alcanzable y documentar que la lectura del dispositivo llega tanto a SQLite como a CSV. Conservar capturas legibles de Ubuntu, Wokwi y las dos salidas.
+Después de varias lecturas, consultar `http://127.0.0.1:18000/health` y `http://127.0.0.1:18000/api/readings.csv`. La tabla `readings` queda en `server/data/readings.sqlite3`. El token de este ejemplo es solo para una prueba local; reemplazarlo por otro valor y no publicarlo como credencial de un servidor expuesto. El puente debe permanecer abierto durante la demostración. Para detener el contenedor: `docker stop savia-ubuntu-local`.
 
 ## Secuencia para la sustentación
 
@@ -52,6 +51,6 @@ La petición manual comprueba el servidor y sus salidas, pero **no** que el ESP3
 2. Verificar que el monitor serial indique conexión antes de afirmar que hay envío remoto. Si falla la red, mostrar solo el control local y explicar el límite.
 3. En AWS, mostrar la VM pública, las subredes privadas de RDS y sus grupos de seguridad sin enseñar claves.
 4. Comparar una lectura identificada por el mismo arranque y secuencia en la API, el CSV y PostgreSQL.
-5. Diferenciar la evidencia observada en AWS del procedimiento de reproducción en Ubuntu local.
+5. Comparar las secuencias del mismo arranque en Ubuntu local (SQLite/CSV) y AWS (PostgreSQL/CSV).
 
 La [ficha de implementación y evidencia](CHECKLIST_ENTREGA_PRACTICA_1.md) resume qué se observó en cada componente y el alcance de esas comprobaciones.

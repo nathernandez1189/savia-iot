@@ -7,6 +7,7 @@ La aplicación HTTP sigue siendo la única que valida y guarda cada lectura.
 import json
 import logging
 import os
+import uuid
 from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
 
@@ -66,7 +67,8 @@ def main():
     if not os.getenv("SAVIA_DEVICE_TOKEN"):
         raise SystemExit("Falta SAVIA_DEVICE_TOKEN en el servidor")
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
-    client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2, client_id="savia-archive")
+    client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2,
+                        client_id=f"savia-archive-{uuid.uuid4().hex[:12]}")
     client.on_connect = on_connect
     client.on_message = on_message
     client.connect(BROKER, 1883, keepalive=30)
