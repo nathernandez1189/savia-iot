@@ -20,10 +20,12 @@
 ## Falta para afirmar que está **todo** completo
 
 - [ ] Ejecutar y **capturar** una instalación local separada en Ubuntu con SQLite y CSV, o confirmar explícitamente con el docente que la VM Ubuntu de AWS satisface también la primera fase. Los tests locales de Python no demuestran por sí solos ese requisito.
-- [ ] Confirmar en el navegador de la estudiante el acceso remoto a la VM. AWS CloudShell sí respondió por HTTP; Chrome mostró antes un bloqueo del cliente al abrir la IP. El servidor no tiene HTTPS.
-- [ ] Capturar una prueba completa en la sustentación: Wokwi, monitor serial, API, CSV y una consulta PostgreSQL sin secretos.
+- [x] Acceso remoto a la VM comprobado desde el navegador interno: la portada, `/health` y `/api/readings?limit=2` abrieron y mostraron 13 lecturas en PostgreSQL. Chrome de esta sesión bloqueó HTTP; el servidor sigue sin HTTPS.
+- [ ] Capturar una prueba completa **en vivo** en la sustentación: Wokwi, monitor serial, API, CSV y consulta PostgreSQL sin secretos. En la verificación posterior, Wokwi mostró `WiFi Error: Connection to IoT Gateway wss://netwi.wokwi.com/ failed` en Chrome y navegador interno; el control local sí funcionó, pero esa sesión no generó nuevas filas en AWS.
 - [ ] Presentar y subir el material al campus. Tener código y documentación en GitHub no equivale a entrega oficial.
 - [ ] Aclarar si el profesor exige un montaje físico. Todo lo verificado utiliza una simulación, sin motor real.
 - [ ] Tras el 1 de noviembre, comprobar que se borraron la pila, RDS, la IP elástica y los dos parámetros, y que no siguen los cargos.
+
+**Verificación adicional del 24 de octubre:** EC2 `running` con estado de instancia/sistema `ok`; RDS `available` y no pública; servicios `savia-iot`, `savia-mqtt` y `nginx` activos; CSV de AWS con 13 filas de datos más encabezado. El historial del dashboard persistió tras recargar y su exportación descargó un CSV con una lectura. La búsqueda de municipios distinguió Cali (Colombia) de homónimos; el pronóstico no se probó porque no se configuró una ubicación real del cultivo.
 
 **Límites:** los datos son simulados; el broker MQTT de pruebas es público y no autentica el origen. La página de GitHub Pages, el servidor AWS y el proyecto Wokwi son piezas distintas.
