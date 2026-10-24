@@ -22,6 +22,6 @@ Describir el recorrido real: ESP32 → MQTT → puente en Ubuntu → aplicación
 
 En AWS CloudFormation señalar la VM Ubuntu de la subred pública, la IP elástica, las subredes privadas de RDS y los grupos de seguridad. La base no tiene acceso público. La [evidencia del 24 de octubre](Evidencia_AWS_2026-10-24.md) registró 13 lecturas, pero en una prueba posterior falló la conexión Wi-Fi de Wokwi. Repetir la comprobación en vivo antes de afirmar que siguen entrando datos.
 
-Cerrar indicando con claridad que falta la evidencia de una instalación **Ubuntu local separada**, además de la presentación y la entrega oficial. La versión AWS usa HTTP sin HTTPS y un broker MQTT público de pruebas, adecuado solo para este prototipo simulado.
+Cerrar indicando con claridad que la **VM Ubuntu de AWS ya funciona**, mientras que falta evidencia de la ejecución Ubuntu local previa, además de la presentación y la entrega oficial. La versión AWS usa HTTP sin HTTPS y un broker MQTT público de pruebas, adecuado solo para este prototipo simulado.
 
 **Enlaces para preparar la demostración:** [Repositorio](https://github.com/nathernandez1189/savia-iot) · [Wokwi](https://wokwi.com/projects/477744536654042113) · [Tablero](https://nathernandez1189.github.io/savia-iot/) · [Checklist](../CHECKLIST_ENTREGA_PRACTICA_1.md).
