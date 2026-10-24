@@ -37,9 +37,13 @@ El conteo procede de PostgreSQL porque la aplicación estaba configurada con `SA
 3. En el servidor: `/health`, `/api/readings` y `/api/readings.csv`; comparar un mismo `boot` y `seq`.
 4. Explicar que el servidor está en red pública y RDS solo en red privada; no mostrar contraseñas ni parámetros privados.
 
+## Verificación local de código
+
+Se ejecutó la prueba automatizada del servidor en el Mac del equipo: 1 prueba aprobada. Verificó autenticación, rechazo de lecturas inválidas, deduplicación y persistencia en SQLite y CSV. Esta prueba **no equivale** a una instalación local Ubuntu: Docker Desktop no respondió a la comprobación y no se pudo abrir un contenedor Ubuntu en esta sesión.
+
 ## Estado para la entrega
 
-La **fase AWS** está desplegada y las lecturas de Wokwi llegaron a PostgreSQL y CSV. Para afirmar que toda la práctica está terminada falta documentar una **prueba local separada en Ubuntu** si el profesor la exige, validar el acceso desde el navegador de la estudiante y presentar/subir oficialmente el material. El acceso HTTP desde CloudShell funcionó; una prueba anterior en Chrome mostró bloqueo del cliente para la IP. No se ha instalado HTTPS en AWS. [Checklist vigente](../CHECKLIST_ENTREGA_PRACTICA_1.md).
+La **fase AWS** está desplegada y las lecturas de Wokwi llegaron a PostgreSQL y CSV. Para afirmar que toda la práctica está terminada falta documentar una **prueba local separada en Ubuntu** si el profesor la exige, validar el acceso desde el navegador de la estudiante y presentar/subir oficialmente el material. El acceso HTTP desde CloudShell funcionó; Chrome bloqueó por el cliente tanto la IP como el nombre gratuito `184-193-138-254.sslip.io`. No se ha instalado HTTPS en AWS. [Checklist vigente](../CHECKLIST_ENTREGA_PRACTICA_1.md).
 
 ## Control de costos
 
