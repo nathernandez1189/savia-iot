@@ -16,3 +16,5 @@ build/
 !entregables/Savia_IoT_Practica_1_AWS.pptx
 __pycache__/
 server/data/
+practica2/.secrets/
+practica2/data/

@@ -1,0 +1,73 @@
+name: savia-practica2
+services:
+  mosquitto:
+    image: eclipse-mosquitto:2
+    restart: unless-stopped
+    ports:
+      - "${MQTT_BIND_HOST:-127.0.0.1}:1883:1883"
+    volumes:
+      - ./mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
+      - ./.secrets/mosquitto_passwd:/mosquitto/config/passwords:ro
+      - ./mosquitto.acl:/mosquitto/config/acl:ro
+      - mosquitto_data:/mosquitto/data
+  influxdb:
+    image: influxdb:2
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:8086:8086"
+    environment:
+      DOCKER_INFLUXDB_INIT_MODE: setup
+      DOCKER_INFLUXDB_INIT_USERNAME: ${INFLUX_USER:?configure .env}
+      DOCKER_INFLUXDB_INIT_PASSWORD: ${INFLUX_PASSWORD:?configure .env}
+      DOCKER_INFLUXDB_INIT_ORG: ${INFLUX_ORG:-savia}
+      DOCKER_INFLUXDB_INIT_BUCKET: ${INFLUX_BUCKET:-invernadero}
+      DOCKER_INFLUXDB_INIT_ADMIN_TOKEN: ${INFLUX_TOKEN:?configure .env}
+    volumes:
+      - influx_data:/var/lib/influxdb2
+      - influx_config:/etc/influxdb2
+  collector:
+    build:
+      context: .
+      dockerfile: Dockerfile.collector
+    restart: unless-stopped
+    depends_on:
+      - mosquitto
+      - influxdb
+    environment:
+      MQTT_HOST: mosquitto
+      MQTT_PORT: "1883"
+      MQTT_USER: ${MQTT_COLLECTOR_USER:-savia_collector}
+      MQTT_PASSWORD: ${MQTT_COLLECTOR_PASSWORD:?configure .env}
+      INFLUX_URL: http://influxdb:8086
+      INFLUX_ORG: ${INFLUX_ORG:-savia}
+      INFLUX_BUCKET: ${INFLUX_BUCKET:-invernadero}
+      INFLUX_TOKEN: ${INFLUX_TOKEN:?configure .env}
+      DATA_DIR: /data
+    volumes:
+      - collector_data:/data
+  grafana:
+    image: grafana/grafana:11.5.2
+    restart: unless-stopped
+    depends_on:
+      - influxdb
+    ports:
+      - "127.0.0.1:3000:3000"
+    environment:
+      GF_SECURITY_ADMIN_USER: ${GRAFANA_USER:-admin}
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_PASSWORD:?configure .env}
+      GF_USERS_ALLOW_SIGN_UP: "false"
+      INFLUX_ORG: ${INFLUX_ORG:-savia}
+      INFLUX_BUCKET: ${INFLUX_BUCKET:-invernadero}
+      INFLUX_TOKEN: ${INFLUX_TOKEN:?configure .env}
+      MQTT_ALERT_USER: ${MQTT_ALERT_USER:-savia_alerts}
+      MQTT_ALERT_PASSWORD: ${MQTT_ALERT_PASSWORD:?configure .env}
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./grafana/dashboards:/var/lib/grafana/dashboards:ro
+volumes:
+  mosquitto_data:
+  influx_data:
+  influx_config:
+  grafana_data:
+  collector_data:

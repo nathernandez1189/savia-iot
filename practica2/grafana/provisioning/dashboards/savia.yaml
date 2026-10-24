@@ -1,0 +1,10 @@
+apiVersion: 1
+providers:
+  - name: Savia IoT
+    orgId: 1
+    folder: Savia IoT
+    type: file
+    disableDeletion: false
+    editable: true
+    options:
+      path: /var/lib/grafana/dashboards

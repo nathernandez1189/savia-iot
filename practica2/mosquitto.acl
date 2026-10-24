@@ -1,0 +1,10 @@
+user savia_device
+topic write invernadero1/telemetria
+topic write invernadero1/temperatura
+topic write invernadero1/humedad
+
+user savia_collector
+topic read invernadero1/telemetria
+
+user savia_alerts
+topic readwrite invernadero1/alertas

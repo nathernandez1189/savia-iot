@@ -1,0 +1,75 @@
+apiVersion: 1
+contactPoints:
+  - orgId: 1
+    name: Savia MQTT
+    receivers:
+      - uid: savia-mqtt-notification
+        type: mqtt
+        settings:
+          brokerUrl: tcp://mosquitto:1883
+          topic: invernadero1/alertas
+          clientId: grafana-savia-alerts
+          username: ${MQTT_ALERT_USER}
+          password: ${MQTT_ALERT_PASSWORD}
+          messageFormat: json
+          qos: 1
+          retain: false
+policies:
+  - orgId: 1
+    receiver: Savia MQTT
+    group_by: [alertname]
+    group_wait: 5s
+    group_interval: 1m
+    repeat_interval: 4h
+groups:
+  - orgId: 1
+    name: Ambiente del invernadero
+    folder: Savia IoT
+    interval: 1m
+    rules:
+      - uid: savia-temp-alta
+        title: Temperatura del aire superior a 30 C
+        condition: C
+        data:
+          - refId: A
+            relativeTimeRange: {from: 300, to: 0}
+            datasourceUid: savia-influx
+            model:
+              datasource: {type: influxdb, uid: savia-influx}
+              query: 'from(bucket: "invernadero") |> range(start: -5m) |> filter(fn: (r) => r._measurement == "invernadero_aire" and r._field == "temperatura") |> last()'
+              intervalMs: 1000
+              maxDataPoints: 43200
+              refId: A
+          - refId: B
+            datasourceUid: __expr__
+            model:
+              datasource: {type: __expr__, uid: __expr__}
+              expression: A
+              intervalMs: 1000
+              maxDataPoints: 43200
+              reducer: last
+              refId: B
+              type: reduce
+          - refId: C
+            datasourceUid: __expr__
+            model:
+              datasource: {type: __expr__, uid: __expr__}
+              expression: B
+              conditions:
+                - evaluator: {params: [30], type: gt}
+                  operator: {type: and}
+                  query: {params: [C]}
+                  reducer: {type: last}
+                  type: query
+              intervalMs: 1000
+              maxDataPoints: 43200
+              refId: C
+              type: threshold
+        noDataState: NoData
+        execErrState: Error
+        for: 0s
+        annotations:
+          summary: Temperatura simulada superior a 30 C
+        labels:
+          proyecto: savia-iot
+          origen: simulacion

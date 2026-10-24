@@ -1,0 +1,149 @@
+{
+  "version": 1,
+  "author": "Proyecto academico IoT",
+  "editor": "wokwi",
+  "parts": [
+    {
+      "type": "board-esp32-devkit-c-v4",
+      "id": "esp",
+      "top": 20,
+      "left": 0,
+      "attrs": {}
+    },
+    {
+      "type": "wokwi-dht22",
+      "id": "dht",
+      "top": -86.1,
+      "left": -187.8,
+      "attrs": {
+        "temperature": "24",
+        "humidity": "65"
+      }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "pullup",
+      "top": -70,
+      "left": -95,
+      "rotate": 90,
+      "attrs": {
+        "value": "10000"
+      }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "fan",
+      "top": 75,
+      "left": 425,
+      "attrs": {
+        "color": "green",
+        "label": "VENTILACION SIMULADA"
+      }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "rfan",
+      "top": 165,
+      "left": 420,
+      "rotate": 90,
+      "attrs": {
+        "value": "330"
+      }
+    },
+    {
+      "type": "wokwi-text",
+      "id": "title",
+      "top": -240,
+      "left": -190,
+      "attrs": {
+        "text": "SAVIA IoT | PRACTICA 2\nESP32 + DHT22 -> MQTT AWS -> InfluxDB + Grafana"
+      }
+    },
+    {
+      "type": "wokwi-text",
+      "id": "rules",
+      "top": 215,
+      "left": -225,
+      "attrs": {
+        "text": "AUTO: >30 C enciende\n<27 C apaga\n27-30 C conserva estado"
+      }
+    }
+  ],
+  "connections": [
+    [
+      "esp:TX",
+      "$serialMonitor:RX",
+      "",
+      []
+    ],
+    [
+      "esp:RX",
+      "$serialMonitor:TX",
+      "",
+      []
+    ],
+    [
+      "esp:3V3",
+      "dht:VCC",
+      "red",
+      [
+        "h-80",
+        "v-85"
+      ]
+    ],
+    [
+      "esp:GND.1",
+      "dht:GND",
+      "black",
+      [
+        "h-120",
+        "v-75"
+      ]
+    ],
+    [
+      "esp:15",
+      "dht:SDA",
+      "green",
+      [
+        "h40",
+        "v-120",
+        "h-300"
+      ]
+    ],
+    [
+      "dht:VCC",
+      "pullup:1",
+      "red",
+      []
+    ],
+    [
+      "pullup:2",
+      "dht:SDA",
+      "green",
+      []
+    ],
+    [
+      "rfan:2",
+      "fan:A",
+      "green",
+      []
+    ],
+    [
+      "fan:C",
+      "esp:GND.2",
+      "black",
+      [
+        "h45",
+        "v205",
+        "h-330"
+      ]
+    ],
+    [
+      "esp:26",
+      "rfan:1",
+      "green",
+      []
+    ]
+  ],
+  "dependencies": {}
+}
