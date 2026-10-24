@@ -18,12 +18,12 @@ Se inició en Docker Desktop una pila de cuatro servicios: Mosquitto, colector P
 5. Grafana cargó la regla `savia-temp-alta`, el contacto MQTT `Savia MQTT` y la política de notificación. Tras superar 30 °C, la regla figuró como `firing` y `health ok`. Un suscriptor autenticado **recibió un mensaje de alerta** en `invernadero1/alertas`. Esto comprueba la notificación local, no una entrega por correo ni a un teléfono.
 6. Las pruebas unitarias del colector pasaron: validación de lecturas y deduplicación/reintento de la cola. No se guardaron contraseñas ni tokens en el repositorio.
 
-## Pendiente para acreditar la práctica completa
+## Continuación realizada y evidencia académica
 
 - El despliegue en AWS Academy ya se verificó; véase la [evidencia de AWS](EVIDENCIA_AWS_2026-10-24.md). Mantener InfluxDB y Grafana sin puertos públicos y retirar la apertura temporal de MQTT al terminar la demostración.
-- Crear una copia **privada** de la simulación de la Práctica 2, configurar la IP y clave temporal allí, variar el DHT22 y comprobar que las nuevas lecturas lleguen a MQTT, CSV, InfluxDB y Grafana. No publicar la clave dentro de un Wokwi compartido.
-- Guardar capturas legibles de AWS, Wokwi, tópicos, serie temporal, tablero y alerta recibida; presentar el recorrido al grupo.
-- Aclarar con el docente el numeral de la subred de base de datos: el enunciado de esta actividad menciona una subred pública, mientras que la Práctica 1 usó PostgreSQL privado. Esta prueba local no acredita una topología de subred AWS.
+- La [copia pública de Wokwi](https://wokwi.com/projects/478779944323491841) ya envió lecturas a MQTT, CSV e InfluxDB de AWS con una clave temporal. El código compartido volvió a quedar sin credenciales y la clave se rotó; detalles en la [evidencia AWS](EVIDENCIA_AWS_2026-10-24.md).
+- Guardar capturas legibles de AWS, Wokwi, tópicos, serie temporal, tablero y alerta recibida para la sustentación al grupo.
+- Esta prueba local no acredita la topología de AWS. Posteriormente se instaló InfluxDB en una [segunda VM y subred pública](EVIDENCIA_AWS_2026-10-24.md), con acceso a 8086 restringido a la primera VM. PostgreSQL de la Práctica 1 permanece privado.
 
 **Evolución de AWS:** la instancia existente `i-01f3188a0db02ef65` era `t3.micro` durante esta prueba local. Después se amplió a `t3.small`, se abrió MQTT temporalmente y se instaló la pila. La [evidencia posterior](EVIDENCIA_AWS_2026-10-24.md) prevalece para el estado en nube.
 
