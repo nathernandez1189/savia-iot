@@ -1,5 +1,7 @@
 # Bitácora de decisiones
 
+- **2026-10-31 — Organizar la documentación interna de la Práctica 2 como la Práctica 1.** Se añade checklist y un índice de entregables; las dos evidencias fechadas se reúnen con la captura en `practica2/evidencias/`. Se amplía la guía con arranque local, particularidades de AWS, permisos MQTT y demostración de la base. Se conserva `practica2/`, la presentación original en Releases y el acceso desde `entregables/README.md`. Los servicios, firmware, configuración y datos de las evidencias permanecen intactos; no se inicia ni modifica AWS por esta reorganización.
+
 - **2026-10-31 — Conservar `practica2/` con su nombre y función.** Petición explícita de Natalia. Se mantienen sus servicios, configuraciones, firmware y evidencias; solo se actualizan enlaces y la ubicación de descarga de la presentación.
 - **2026-10-31 — Reunir la Práctica 1 en `practica-1/`.** Se trasladan servidor, Wokwi, CloudFormation, Dockerfile, guía, checklist y evidencias para que las dos entregas se identifiquen desde la portada. Los archivos `.service` siguen apuntando a `/opt/savia-iot/server` en la VM; el traslado del código fuente no cambia una instalación existente.
 - **2026-10-31 — Publicar Pages desde `dashboard/` después de pasar pruebas.** Primero se habilita y comprueba el flujo, después se retiran los archivos compilados de la raíz. La única fuente de imágenes queda en `dashboard/public/`. Se mantiene el enlace público y el proyecto Wokwi `479406694310787073`.
@@ -7,7 +9,7 @@
 - **2026-10-31 — Conservar entregables en Releases.** Los dos PowerPoint y el PDF ya eran públicos. Antes de retirarlos del árbol de código se verifican los mismos hashes SHA-256 en Releases. El historial de Git no se reescribe; las evidencias permanecen en carpetas de cada práctica.
 - **2026-10-31 — Mantener separados el broker público y el broker de la Práctica 2.** El tablero, el sketch de la Práctica 1 y su puente usan actualmente EMQX público; la Práctica 2 usa Mosquitto propio con credenciales privadas. Se documenta la implementación vigente, sin sustituirla por un broker distinto durante esta limpieza.
 - **2026-10-31 — Reservar el proyecto final sin atribuirle resultados.** Se crean carpetas para datos, código ML, modelos, resultados e informe. No se instala otro agente, no se configura un conector AWS y no se elige licencia en esta reorganización.
-- **2026-10-24 — InfluxDB en segunda EC2 y otra subred.** Según la [evidencia de la Práctica 2](practica2/EVIDENCIA_AWS_2026-10-24.md), 8086 solo acepta tráfico del grupo de seguridad del servidor principal. La subred tiene ruta pública; eso no hace público el servicio de base de datos.
+- **2026-10-24 — InfluxDB en segunda EC2 y otra subred.** Según la [evidencia de la Práctica 2](practica2/evidencias/EVIDENCIA_AWS_2026-10-24.md), 8086 solo acepta tráfico del grupo de seguridad del servidor principal. La subred tiene ruta pública; eso no hace público el servicio de base de datos.
 - **2026-10-24 — Token InfluxDB en Systems Manager y rotación de la clave del dispositivo.** La misma evidencia registra el parámetro cifrado y la retirada y rotación de la clave temporal después de probar Wokwi.
 
 Las entradas históricas describen las evidencias citadas; no equivalen a una comprobación actual de AWS.

@@ -26,7 +26,7 @@ Prototipo académico con ESP32 y DHT22 simulados en Wokwi: mide temperatura y hu
 ## Evidencias y entregables
 
 - Práctica 1: [AWS](practica-1/evidencias/Evidencia_AWS_2026-10-24.md), [Ubuntu local](practica-1/evidencias/Evidencia_Ubuntu_Local_2026-10-24.md), [checklist](practica-1/checklist-entrega.md) e [informe y presentación descargables](practica-1/entregables.md).
-- Práctica 2: [AWS](practica2/EVIDENCIA_AWS_2026-10-24.md), [prueba local](practica2/EVIDENCIA_LOCAL_2026-10-24.md) y [presentación descargable](practica2/entregables/README.md).
+- Práctica 2: [AWS](practica2/evidencias/EVIDENCIA_AWS_2026-10-24.md), [prueba local](practica2/evidencias/EVIDENCIA_LOCAL_2026-10-24.md), [checklist](practica2/checklist-entrega.md) y [presentación descargable](practica2/entregables.md).
 - Contexto de mantenimiento: [AGENTS.md](AGENTS.md) y [decisiones.md](decisiones.md).
 
 Las evidencias acreditan sesiones fechadas, no disponibilidad permanente de AWS. Los datos interiores son simulados; Open-Meteo aporta estimaciones exteriores. El historial del tablero vive en el navegador y no es una consulta a PostgreSQL. No se ha entrenado un modelo de IA ni se presentan mediciones de plantas reales.
