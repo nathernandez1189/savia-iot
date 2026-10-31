@@ -6,7 +6,7 @@
 
 ## Caso y recorrido de las lecturas
 
-El [ESP32 con DHT22 simulado en Wokwi](https://wokwi.com/projects/477744536654042113) representa un invernadero de tomates. El sensor mide temperatura y humedad relativa del **aire**; no mide suelo ni estado de las plantas. El ESP32 publica lecturas por MQTT. Un puente en la VM Ubuntu recibe ese canal y entrega cada mensaje a la aplicación Python por HTTP local. La aplicación valida y deduplica antes de guardar en PostgreSQL y generar el CSV.
+El [ESP32 con DHT22 simulado en Wokwi](https://wokwi.com/projects/479406694310787073) representa un invernadero de tomates. El sensor mide temperatura y humedad relativa del **aire**; no mide suelo ni estado de las plantas. El ESP32 publica lecturas por MQTT. Un puente en la VM Ubuntu recibe ese canal y entrega cada mensaje a la aplicación Python por HTTP local. La aplicación valida y deduplica antes de guardar en PostgreSQL y generar el CSV.
 
     DHT22 → ESP32 → MQTT → puente en Ubuntu → aplicación Python
                                              ├→ PostgreSQL
@@ -47,7 +47,7 @@ Después de varias lecturas, consultar `http://127.0.0.1:18000/health` y `http:/
 
 ## Secuencia para la sustentación
 
-1. Mostrar el caso de uso y el circuito en [Wokwi](https://wokwi.com/projects/477744536654042113); variar el DHT22 y explicar la regla local.
+1. Mostrar el caso de uso y el circuito en [Wokwi](https://wokwi.com/projects/479406694310787073); variar el DHT22 y explicar la regla local.
 2. Verificar que el monitor serial indique conexión antes de afirmar que hay envío remoto. Si falla la red, mostrar solo el control local y explicar el límite.
 3. En AWS, mostrar la VM pública, las subredes privadas de RDS y sus grupos de seguridad sin enseñar claves.
 4. Comparar una lectura identificada por el mismo arranque y secuencia en la API, el CSV y PostgreSQL.

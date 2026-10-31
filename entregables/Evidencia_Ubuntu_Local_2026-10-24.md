@@ -4,7 +4,7 @@
 
 **Entorno:** Ubuntu 24.04 en un contenedor Docker ejecutado en el computador del equipo; separado de la VM de AWS.
 
-**Fuente de los datos:** ESP32 y DHT22 simulados en [Wokwi](https://wokwi.com/projects/477744536654042113).
+**Fuente de los datos:** ESP32 y DHT22 simulados en [Wokwi](https://wokwi.com/projects/479406694310787073).
 
 La aplicación Python se construyó con [local-ubuntu/Dockerfile](../local-ubuntu/Dockerfile) y se ejecutó en el puerto local `127.0.0.1:18000`. El almacenamiento de esta etapa fue SQLite y CSV en un volumen local. La misma imagen superó las dos pruebas del repositorio: validación/autorización/deduplicación/almacenamiento y aceptación de mensajes MQTT.
 

@@ -7,7 +7,7 @@
 
 ## Caso de uso
 
-Savia IoT representa el monitoreo de un invernadero de tomates. Un ESP32 y un DHT22 simulados en [Wokwi](https://wokwi.com/projects/477744536654042113) generan lecturas de temperatura y humedad relativa del **aire**. El ESP32 conserva el control local de un LED que representa la ventilación: se activa por encima de 30 °C y se desactiva por debajo de 27 °C.
+Savia IoT representa el monitoreo de un invernadero de tomates. Un ESP32 y un DHT22 simulados en [Wokwi](https://wokwi.com/projects/479406694310787073) generan lecturas de temperatura y humedad relativa del **aire**. El ESP32 conserva el control local de un LED que representa la ventilación: se activa por encima de 30 °C y se desactiva por debajo de 27 °C.
 
 ## Componentes desarrollados y comprobaciones
 
@@ -17,7 +17,7 @@ Savia IoT representa el monitoreo de un invernadero de tomates. Un ESP32 y un DH
 | Comunicación del dispositivo | El ESP32 publica las lecturas por MQTT. Un puente en cada Ubuntu las entrega por HTTP local a su aplicación. AWS pasó de 4 a 13 lecturas en una sesión y de 13 a 23 en otra; el Ubuntu local recibió las secuencias 22–25 del segundo arranque. La configuración activa no usa envío HTTP directo desde el ESP32. |
 | Persistencia | La aplicación valida y deduplica los mensajes. Las secuencias 23–25 de un mismo arranque coincidieron en la API respaldada por PostgreSQL y en el CSV del servidor. |
 | Infraestructura AWS | La pila CloudFormation llegó a CREATE_COMPLETE. Incluye EC2 Ubuntu en subred pública con IP elástica, PostgreSQL RDS en subredes privadas y grupos de seguridad que restringen el acceso a la base. La [plantilla](aws/savia-iot.yaml) permite examinar la configuración. |
-| Código y demostración | [Repositorio GitHub](https://github.com/nathernandez1189/savia-iot), [simulación Wokwi](https://wokwi.com/projects/477744536654042113), [tablero Savia IoT](https://nathernandez1189.github.io/savia-iot/) y [presentación](entregables/Savia_IoT_Practica_1_AWS.pptx). |
+| Código y demostración | [Repositorio GitHub](https://github.com/nathernandez1189/savia-iot), [simulación Wokwi](https://wokwi.com/projects/479406694310787073), [tablero Savia IoT](https://nathernandez1189.github.io/savia-iot/) y [presentación](entregables/Savia_IoT_Practica_1_AWS.pptx). |
 
 El [código fuente del tablero](dashboard/) también está incluido. Pasó la comprobación de tipos y 12 pruebas; su compilación reproduce los archivos HTML, CSS y JavaScript de la versión publicada.
 
