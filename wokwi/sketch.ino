@@ -16,7 +16,7 @@
 
 const uint8_t PIN_DHT=15, PIN_RELE=26, PIN_ALERTA=27;
 const uint8_t PIN_AUTO=18, PIN_ON=19, PIN_OFF=23;
-const char* BROKER="test.mosquitto.org";
+const char* BROKER="broker.emqx.io";
 const char* BASE="uao/invernadero/477744536654042113/v2";
 // Configurar al desplegar el servidor. Vacío mantiene solo el flujo MQTT actual.
 const char* API_URL=""; // Ejemplo: http://IP_PUBLICA/api/telemetry

@@ -1,6 +1,6 @@
 import { z } from 'zod';
 export const TOPIC = 'uao/invernadero/477744536654042113/v2';
-export const BROKER = 'wss://test.mosquitto.org:8081/mqtt';
+export const BROKER = 'wss://broker.emqx.io:8084/mqtt';
 export const WOKWI = 'https://wokwi.com/projects/477744536654042113';
 export const Measurement = z.object({
   v:z.literal(2), boot:z.string().regex(/^[a-f0-9]{8}$/), seq:z.number().int().positive().max(4294967295),

@@ -14,7 +14,7 @@ from urllib.request import Request, urlopen
 import paho.mqtt.client as mqtt
 
 
-BROKER = os.getenv("SAVIA_MQTT_BROKER", "test.mosquitto.org")
+BROKER = os.getenv("SAVIA_MQTT_BROKER", "broker.emqx.io")
 TOPIC = os.getenv(
     "SAVIA_MQTT_TOPIC", "uao/invernadero/477744536654042113/v2/telemetry"
 )
