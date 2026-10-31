@@ -5,9 +5,9 @@
 | Entrega o componente | Estado acreditado | Dónde |
 | --- | --- | --- |
 | Práctica 1 | Implementada; pruebas locales y evidencias fechadas de Ubuntu/AWS | [practica-1/](practica-1/README.md) |
-| Práctica 2 | Implementada; pruebas de colector y evidencias fechadas de MQTT/InfluxDB/Grafana | [practica2/](practica2/README.md) |
+| Práctica 2 | Implementada; pruebas de colector y evidencias fechadas de MQTT/InfluxDB/Grafana | [Guía](practica2/README.md) · [Checklist](practica2/checklist-entrega.md) · [Evidencias](practica2/evidencias/README.md) |
 | Tablero público | Publicación desde el código mediante GitHub Actions; enlace actualizado a Wokwi | [dashboard/](dashboard/README.md) |
-| Entregables | Archivos originales preservados en Releases | [Práctica 1](practica-1/entregables.md) · [Práctica 2](practica2/entregables/README.md) |
+| Entregables | Archivos originales preservados en Releases | [Práctica 1](practica-1/entregables.md) · [Práctica 2](practica2/entregables.md) |
 | Proyecto final | Estructura preparada; problema de IA y modelo pendientes | [proyecto-final/](proyecto-final/README.md) |
 
 Este índice describe el repositorio. La calificación, la exposición y la entrega en CampusDigital se verifican en el curso; la reorganización no demuestra esos estados. Las evidencias históricas no garantizan que el laboratorio AWS siga activo.

@@ -13,7 +13,7 @@ Para cumplir el numeral de separación de la base, se creó la pila CloudFormati
 
 ## Recorrido de una lectura de prueba
 
-La prueba reproducible está en [`smoke_test.sh`](smoke_test.sh). Publicó desde la propia VM, mediante un **cliente MQTT de prueba autenticado**, un mensaje identificado como `AWSCHECK1792859337`: temperatura **31,2 °C**, humedad **64,5 %** y ventilación encendida. El registro apareció en `readings.csv` y en la cola SQLite. El colector confirmó posteriormente `sent=1`; una consulta de InfluxDB devolvió puntos del mismo identificador con la etiqueta `origen=simulacion`. La primera consulta se hizo mientras la lectura seguía en la cola (`sent=0`), por lo que se repitió y se corrigió el script para esperar confirmación antes de declarar éxito. La ejecución definitiva terminó con código 0.
+La prueba reproducible está en [`smoke_test.sh`](../smoke_test.sh). Publicó desde la propia VM, mediante un **cliente MQTT de prueba autenticado**, un mensaje identificado como `AWSCHECK1792859337`: temperatura **31,2 °C**, humedad **64,5 %** y ventilación encendida. El registro apareció en `readings.csv` y en la cola SQLite. El colector confirmó posteriormente `sent=1`; una consulta de InfluxDB devolvió puntos del mismo identificador con la etiqueta `origen=simulacion`. La primera consulta se hizo mientras la lectura seguía en la cola (`sent=0`), por lo que se repitió y se corrigió el script para esperar confirmación antes de declarar éxito. La ejecución definitiva terminó con código 0.
 
 ## Prueba del ESP32 simulado
 
@@ -37,9 +37,9 @@ En la VM principal se configuraron el colector y la fuente de datos de Grafana p
 
 ## Captura del tablero en AWS
 
-Se abrió el Grafana privado desde la propia VM y se guardó [esta captura del tablero](evidencias/grafana-aws-2026-10-24.png). Aparecen las cuatro tarjetas: serie de temperatura, serie de humedad, última temperatura y última humedad. Las series incluyen el arranque `39c72c8e` del ESP32 **simulado en Wokwi** (24 °C, 65 %) y lecturas `AWSCHECK...` enviadas por un cliente MQTT de prueba. La última lectura visible (31,2 °C y 64,5 %) es **sintética**; no se presenta como medición física ni como lectura del DHT22 de Wokwi. Para que las tarjetas de valor actual mostraran un único dato, su consulta se agrupó y ordenó por fecha antes de seleccionar el último punto. La imagen no expone credenciales.
+Se abrió el Grafana privado desde la propia VM y se guardó [esta captura del tablero](grafana-aws-2026-10-24.png). Aparecen las cuatro tarjetas: serie de temperatura, serie de humedad, última temperatura y última humedad. Las series incluyen el arranque `39c72c8e` del ESP32 **simulado en Wokwi** (24 °C, 65 %) y lecturas `AWSCHECK...` enviadas por un cliente MQTT de prueba. La última lectura visible (31,2 °C y 64,5 %) es **sintética**; no se presenta como medición física ni como lectura del DHT22 de Wokwi. Para que las tarjetas de valor actual mostraran un único dato, su consulta se agrupó y ordenó por fecha antes de seleccionar el último punto. La imagen no expone credenciales.
 
-![Tablero Grafana de Savia IoT en AWS con temperatura y humedad simuladas](evidencias/grafana-aws-2026-10-24.png)
+![Tablero Grafana de Savia IoT en AWS con temperatura y humedad simuladas](grafana-aws-2026-10-24.png)
 
 ## Alcance y pasos restantes
 
