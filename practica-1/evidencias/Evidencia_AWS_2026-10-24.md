@@ -34,4 +34,4 @@ Además de la VM Ubuntu de AWS, la aplicación y el puente se ejecutaron y compr
 
 Los datos del DHT22 son simulados. El broker MQTT público no autentica la procedencia de un mensaje; por eso este montaje no se presenta como una instalación productiva. El servidor AWS ofrece HTTP sin HTTPS y su dirección pública es temporal. El clima exterior de Open-Meteo en el tablero es una fuente distinta y no se usa como lectura del invernadero.
 
-[Consultar la ficha de implementación y evidencia](../CHECKLIST_ENTREGA_PRACTICA_1.md).
+[Consultar la ficha de implementación y evidencia](../checklist-entrega.md).

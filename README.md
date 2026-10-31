@@ -1,43 +1,32 @@
-# Savia IoT | Invernadero de tomates
+# Savia IoT · Invernadero de tomates
 
-Proyecto académico de **Inteligencia Artificial Aplicada a Internet de las Cosas**. Simulamos un ESP32 con sensor DHT22 para registrar la temperatura y la humedad relativa del **aire** en un invernadero de tomates. El ESP32 aplica una regla local de ventilación; un LED representa el actuador.
+[![Pruebas](https://github.com/nathernandez1189/savia-iot/actions/workflows/pruebas.yml/badge.svg)](https://github.com/nathernandez1189/savia-iot/actions/workflows/pruebas.yml)
+[![Publicar tablero](https://github.com/nathernandez1189/savia-iot/actions/workflows/pages.yml/badge.svg)](https://github.com/nathernandez1189/savia-iot/actions/workflows/pages.yml)
+
+Prototipo académico con ESP32 y DHT22 simulados en Wokwi: mide temperatura y humedad del aire y controla una ventilación representada por un LED. Asignatura **Inteligencia Artificial Aplicada a Internet de las Cosas**, UAO, 2026-2.
 
 **Equipo:** Natalia Hernández Piedrahita, Sidney Leonardo Leusson Angulo, José Fernando Luque Cajiao y Jarvin David Alvarado Garcés.  
 **Docente:** Jhorman Andrés Villanueva Vivas.
 
-[Simulación en Wokwi](https://wokwi.com/projects/479406694310787073) · [Tablero Savia IoT](https://nathernandez1189.github.io/savia-iot/) · [Implementación y evidencia](CHECKLIST_ENTREGA_PRACTICA_1.md)
+[Abrir tablero](https://nathernandez1189.github.io/savia-iot/) · [Wokwi del tablero público](https://wokwi.com/projects/479406694310787073) · [Estado y siguientes pasos](00-indice.md)
 
-**Nueva actividad:** la [Práctica 2](practica2/README.md) desarrolla para el mismo invernadero un broker MQTT autenticado, almacenamiento en InfluxDB y CSV, y visualización con alertas en Grafana. La [prueba local](practica2/EVIDENCIA_LOCAL_2026-10-24.md) y la [prueba en AWS](practica2/EVIDENCIA_AWS_2026-10-24.md) están documentadas. La [copia de Wokwi de esta actividad](https://wokwi.com/projects/478779944323491841) envió siete lecturas a AWS durante una prueba temporal; la clave fue retirada del proyecto público y rotada al terminar.
+| Parte | Qué contiene | Guía |
+| --- | --- | --- |
+| Práctica 1 | ESP32 → MQTT público → puente HTTP → API Python → PostgreSQL/SQLite y CSV | [practica-1/](practica-1/README.md) |
+| Práctica 2 | ESP32 → Mosquitto autenticado → colector → InfluxDB/CSV → Grafana | [practica2/](practica2/README.md) |
+| Tablero web | React + Vite, telemetría MQTT, historial local y clima exterior | [dashboard/](dashboard/README.md) |
+| Proyecto final | Espacio para definir y evaluar la futura parte de IA | [proyecto-final/](proyecto-final/README.md) |
 
-## Relación con la Práctica 1
+## Cómo empezar
 
-El enunciado solicita un caso de monitoreo, un servidor Ubuntu, envío de lecturas desde el ESP32, almacenamiento en CSV y base de datos, una implementación posterior en AWS, repositorio y exposición. Este repositorio reúne el prototipo, el servidor, la plantilla AWS y resultados fechados. Se comprobaron **Ubuntu local en Docker** y, por separado, la **VM Ubuntu en AWS**. La [guía](GUIA_PRACTICA_1.md) explica cómo repetir ambas etapas.
+1. Abre el [tablero](https://nathernandez1189.github.io/savia-iot/) y pulsa **Abrir Wokwi**. Inicia la simulación para producir lecturas nuevas. La conexión depende del simulador y de un broker público de pruebas.
+2. Para reproducir el servidor local o el almacenamiento en AWS, sigue la [guía de la Práctica 1](practica-1/README.md). Para Mosquitto propio, InfluxDB y Grafana, sigue la [Práctica 2](practica2/README.md). Su [Wokwi público](https://wokwi.com/projects/478779944323491841) contiene marcadores de credenciales que deben configurarse de forma privada.
+3. Para modificar la página, trabaja en [dashboard/](dashboard/README.md). GitHub Actions ejecuta las pruebas y publica desde ese código cuando se integra un cambio en `main`.
 
-## Qué contiene el repositorio
+## Evidencias y entregables
 
-- [wokwi/](wokwi/): circuito, programa ESP32 y bibliotecas de la simulación.
-- [dashboard/](dashboard/): código fuente editable del tablero, sus pruebas y las instrucciones para generar el sitio publicado.
-- [server/](server/): aplicación Python, puente MQTT, servicios de ejecución y prueba del servidor.
-- [local-ubuntu/Dockerfile](local-ubuntu/Dockerfile): entorno Ubuntu 24.04 para reproducir la etapa local con SQLite y CSV.
-- [aws/savia-iot.yaml](aws/savia-iot.yaml): plantilla CloudFormation para AWS Academy Learner Lab. Define una VM Ubuntu en subred pública, IP elástica y PostgreSQL RDS en subredes privadas.
-- [GUIA_PRACTICA_1.md](GUIA_PRACTICA_1.md): arquitectura, reproducción y comprobaciones.
-- [CHECKLIST_ENTREGA_PRACTICA_1.md](CHECKLIST_ENTREGA_PRACTICA_1.md): informe breve de implementación y evidencia por componente.
-- [entregables/Evidencia_AWS_2026-10-24.md](entregables/Evidencia_AWS_2026-10-24.md): resultados observados el 24 de octubre de 2026 y sus límites.
-- [entregables/Evidencia_Ubuntu_Local_2026-10-24.md](entregables/Evidencia_Ubuntu_Local_2026-10-24.md): prueba local de Wokwi a SQLite y CSV.
-- [entregables/Savia_IoT_Practica_1_AWS.pptx](entregables/Savia_IoT_Practica_1_AWS.pptx): presentación de ocho diapositivas para explicar el caso, la arquitectura, la simulación, las pruebas y sus límites.
-- [entregables/Savia_IoT_Practica_1_Entrega_2026-10-24.pdf](entregables/Savia_IoT_Practica_1_Entrega_2026-10-24.pdf): informe formal de tres páginas con los enlaces y resultados de ambas etapas.
-- [index.html](index.html), [assets/](assets/) y [brand/](brand/): versión compilada del tablero publicada en GitHub Pages. Se generó desde [dashboard/](dashboard/); se comprobó que la compilación local produce exactamente los mismos archivos HTML, CSS y JavaScript publicados.
+- Práctica 1: [AWS](practica-1/evidencias/Evidencia_AWS_2026-10-24.md), [Ubuntu local](practica-1/evidencias/Evidencia_Ubuntu_Local_2026-10-24.md), [checklist](practica-1/checklist-entrega.md) e [informe y presentación descargables](practica-1/entregables.md).
+- Práctica 2: [AWS](practica2/EVIDENCIA_AWS_2026-10-24.md), [prueba local](practica2/EVIDENCIA_LOCAL_2026-10-24.md) y [presentación descargable](practica2/entregables/README.md).
+- Contexto de mantenimiento: [AGENTS.md](AGENTS.md) y [decisiones.md](decisiones.md).
 
-## Funcionamiento
-
-El DHT22 simulado entrega temperatura y humedad relativa del aire. El ESP32 publica las lecturas por MQTT; un puente en Ubuntu las recibe y las entrega por HTTP a la aplicación Python. Esta valida cada registro y lo conserva en PostgreSQL y CSV. En modo automático, el indicador de ventilación se enciende por encima de 30 °C y se apaga por debajo de 27 °C; entre esos límites mantiene su estado. La decisión local funciona aunque la conexión se interrumpa.
-
-El tablero muestra las lecturas del prototipo y permite consultar historial y controles. Su sección de clima utiliza Open-Meteo para **estimaciones exteriores y pronósticos** de la ubicación que el usuario seleccione. Estos datos no son mediciones dentro del invernadero y nunca reemplazan una lectura ausente del DHT22. No se ha entrenado un modelo de inteligencia artificial ni se han medido plantas reales.
-
-## Evidencia y límites
-
-El **24 de octubre de 2026** se verificó en AWS el servidor Ubuntu, PostgreSQL privado, la API y el CSV. Durante una sesión de Wokwi, el registro aumentó de 4 a 13 lecturas. La pasarela Wi-Fi falló temporalmente en otra comprobación; tras reiniciar Wokwi, el contador de AWS pasó de **13 a 23** y las secuencias 23 y 24 del mismo arranque aparecieron en la API y CSV. El Ubuntu local recibió las secuencias 22–25 de ese arranque y las guardó en SQLite y CSV. Los detalles y límites constan en las [evidencias AWS](entregables/Evidencia_AWS_2026-10-24.md) y [local](entregables/Evidencia_Ubuntu_Local_2026-10-24.md). La demostración se debe repetir antes de la exposición porque la conexión depende de servicios de prueba.
-
-La comunicación utiliza un broker MQTT público de pruebas y solo datos simulados. La instalación AWS ofrece HTTP, sin HTTPS. La dirección de la VM es temporal y depende de que el laboratorio siga activo; GitHub Pages es un tablero separado del servidor de almacenamiento.
-
-La [ficha de la práctica](CHECKLIST_ENTREGA_PRACTICA_1.md) distingue las verificaciones técnicas realizadas de la exposición y la entrega en CampusDigital, que son acciones académicas del equipo. El informe y las diapositivas están disponibles en `entregables/` para su revisión.
+Las evidencias acreditan sesiones fechadas, no disponibilidad permanente de AWS. Los datos interiores son simulados; Open-Meteo aporta estimaciones exteriores. El historial del tablero vive en el navegador y no es una consulta a PostgreSQL. No se ha entrenado un modelo de IA ni se presentan mediciones de plantas reales.

@@ -21,4 +21,4 @@ Después se inició el puente MQTT dentro del mismo Ubuntu local. Wokwi mostró 
 
 El simulador había mostrado antes una falla de su pasarela Wi-Fi; al reiniciarlo se recuperó la conexión y se obtuvieron estos resultados. Esta evidencia prueba la sesión fechada, no disponibilidad permanente. El DHT22 y el actuador son simulados, y el broker MQTT es público. La contraseña de prueba local no forma parte del código del ESP32 ni del repositorio.
 
-[Procedimiento para repetir la prueba](../GUIA_PRACTICA_1.md) · [Evidencia de AWS](Evidencia_AWS_2026-10-24.md)
+[Procedimiento para repetir la prueba](../README.md) · [Evidencia de AWS](Evidencia_AWS_2026-10-24.md)
