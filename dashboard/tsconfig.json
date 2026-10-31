@@ -14,8 +14,7 @@
     "allowImportingTsExtensions": true,
     "esModuleInterop": true,
     "types": [
-      "node",
-      "@cloudflare/workers-types"
+      "node"
     ]
   },
   "include": [
