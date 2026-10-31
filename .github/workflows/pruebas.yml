@@ -16,7 +16,7 @@ jobs:
     timeout-minutes: 10
     strategy:
       matrix:
-        carpeta: [server, practica2]
+        carpeta: [practica-1/server, practica2]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5

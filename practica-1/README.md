@@ -20,17 +20,17 @@ El broker MQTT usado en la práctica es público y no autentica quién envía un
 
 La plantilla [aws/savia-iot.yaml](aws/savia-iot.yaml) crea en AWS Academy Learner Lab una VPC, una subred pública para EC2 Ubuntu, dos subredes privadas para RDS PostgreSQL, una IP elástica y grupos de seguridad. La base no es pública y acepta el puerto 5432 solamente desde el grupo de la VM. La instancia usa el perfil propio del Learner Lab; en otra cuenta hay que adaptar ese perfil y revisar la configuración antes de desplegar.
 
-El 24 de octubre de 2026 se comprobó que la pila estaba en CREATE_COMPLETE, EC2 y RDS estaban disponibles, y la ruta de salud devolvía estado correcto con PostgreSQL. Durante una sesión de Wokwi, el contador pasó de 4 a 13 lecturas; las secuencias 23–25 coincidieron en la API y el CSV. Esto respalda esa sesión de prueba, no una conexión continua. La [evidencia detallada](entregables/Evidencia_AWS_2026-10-24.md) registra también una segunda prueba en la que falló la pasarela Wi-Fi de Wokwi y no llegaron nuevos mensajes.
+El 24 de octubre de 2026 se comprobó que la pila estaba en CREATE_COMPLETE, EC2 y RDS estaban disponibles, y la ruta de salud devolvía estado correcto con PostgreSQL. Durante una sesión de Wokwi, el contador pasó de 4 a 13 lecturas; las secuencias 23–25 coincidieron en la API y el CSV. Esto respalda esa sesión de prueba, no una conexión continua. La [evidencia detallada](evidencias/Evidencia_AWS_2026-10-24.md) registra también una segunda prueba en la que falló la pasarela Wi-Fi de Wokwi y no llegaron nuevos mensajes.
 
 El servidor expone HTTP sin HTTPS. Su IP es temporal y solo funciona mientras el laboratorio permanezca activo; por eso no se usa aquí como enlace permanente de entrega.
 
 ## Reproducción de la etapa inicial en Ubuntu local
 
-Además de la VM Ubuntu de AWS, el 24 de octubre se ejecutó el servidor en **Ubuntu 24.04 local mediante Docker**. La [evidencia local](entregables/Evidencia_Ubuntu_Local_2026-10-24.md) registra cuatro lecturas del ESP32 simulado recibidas en SQLite y CSV. Para repetirla en un equipo con Git y Docker Desktop:
+Además de la VM Ubuntu de AWS, el 24 de octubre se ejecutó el servidor en **Ubuntu 24.04 local mediante Docker**. La [evidencia local](evidencias/Evidencia_Ubuntu_Local_2026-10-24.md) registra cuatro lecturas del ESP32 simulado recibidas en SQLite y CSV. Para repetirla en un equipo con Git y Docker Desktop:
 
 ~~~bash
 git clone https://github.com/nathernandez1189/savia-iot.git
-cd savia-iot
+cd savia-iot/practica-1
 docker build -f local-ubuntu/Dockerfile -t savia-iot-ubuntu-local:practica1 .
 docker run --rm savia-iot-ubuntu-local:practica1 python3 -m unittest discover -s server -p 'test_*.py' -v
 mkdir -p server/data
@@ -53,4 +53,4 @@ Después de varias lecturas, consultar `http://127.0.0.1:18000/health` y `http:/
 4. Comparar una lectura identificada por el mismo arranque y secuencia en la API, el CSV y PostgreSQL.
 5. Comparar las secuencias del mismo arranque en Ubuntu local (SQLite/CSV) y AWS (PostgreSQL/CSV).
 
-La [ficha de implementación y evidencia](CHECKLIST_ENTREGA_PRACTICA_1.md) resume qué se observó en cada componente y el alcance de esas comprobaciones.
+La [ficha de implementación y evidencia](checklist-entrega.md) resume qué se observó en cada componente y el alcance de esas comprobaciones.
