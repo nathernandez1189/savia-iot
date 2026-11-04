@@ -1,0 +1,1117 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>savia IoT · Invernadero</title>
+  <link rel="icon" type="image/png" href="brand/savia-symbol.png" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+  <style>
+    :root {
+      --forest: #173e2e;
+      --deep: #102e24;
+      --lime: #c6f36d;
+      --ink: #24392f;
+      --muted: #69766c;
+      --line: #e2e7dd;
+      --paper: #f5f6f0;
+      --white: #ffffff;
+      --orange: #bd683d;
+      --orange-soft: #f8ece5;
+      --teal: #487f63;
+      --teal-soft: #eaf2ee;
+      --radius-lg: 14px;
+      --radius-md: 10px;
+      --shadow-sm: 0 2px 10px rgba(16, 46, 36, 0.04);
+      --sans: "Avenir Next", "Plus Jakarta Sans", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --mono: "JetBrains Mono", "SFMono-Regular", Consolas, monospace;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      background: var(--paper);
+      color: var(--ink);
+      font-family: var(--sans);
+      font-size: 15px;
+      line-height: 1.45;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    .shell {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 0 20px 40px;
+    }
+
+    /* Topbar */
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 16px 0;
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--forest);
+    }
+
+    .brand-mark {
+      width: 32px;
+      height: 32px;
+      object-fit: contain;
+      flex-shrink: 0;
+    }
+
+    .brand-name {
+      font-size: 21px;
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      color: var(--forest);
+    }
+
+    .brand-chip {
+      padding: 2px 7px;
+      border-radius: 5px;
+      background: var(--forest);
+      color: var(--lime);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 6px 11px;
+      border-radius: 999px;
+      background: var(--white);
+      border: 1px solid var(--line);
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--ink);
+    }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--teal);
+    }
+
+    .status-pill.offline .status-dot {
+      background: var(--orange);
+    }
+
+    .sync-time {
+      font-size: 12px;
+      color: var(--muted);
+      font-variant-numeric: tabular-nums;
+      padding: 0 4px;
+    }
+
+    .btn-action {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 12px;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      background: var(--white);
+      color: var(--ink);
+      font-family: inherit;
+      font-size: 12.5px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s ease, border-color 0.15s ease;
+    }
+
+    .btn-action:hover {
+      background: #ecefe6;
+    }
+
+    .btn-action.primary {
+      background: var(--forest);
+      border-color: var(--forest);
+      color: var(--white);
+    }
+
+    .btn-action.primary:hover {
+      background: var(--deep);
+    }
+
+    .btn-action svg {
+      width: 14px;
+      height: 14px;
+      flex-shrink: 0;
+    }
+
+    /* Compact Climate Summary Strip */
+    .climate-strip {
+      background: var(--forest);
+      color: var(--white);
+      border-radius: var(--radius-lg);
+      padding: 16px 20px;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .climate-main {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+      flex: 1 1 320px;
+    }
+
+    .climate-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 9px;
+      background: rgba(198, 243, 109, 0.14);
+      color: var(--lime);
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+    }
+
+    .climate-icon svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    .climate-copy {
+      min-width: 0;
+    }
+
+    .climate-eyebrow {
+      font-size: 10.5px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--lime);
+      margin-bottom: 2px;
+    }
+
+    .climate-text {
+      font-size: 13.5px;
+      color: rgba(255, 255, 255, 0.92);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .climate-pills {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .metric-chip {
+      background: rgba(255, 255, 255, 0.09);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 8px;
+      padding: 6px 11px;
+      font-size: 12px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .metric-chip span {
+      color: rgba(255, 255, 255, 0.68);
+    }
+
+    .metric-chip strong {
+      color: var(--white);
+      font-weight: 700;
+    }
+
+    /* 4 KPI Cards */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .kpi-card {
+      background: var(--white);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      padding: 16px 18px;
+      box-shadow: var(--shadow-sm);
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .kpi-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .kpi-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--muted);
+    }
+
+    .kpi-icon {
+      width: 30px;
+      height: 30px;
+      border-radius: 8px;
+      background: var(--paper);
+      color: var(--forest);
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+    }
+
+    .kpi-icon svg {
+      width: 15px;
+      height: 15px;
+    }
+
+    .kpi-icon.warm {
+      background: var(--orange-soft);
+      color: var(--orange);
+    }
+
+    .kpi-icon.cool {
+      background: var(--teal-soft);
+      color: var(--teal);
+    }
+
+    .kpi-icon.active {
+      background: var(--forest);
+      color: var(--lime);
+    }
+
+    .kpi-number {
+      font-size: clamp(26px, 3vw, 34px);
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      line-height: 1.05;
+      color: var(--ink);
+      font-variant-numeric: tabular-nums;
+      margin-bottom: 6px;
+    }
+
+    .kpi-unit {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--muted);
+      margin-left: 2px;
+    }
+
+    .kpi-meta {
+      font-size: 11.5px;
+      color: var(--muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .spinning {
+      animation: spin 2.4s linear infinite;
+    }
+
+    /* Control Strip */
+    .panel {
+      background: var(--white);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      padding: 18px 20px;
+      box-shadow: var(--shadow-sm);
+      min-width: 0;
+    }
+
+    .panel-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+    }
+
+    .panel-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--ink);
+      letter-spacing: -0.01em;
+    }
+
+    .panel-sub {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .control-section {
+      margin-bottom: 16px;
+    }
+
+    .control-options {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .control-option {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      background: var(--paper);
+      color: var(--ink);
+      font-family: inherit;
+      text-align: left;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      min-width: 0;
+    }
+
+    .control-option:hover:not(:disabled) {
+      border-color: var(--forest);
+    }
+
+    .control-option svg {
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
+    }
+
+    .control-option div {
+      display: grid;
+      min-width: 0;
+    }
+
+    .control-option strong {
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    .control-option small {
+      font-size: 11px;
+      color: var(--muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .control-option .check-mark {
+      margin-left: auto;
+      opacity: 0;
+      transition: opacity 0.15s ease;
+    }
+
+    .control-option.selected {
+      background: var(--forest);
+      border-color: var(--forest);
+      color: var(--white);
+    }
+
+    .control-option.selected small {
+      color: rgba(255, 255, 255, 0.72);
+    }
+
+    .control-option.selected svg {
+      color: var(--lime);
+    }
+
+    .control-option.selected .check-mark {
+      opacity: 1;
+    }
+
+    /* Main Workspace Grid: Chart + History */
+    .workspace-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr);
+      gap: 16px;
+    }
+
+    .chart-box {
+      position: relative;
+      height: 270px;
+      width: 100%;
+    }
+
+    .table-scroll {
+      overflow-x: auto;
+      margin: 0 -4px;
+      padding: 0 4px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12.5px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    th, td {
+      text-align: left;
+      padding: 8px 8px;
+      border-bottom: 1px solid var(--line);
+      white-space: nowrap;
+    }
+
+    th {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    .state-tag {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 7px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .state-tag.on {
+      background: var(--teal-soft);
+      color: var(--forest);
+    }
+
+    .state-tag.off {
+      background: var(--paper);
+      color: var(--muted);
+    }
+
+    /* Discrete Footer with Collapsible Endpoint Config */
+    .footer {
+      margin-top: 24px;
+      padding-top: 14px;
+      border-top: 1px solid var(--line);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    details.api-config {
+      font-size: 12px;
+    }
+
+    details.api-config summary {
+      cursor: pointer;
+      color: var(--muted);
+      user-select: none;
+      list-style: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    details.api-config summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .api-config-form {
+      margin-top: 8px;
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .api-config-form input {
+      width: 280px;
+      max-width: 100%;
+      padding: 5px 9px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      font-family: var(--mono);
+      font-size: 11.5px;
+      background: var(--white);
+      color: var(--ink);
+    }
+
+    /* Responsive Breakpoints */
+    @media (max-width: 960px) {
+      .kpi-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      .workspace-grid {
+        grid-template-columns: 1fr;
+      }
+      .climate-text {
+        white-space: normal;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .shell {
+        padding: 0 14px 32px;
+      }
+      .topbar {
+        padding: 12px 0;
+      }
+      .sync-time {
+        display: none;
+      }
+      .climate-strip {
+        padding: 14px;
+        gap: 12px;
+      }
+      .climate-pills {
+        width: 100%;
+        justify-content: space-between;
+      }
+      .metric-chip {
+        flex: 1 1 auto;
+        justify-content: center;
+      }
+      .kpi-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+      }
+      .kpi-card {
+        padding: 13px 14px;
+      }
+      .kpi-number {
+        font-size: 24px;
+      }
+      .control-options {
+        grid-template-columns: 1fr;
+      }
+      .panel {
+        padding: 15px;
+      }
+      .chart-box {
+        height: 220px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header class="topbar">
+      <a class="brand" href="#">
+        <img class="brand-mark" src="brand/savia-symbol.png" alt="" onerror="this.style.display='none'" />
+        <span class="brand-name">savia</span>
+        <span class="brand-chip">IoT</span>
+      </a>
+
+      <div class="topbar-right">
+        <span class="status-pill" id="conn-badge">
+          <span class="status-dot"></span>
+          <span id="conn-text">En vivo</span>
+        </span>
+        <span class="sync-time" id="last-sync">--:--</span>
+        <button class="btn-action" onclick="fetchTelemetry()" title="Actualizar lecturas">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg>
+          <span>Actualizar</span>
+        </button>
+        <button class="btn-action primary" onclick="downloadCSV()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          <span>CSV</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Estado climático resumido -->
+    <section class="climate-strip">
+      <div class="climate-main">
+        <div class="climate-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 20h10"/><path d="M10 20c5.5-2.5.8-6.4 3-10"/><path d="M9.5 9.4c1.1.8 1.8 2.2 2.3 3.7-2 .4-3.5.4-4.8-.3-1.2-.6-2.3-1.9-3-4.2 2.8-.5 4.4 0 5.5.8z"/><path d="M14.1 6a7 7 0 0 0-1.1 4c1.9-.1 3.3-.6 4.3-1.4 1-1 1.6-2.3 1.7-4.6-2.7.1-4 1-4.9 2z"/></svg>
+        </div>
+        <div class="climate-copy">
+          <div class="climate-eyebrow" id="ai-action-tag">Diagnóstico en curso</div>
+          <p class="climate-text" id="ai-diagnosis-text">Sincronizando lecturas del invernadero...</p>
+        </div>
+      </div>
+      <div class="climate-pills">
+        <div class="metric-chip">
+          <span>+15 min</span>
+          <strong id="ai-pred-15m">-- °C</strong>
+        </div>
+        <div class="metric-chip">
+          <span>Riesgo Botrytis</span>
+          <strong id="ai-botrytis">-- %</strong>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4 KPIs -->
+    <section class="kpi-grid">
+      <article class="kpi-card">
+        <div class="kpi-head">
+          <span class="kpi-label">Temperatura</span>
+          <span class="kpi-icon warm">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4v10.54a4 4 0 1 1-4 0V4a2 2 0 0 1 4 0Z"/></svg>
+          </span>
+        </div>
+        <div class="kpi-number"><span id="kpi-temp">--</span><span class="kpi-unit">°C</span></div>
+        <div class="kpi-meta" id="kpi-temp-foot">Meta 18 – 30 °C</div>
+      </article>
+
+      <article class="kpi-card">
+        <div class="kpi-head">
+          <span class="kpi-label">Humedad relativa</span>
+          <span class="kpi-icon cool">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 16.3c2.2 0 4-1.83 4-4.05 0-1.16-.57-2.26-1.71-3.19S7.29 6.75 7 5.3c-.29 1.45-1.14 2.84-2.29 3.76S3 11.1 3 12.25c0 2.22 1.8 4.05 4 4.05z"/><path d="M12.56 6.6A10.97 10.97 0 0 0 14 3.02c.5 2.5 2 4.9 4 6.5s3 3.5 3 5.5a6.98 6.98 0 0 1-11.91 4.97"/></svg>
+          </span>
+        </div>
+        <div class="kpi-number"><span id="kpi-hum">--</span><span class="kpi-unit">%</span></div>
+        <div class="kpi-meta">Meta 50 – 80 %</div>
+      </article>
+
+      <article class="kpi-card">
+        <div class="kpi-head">
+          <span class="kpi-label">Déficit de vapor (VPD)</span>
+          <span class="kpi-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg>
+          </span>
+        </div>
+        <div class="kpi-number"><span id="kpi-vpd">--</span><span class="kpi-unit">kPa</span></div>
+        <div class="kpi-meta" id="kpi-dew-foot">Óptimo 0.8 – 1.5 kPa</div>
+      </article>
+
+      <article class="kpi-card">
+        <div class="kpi-head">
+          <span class="kpi-label">Ventilación</span>
+          <span class="kpi-icon" id="fan-icon-box">
+            <svg id="fan-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.827 16.379a6.082 6.082 0 0 1-8.618-7.002l5.412 1.45a6.082 6.082 0 0 1 7.002-8.618l-1.45 5.412a6.082 6.082 0 0 1 8.618 7.002l-5.412-1.45a6.082 6.082 0 0 1-7.002 8.618l1.45-5.412Z"/><circle cx="12" cy="12" r="2"/></svg>
+          </span>
+        </div>
+        <div class="kpi-number" id="kpi-fan">--</div>
+        <div class="kpi-meta" id="kpi-mode-label">Modo automático</div>
+      </article>
+    </section>
+
+    <!-- Control del actuador -->
+    <section class="panel control-section">
+      <div class="panel-head">
+        <div>
+          <h2 class="panel-title">Control de ventilación</h2>
+          <p class="panel-sub" id="cmd-feedback">Selecciona cómo responde el invernadero</p>
+        </div>
+        <span class="state-tag on" id="ctrl-mode-pill">AUTO</span>
+      </div>
+
+      <div class="control-options">
+        <button type="button" class="control-option selected" id="opt-auto" onclick="sendActuatorCommand(false, 'AUTO')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+          <div>
+            <strong>Automático</strong>
+            <small>Activa si supera 30 °C</small>
+          </div>
+          <svg class="check-mark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        </button>
+
+        <button type="button" class="control-option" id="opt-on" onclick="sendActuatorCommand(true, 'MANUAL')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.827 16.379a6.082 6.082 0 0 1-8.618-7.002l5.412 1.45a6.082 6.082 0 0 1 7.002-8.618l-1.45 5.412a6.082 6.082 0 0 1 8.618 7.002l-5.412-1.45a6.082 6.082 0 0 1-7.002 8.618l1.45-5.412Z"/><circle cx="12" cy="12" r="2"/></svg>
+          <div>
+            <strong>Encender</strong>
+            <small>Forzar ventilación continua</small>
+          </div>
+          <svg class="check-mark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        </button>
+
+        <button type="button" class="control-option" id="opt-off" onclick="sendActuatorCommand(false, 'MANUAL')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18.36 6.64a9 9 0 1 1-12.73 0"/><line x1="12" y1="2" x2="12" y2="12"/></svg>
+          <div>
+            <strong>Apagar</strong>
+            <small>Detener ventilador</small>
+          </div>
+          <svg class="check-mark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        </button>
+      </div>
+    </section>
+
+    <!-- Gráfica + Historial -->
+    <section class="workspace-grid">
+      <div class="panel">
+        <div class="panel-head">
+          <h2 class="panel-title">Tendencia climática</h2>
+          <span class="panel-sub">Tiempo real + proyección 15 min</span>
+        </div>
+        <div class="chart-box">
+          <canvas id="telemetryChart"></canvas>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head">
+          <h2 class="panel-title">Lecturas recientes</h2>
+          <span class="panel-sub" id="records-count">0 registros</span>
+        </div>
+        <div class="table-scroll">
+          <table>
+            <thead>
+              <tr>
+                <th>Hora</th>
+                <th>Temp</th>
+                <th>Hum</th>
+                <th>VPD</th>
+                <th>Vent</th>
+              </tr>
+            </thead>
+            <tbody id="telemetry-tbody">
+              <tr><td colspan="5" style="text-align:center; color:var(--muted); padding: 20px 0;">Cargando lecturas...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <span>savia IoT · Cultivo de tomate (<em>Solanum lycopersicum</em>)</span>
+      <details class="api-config">
+        <summary>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          <span>Conexión API</span>
+        </summary>
+        <div class="api-config-form">
+          <input type="text" id="api-url-input" placeholder="https://..." />
+          <button class="btn-action" onclick="saveApiUrl()">Guardar</button>
+        </div>
+      </details>
+    </footer>
+  </div>
+
+  <script>
+    const DEFAULT_API_BASE = "__API_GATEWAY_URL__";
+    let currentRecords = [];
+    let chartInstance = null;
+
+    function getApiBase() {
+      const saved = localStorage.getItem("savia_p3_api_url");
+      if (saved && saved.startsWith("http")) return saved.replace(/\/+$/, "");
+      if (DEFAULT_API_BASE.startsWith("http")) return DEFAULT_API_BASE.replace(/\/+$/, "");
+      return "";
+    }
+
+    function saveApiUrl() {
+      const val = document.getElementById("api-url-input").value.trim().replace(/\/+$/, "");
+      if (val) {
+        localStorage.setItem("savia_p3_api_url", val);
+        fetchTelemetry();
+      }
+    }
+
+    function updateControlSelection(modo, fanOn) {
+      const optAuto = document.getElementById("opt-auto");
+      const optOn = document.getElementById("opt-on");
+      const optOff = document.getElementById("opt-off");
+      optAuto.classList.remove("selected");
+      optOn.classList.remove("selected");
+      optOff.classList.remove("selected");
+
+      if ((modo || "AUTO") === "AUTO") {
+        optAuto.classList.add("selected");
+      } else if (fanOn) {
+        optOn.classList.add("selected");
+      } else {
+        optOff.classList.add("selected");
+      }
+
+      const fanSvg = document.getElementById("fan-svg");
+      const fanBox = document.getElementById("fan-icon-box");
+      if (fanOn) {
+        fanSvg.classList.add("spinning");
+        fanBox.classList.add("active");
+      } else {
+        fanSvg.classList.remove("spinning");
+        fanBox.classList.remove("active");
+      }
+    }
+
+    function initChart() {
+      const ctx = document.getElementById("telemetryChart").getContext("2d");
+      chartInstance = new Chart(ctx, {
+        type: "line",
+        data: {
+          labels: [],
+          datasets: [
+            {
+              label: "Temperatura (°C)",
+              data: [],
+              borderColor: "#bd683d",
+              backgroundColor: "rgba(189, 104, 61, 0.08)",
+              borderWidth: 2,
+              pointRadius: 2,
+              tension: 0.32,
+              fill: true,
+              yAxisID: "y"
+            },
+            {
+              label: "Humedad (%)",
+              data: [],
+              borderColor: "#487f63",
+              backgroundColor: "transparent",
+              borderWidth: 2,
+              pointRadius: 2,
+              tension: 0.32,
+              fill: false,
+              yAxisID: "y1"
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          interaction: { mode: "index", intersect: false },
+          plugins: {
+            legend: {
+              labels: {
+                boxWidth: 10,
+                usePointStyle: true,
+                font: { size: 11.5 }
+              }
+            }
+          },
+          scales: {
+            x: {
+              grid: { display: false },
+              ticks: { maxTicksLimit: 6, font: { size: 11 } }
+            },
+            y: {
+              type: "linear",
+              position: "left",
+              grid: { color: "#eef1ea" },
+              ticks: { font: { size: 11 } }
+            },
+            y1: {
+              type: "linear",
+              position: "right",
+              grid: { drawOnChartArea: false },
+              ticks: { font: { size: 11 } }
+            }
+          }
+        }
+      });
+    }
+
+    async function fetchTelemetry() {
+      const base = getApiBase();
+      const inputEl = document.getElementById("api-url-input");
+      if (inputEl) inputEl.value = base;
+      const badge = document.getElementById("conn-badge");
+
+      if (!base) {
+        badge.classList.add("offline");
+        document.getElementById("conn-text").textContent = "Sin API";
+        return;
+      }
+
+      try {
+        const res = await fetch(`${base}/sensor?limit=30`);
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
+        currentRecords = data.records || [];
+        renderDashboard(data);
+        badge.classList.remove("offline");
+        document.getElementById("conn-text").textContent = "En vivo";
+        document.getElementById("last-sync").textContent = new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" });
+      } catch (err) {
+        badge.classList.add("offline");
+        document.getElementById("conn-text").textContent = "Sin conexión";
+      }
+    }
+
+    function renderDashboard(data) {
+      const latest = data.latest;
+      const ai = data.ai || {};
+
+      if (latest) {
+        const fanOn = Boolean(latest.actuador_fan);
+        const modo = latest.modo || "AUTO";
+
+        document.getElementById("kpi-temp").textContent = Number(latest.temperatura).toFixed(1);
+        document.getElementById("kpi-hum").textContent = Number(latest.humedad).toFixed(1);
+        document.getElementById("kpi-vpd").textContent = Number(ai.vpd_kpa ?? latest.vpd_kpa ?? 0).toFixed(2);
+        document.getElementById("kpi-dew-foot").textContent =
+          `Rocío ${ai.dew_point_c ?? latest.dew_point_c ?? "--"} °C · Óptimo 0.8–1.5`;
+        document.getElementById("kpi-fan").textContent = fanOn ? "Activa" : "En espera";
+        document.getElementById("kpi-mode-label").textContent =
+          modo === "AUTO" ? "Modo automático" : "Control manual";
+        document.getElementById("ctrl-mode-pill").textContent = modo;
+
+        updateControlSelection(modo, fanOn);
+      }
+
+      if (ai.ai_diagnosis) {
+        const labelMap = {
+          VENTILACION_ACTIVA_CRITICA: "Estrés térmico activo",
+          VENTILACION_PREVENTIVA_IA: "Ventilación preventiva",
+          DESHUMIDIFICACION_URGENTE: "Humedad crítica",
+          CONFORT_TRANSPIRACION_OPTIMA: "Clima en rango óptimo"
+        };
+        document.getElementById("ai-action-tag").textContent =
+          labelMap[ai.ai_action] || "Estado del cultivo";
+        document.getElementById("ai-diagnosis-text").textContent = ai.ai_diagnosis;
+        document.getElementById("ai-pred-15m").textContent =
+          ai.temp_pred_15m != null ? `${Number(ai.temp_pred_15m).toFixed(1)} °C` : "-- °C";
+        document.getElementById("ai-botrytis").textContent =
+          ai.botrytis_risk_pct != null ? `${ai.botrytis_risk_pct} %` : "-- %";
+      }
+
+      const records = data.records || [];
+      document.getElementById("records-count").textContent = `${records.length} lecturas`;
+
+      if (chartInstance && records.length > 0) {
+        const labels = records.map(r =>
+          new Date(Number(r.timestamp)).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" })
+        );
+        const temps = records.map(r => Number(r.temperatura));
+        const hums = records.map(r => Number(r.humedad));
+
+        if (ai.temp_pred_15m != null) {
+          labels.push("+15m");
+          temps.push(Number(ai.temp_pred_15m));
+          hums.push(Number(ai.hum_pred_15m ?? hums[hums.length - 1]));
+        }
+
+        chartInstance.data.labels = labels;
+        chartInstance.data.datasets[0].data = temps;
+        chartInstance.data.datasets[1].data = hums;
+        chartInstance.update();
+      }
+
+      const tbody = document.getElementById("telemetry-tbody");
+      if (records.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; color:var(--muted); padding: 16px 0;">Sin lecturas registradas</td></tr>';
+      } else {
+        tbody.innerHTML = [...records].reverse().slice(0, 8).map(r => {
+          const timeStr = new Date(Number(r.timestamp)).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" });
+          const fanTag = r.actuador_fan
+            ? '<span class="state-tag on">Activa</span>'
+            : '<span class="state-tag off">Espera</span>';
+          return `<tr>
+            <td>${timeStr}</td>
+            <td><strong>${Number(r.temperatura).toFixed(1)} °C</strong></td>
+            <td>${Number(r.humedad).toFixed(1)} %</td>
+            <td>${Number(r.vpd_kpa ?? 0).toFixed(2)}</td>
+            <td>${fanTag}</td>
+          </tr>`;
+        }).join("");
+      }
+    }
+
+    async function sendActuatorCommand(fanState, modo) {
+      const base = getApiBase();
+      const fb = document.getElementById("cmd-feedback");
+      if (!base) return;
+
+      fb.textContent = "Aplicando cambio en el invernadero...";
+      document.getElementById("ctrl-mode-pill").textContent = modo;
+      document.getElementById("kpi-mode-label").textContent =
+        modo === "AUTO" ? "Modo automático" : "Control manual";
+      if (modo === "MANUAL") {
+        document.getElementById("kpi-fan").textContent = fanState ? "Activa" : "En espera";
+      }
+      updateControlSelection(modo, fanState);
+
+      try {
+        const res = await fetch(`${base}/actuador`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            device_id: "esp32_invernadero_01",
+            actuador_fan: fanState,
+            modo: modo
+          })
+        });
+        const data = await res.json();
+        if (data.ok) {
+          fb.textContent = modo === "AUTO"
+            ? "Modo automático activo (umbral 30 °C)"
+            : `Modo manual: ventilación ${fanState ? "encendida" : "apagada"}`;
+          setTimeout(fetchTelemetry, 4200);
+        } else {
+          fb.textContent = `No se pudo aplicar: ${data.error || "error"}`;
+        }
+      } catch (err) {
+        fb.textContent = "Error de red al enviar comando";
+      }
+    }
+
+    function downloadCSV() {
+      const base = getApiBase();
+      if (base && currentRecords.length === 0) {
+        window.open(`${base}/sensor?format=csv`, "_blank");
+        return;
+      }
+      const headers = ["device_id", "timestamp", "fecha_iso", "temperatura_c", "humedad_pct", "vpd_kpa", "riesgo_botrytis_pct", "actuador_fan"];
+      const rows = currentRecords.map(r => [
+        r.device_id,
+        r.timestamp,
+        new Date(Number(r.timestamp)).toISOString(),
+        r.temperatura,
+        r.humedad,
+        r.vpd_kpa ?? "",
+        r.riesgo_botrytis ?? 0,
+        r.actuador_fan
+      ]);
+      const csvContent = [headers.join(","), ...rows.map(e => e.join(","))].join("\n");
+      const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `savia_telemetria_${new Date().toISOString().slice(0, 19).replace(/[:T]/g, "-")}.csv`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    }
+
+    window.addEventListener("DOMContentLoaded", () => {
+      initChart();
+      fetchTelemetry();
+      setInterval(fetchTelemetry, 5000);
+    });
+  </script>
+</body>
+</html>

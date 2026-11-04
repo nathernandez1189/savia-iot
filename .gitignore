@@ -16,7 +16,15 @@ __pycache__/
 practica-1/server/data/
 practica2/.secrets/
 practica2/data/
+practica-3/.secrets/
+practica-3/esp32/esp32_serverless/credentials.h
+practica-3/infra/deployed_endpoints.json
 *.pem
 *.key
+*.crt
+export_for_notebook.md
+repo_knowledge_base.md
+*GUIA_EQUIPO_Y_SUSTENTACION_P3*
+**/GUIA_EQUIPO_Y_SUSTENTACION_P3.*
 proyecto-final/datos/local/
 proyecto-final/modelos/local/
