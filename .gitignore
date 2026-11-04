@@ -18,3 +18,5 @@ __pycache__/
 server/data/
 practica2/.secrets/
 practica2/data/
+export_for_notebook.md
+repo_knowledge_base.md
