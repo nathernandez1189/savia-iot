@@ -5,7 +5,8 @@
 
 Para revisar la entrega académica en el repositorio:
 
-1. [Informe académico de la Práctica 3](informe.md).\n2. [Guía técnica, arquitectura y pasos de reproducción](README.md).
+1. [Informe académico de la Práctica 3](informe.md).
+2. [Guía técnica, arquitectura y pasos de reproducción](README.md).
 3. [Checklist frente al enunciado](checklist-entrega.md).
 4. [Evidencia fechada de AWS](evidencias/README.md).
 5. [Firmware ESP32](esp32/esp32_serverless/esp32_serverless.ino), [Lambda](lambda/lambda_function.py), [tablero S3](s3-dashboard/index.html) e [infraestructura](infra/deploy_serverless.py).
