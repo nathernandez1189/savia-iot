@@ -1,22 +1,24 @@
 # Índice y estado
 
-Última actualización: **3 de noviembre de 2026**.
+Última actualización documental: **5 de noviembre de 2026**.
 
 | Entrega o componente | Estado acreditado | Dónde |
 | --- | --- | --- |
 | Práctica 1 | Implementada; pruebas locales y evidencias fechadas de Ubuntu/AWS | [practica-1/](practica-1/README.md) |
 | Práctica 2 | Implementada; pruebas de colector y evidencias fechadas de MQTT/InfluxDB/Grafana | [Guía](practica2/README.md) · [Checklist](practica2/checklist-entrega.md) · [Evidencias](practica2/evidencias/README.md) |
-| Práctica 3 | Implementada y verificada en AWS Serverless (IoT Core X.509, DynamoDB, Lambda IA, API Gateway y S3) con ESP32 físico | [Guía](practica-3/README.md) · [Evidencia AWS](practica-3/evidencias/EVIDENCIA_AWS_SERVERLESS_2026-11-03.md) |
+| Práctica 3 | Código y servicios documentados; prueba MQTT con X.509 registrada en DynamoDB el 3 de noviembre. Origen físico del ESP32, descarga CSV y actuación remota aún sin evidencia completa | [Guía](practica-3/README.md) · [Checklist](practica-3/checklist-entrega.md) · [Evidencias](practica-3/evidencias/README.md) |
 | Tablero público | Publicación desde el código mediante GitHub Actions; enlace actualizado a Wokwi | [dashboard/](dashboard/README.md) |
-| Entregables | Archivos originales preservados en Releases | [Práctica 1](practica-1/entregables.md) · [Práctica 2](practica2/entregables.md) |
+| Entregables | Prácticas 1 y 2 en Releases; Práctica 3 con índice de archivos y estado del informe | [Práctica 1](practica-1/entregables.md) · [Práctica 2](practica2/entregables.md) · [Práctica 3](practica-3/entregables.md) |
 | Proyecto final | Estructura preparada; motor de IA agronómica integrado en Práctica 3 | [proyecto-final/](proyecto-final/README.md) |
 
 Este índice describe el repositorio. La calificación, la exposición y la entrega en CampusDigital se verifican en el curso. Las evidencias históricas acreditan sesiones fechadas de AWS Academy Learner Lab.
 
 ## Siguientes pasos
 
-- [x] Implementar y verificar el flujo extremo a extremo de la Práctica 3 (ESP32 mTLS X.509 $\rightarrow$ IoT Core $\rightarrow$ DynamoDB $\rightarrow$ Lambda IA $\rightarrow$ API Gateway $\rightarrow$ S3).
-- [ ] Sustentar la Práctica 3 en la sesión presencial del sábado.
+- [x] Publicar código y verificar en una sesión una publicación MQTT con certificado X.509 que llega a DynamoDB.
+- [ ] Documentar una lectura identificada desde el ESP32 hasta DynamoDB, el sitio S3 y el CSV.
+- [ ] Documentar la recepción y ejecución de una orden remota en el ESP32.
+- [ ] Sustentar la Práctica 3 frente al grupo y confirmar la entrega en el curso.
 
 ## Verificación del código
 
