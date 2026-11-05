@@ -5,10 +5,10 @@
 
 Para revisar la entrega académica en el repositorio:
 
-1. [Guía técnica, arquitectura y pasos de reproducción](README.md).
-2. [Checklist frente al enunciado](checklist-entrega.md).
-3. [Evidencia fechada de AWS](evidencias/README.md).
-4. [Firmware ESP32](esp32/esp32_serverless/esp32_serverless.ino), [Lambda](lambda/lambda_function.py), [tablero S3](s3-dashboard/index.html) e [infraestructura](infra/deploy_serverless.py).
+1. [Informe académico de la Práctica 3](informe.md).\n2. [Guía técnica, arquitectura y pasos de reproducción](README.md).
+3. [Checklist frente al enunciado](checklist-entrega.md).
+4. [Evidencia fechada de AWS](evidencias/README.md).
+5. [Firmware ESP32](esp32/esp32_serverless/esp32_serverless.ino), [Lambda](lambda/lambda_function.py), [tablero S3](s3-dashboard/index.html) e [infraestructura](infra/deploy_serverless.py).
 
 El informe formal en PDF se preparó para revisión y entrega del equipo, pero **no se anuncia aquí como archivo alojado en GitHub**. Cuando se incorpore al repositorio o a una release, agregar su enlace y comprobar la descarga. El código y la evidencia histórica están publicados; la exposición frente al grupo y el envío por el canal del curso se confirman aparte.
 
