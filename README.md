@@ -3,7 +3,7 @@
 [![Pruebas](https://github.com/nathernandez1189/savia-iot/actions/workflows/pruebas.yml/badge.svg)](https://github.com/nathernandez1189/savia-iot/actions/workflows/pruebas.yml)
 [![Publicar tablero](https://github.com/nathernandez1189/savia-iot/actions/workflows/pages.yml/badge.svg)](https://github.com/nathernandez1189/savia-iot/actions/workflows/pages.yml)
 
-Prototipo académico con ESP32 y DHT22 (simulado en Wokwi y en hardware físico): mide temperatura y humedad del aire, calcula indicadores agronómicos con IA y controla la ventilación del invernadero (*Solanum lycopersicum*). Asignatura **Inteligencia Artificial Aplicada a Internet de las Cosas**, UAO, 2026-2.
+Prototipo académico para un invernadero de tomates (*Solanum lycopersicum*): las Prácticas 1 y 2 documentan lecturas simuladas con ESP32 y DHT22; la Práctica 3 añade código para ESP32, AWS IoT Core, DynamoDB y un tablero en S3. Los cálculos agronómicos son reglas y estimaciones de demostración, no un modelo entrenado o validado. Asignatura **Inteligencia Artificial Aplicada a Internet de las Cosas**, UAO, 2026-2.
 
 **Equipo:** Natalia Hernández Piedrahita, Sidney Leonardo Leusson Angulo, José Fernando Luque Cajiao y Jarvin David Alvarado Garcés.  
 **Docente:** Jhorman Andrés Villanueva Vivas.
@@ -21,12 +21,12 @@ Prototipo académico con ESP32 y DHT22 (simulado en Wokwi y en hardware físico)
 ## Cómo empezar
 
 1. Abre el [tablero](https://nathernandez1189.github.io/savia-iot/) y pulsa **Abrir Wokwi**. Inicia la simulación para producir lecturas nuevas. La conexión depende del simulador y de un broker público de pruebas.
-2. Para reproducir el servidor local o el almacenamiento en AWS, sigue la [guía de la Práctica 1](practica-1/README.md). Para Mosquitto propio, InfluxDB y Grafana, sigue la [Práctica 2](practica2/README.md). Para la arquitectura **100% Serverless + Motor IA Agronómica**, sigue la [guía de la Práctica 3](practica-3/README.md).
+2. Para reproducir el servidor local o el almacenamiento en AWS, sigue la [guía de la Práctica 1](practica-1/README.md). Para Mosquitto propio, InfluxDB y Grafana, sigue la [Práctica 2](practica2/README.md). Para AWS IoT Core, DynamoDB y el tablero S3, sigue la [guía de la Práctica 3](practica-3/README.md) y su checklist de verificación.
 3. Para modificar la página pública, trabaja en [dashboard/](dashboard/README.md). GitHub Actions ejecuta las pruebas y publica desde ese código cuando se integra un cambio en `main`.
 
 ## Evidencias y entregables
 
 - Práctica 1: [AWS](practica-1/evidencias/Evidencia_AWS_2026-10-24.md), [Ubuntu local](practica-1/evidencias/Evidencia_Ubuntu_Local_2026-10-24.md), [checklist](practica-1/checklist-entrega.md) e [informe y presentación descargables](practica-1/entregables.md).
 - Práctica 2: [AWS](practica2/evidencias/EVIDENCIA_AWS_2026-10-24.md), [prueba local](practica2/evidencias/EVIDENCIA_LOCAL_2026-10-24.md), [checklist](practica2/checklist-entrega.md) y [presentación descargable](practica2/entregables.md).
-- Práctica 3: [Guía técnica Serverless](practica-3/README.md) y [Evidencia AWS Serverless](practica-3/evidencias/EVIDENCIA_AWS_SERVERLESS_2026-11-03.md).
+- Práctica 3: [guía técnica](practica-3/README.md), [checklist](practica-3/checklist-entrega.md), [evidencias](practica-3/evidencias/README.md) y [entregables](practica-3/entregables.md). La prueba fechada de MQTT y DynamoDB no acredita por sí sola el origen físico del ESP32 ni la ejecución de un comando en el actuador.
 - Contexto de mantenimiento: [AGENTS.md](AGENTS.md) y [decisiones.md](decisiones.md).
